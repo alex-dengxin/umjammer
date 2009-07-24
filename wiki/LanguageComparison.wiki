@@ -14,7 +14,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 ||[android DOJA]||5.1||○||実機で動かん...||
 ||[http://java.sun.com/javame/index.jsp Java ME]||WT2.5.2||○||イメージのスケーリングができない||
 ||C# (WinForms)||3.5||○||repaint copyarea がダメダメ||
-||C# (WinForms)||[http://www.mono-project.com/Main_Page mono] 2.0.1 (Mac)||○||
+||C# (WinForms)||[http://www.mono-project.com/Main_Page mono] 2.0.1 (Mac)||○|| ||
 ||C# (WPF/Silverlight?)||b1?||×|| ||
 ||C# (moonlight)|| || ||WPF相当は無い||
 ||C# (XNA)||2.0||△||offscreen||
@@ -216,7 +216,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 ||main|| ||`if ＿name＿ == "＿main＿":`||
 || ||`main(String[] args)`||`sys.argv[n]`||
 || ||`System.out.println("foo: " + bar)`||`print("foo: %d" % (bar))`||
-||Comment|| `/** ... */`|| `"""" ... """"`||
+||Comment|| `/** ... */`|| `""" ... """`||
 ||Comment|| `//`|| `#`||
 ||awt|| ||`Component#graphics` のオーバーライドに注意||
 
