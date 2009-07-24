@@ -1,5 +1,5 @@
 #labels Java,GPS
-#ヨーロッパでカーナビドライブ
+# ヨーロッパでカーナビドライブ
 
 ----
 みなさんこんにちは，私来月(2003/3/15 執筆)から一ヶ月間ヨーロッパへ旅行に行きます．レンタカーを借りて旅しようと思っています．SONY のハンディ GPS を持っているので旅の軌跡をこいつに記録させようかと思い立ちました．ついでにカーナビとして使えないかと検討し始めたらハマリました．あと一ヶ月もないのに，レンタカーもまだ予約してないのに，ソフトもまだぜんぜん出来上がってないのに，大丈夫か？ 
@@ -7,9 +7,9 @@
 無事帰ってまいりました(2003/05/05)．結果だけならxxこちらへxx．ソフトウェアはxxこちらへxx． 
 
 ==Microsoft Autoroute==
-ヨーロッパでの PC カーナビの定番は [Microsoft AutoRoute|http://www.microsoft.com/uk/homepc/autoroute/] みたいです(ホントか？あんまし調べてない．．．)． 
+ヨーロッパでの PC カーナビの定番は [http://www.microsoft.com/uk/homepc/autoroute/ Microsoft AutoRoute] みたいです(ホントか？あんまし調べてない．．．)． 
 
-GPS は[NMEA|http://www.nmea.org/] xx2.0 or later とかいう規格xxでないとダメらしい？ 
+GPS は[http://www.nmea.org/ NMEA] xx2.0 or later とかいう規格xxでないとダメらしい？ 
 
 → NMEA-0183 Version 2.0 以降という意味です． 
 
@@ -50,9 +50,9 @@ xxたぶん以下のようにすればいけるはず．
 
 よって必要なものは， 
 
-  *汎用 USB ドライバ 
-  *HGR -> NMEA フォーマットコンバータ 
-  *COM ポートをクロスケーブルでつないだように見せかけるドライバxx
+  * 汎用 USB ドライバ 
+  * HGR -> NMEA フォーマットコンバータ 
+  * COM ポートをクロスケーブルでつないだように見せかけるドライバxx
 こっちのほうがオールフリーでいけるので良さげ 030321 
 
 {{{
@@ -86,19 +86,19 @@ xxたぶん以下のようにすればいけるはず．
 
 よって必要なものは， 
 
-  *汎用 USB ドライバ 
-  *HGR -> NMEA フォーマットコンバータ 
-  *ネットワークアクセス可能な仮想 COM ポートドライバ 
-===近いもの===
-  *[HGR1US SONY-HGR1/3をシリアル接続に見せるドライバ|http://www.vector.co.jp/soft/win95/home/se181280.html] ... Win 9x 用でかつ出力フォーマットが HGR か IPS-5000 (一番俺のシステムに近かったがシェアだし 9x 用じゃねぇ) 
-  *[AnyGPS|http://www.vector.co.jp/soft/win95/home/se150051.html] ... 上と同じ作者，今わかったのだがこれがあれば俺のシステム(2. のコンバータのところね)必要ないことに気付いた...まぁ俺の方はネットワークでもデータ飛ばせるからアドバンテージがあるとしよう... 
+  * 汎用 USB ドライバ 
+  * HGR -> NMEA フォーマットコンバータ 
+  * ネットワークアクセス可能な仮想 COM ポートドライバ 
+===近いもの ===
+  * [http://www.vector.co.jp/soft/win95/home/se181280.html HGR1US SONY-HGR1/3をシリアル接続に見せるドライバ] ... Win 9x 用でかつ出力フォーマットが HGR か IPS-5000 (一番俺のシステムに近かったがシェアだし 9x 用じゃねぇ) 
+  * [http://www.vector.co.jp/soft/win95/home/se150051.html AnyGPS] ... 上と同じ作者，今わかったのだがこれがあれば俺のシステム(2. のコンバータのところね)必要ないことに気付いた...まぁ俺の方はネットワークでもデータ飛ばせるからアドバンテージがあるとしよう... 
 ==汎用 USB ドライバ==
 和製がありました． 
 
-  *[uusbd.sys|http://www.otto.to/~kasiwano/toppage12.htm] ... 結構有名みたい． 
+  *[http://www.otto.to/~kasiwano/toppage12.htm uusbd.sys] ... 結構有名みたい． 
 VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールすれば OK ！ 
 
-あと USB 用の Java API を組まなければいけません．[ここ|http://hccweb1.bai.ne.jp/~hcj64001/cgi-bin/fswiki/wiki.cgi?page=%C5%FD%B9%E7%A5%A2%A1%BC%A5%AB%A5%A4%A5%D0%A5%D7%A5%ED%A5%B8%A5%A7%A5%AF%A5%C8]で JNI やっといてよかった．とってもスムーズに JNI が組めるようになってる俺．暇があったら [JSR80|http://javax-usb.sourceforge.net/] の Win32 実装にしようと思ったのだが，API が煩雑すぎだし残り半月仕事しながらじゃ無理なので断念． 
+あと USB 用の Java API を組まなければいけません．[http://hccweb1.bai.ne.jp/~hcj64001/cgi-bin/fswiki/wiki.cgi?page=%C5%FD%B9%E7%A5%A2%A1%BC%A5%AB%A5%A4%A5%D0%A5%D7%A5%ED%A5%B8%A5%A7%A5%AF%A5%C8 ここ]で JNI やっといてよかった．とってもスムーズに JNI が組めるようになってる俺．暇があったら [http://javax-usb.sourceforge.net/ JSR80] の Win32 実装にしようと思ったのだが，API が煩雑すぎだし残り半月仕事しながらじゃ無理なので断念． 
 
 とりあえずその場しのぎの Java USB API ... ダウンロード
 
@@ -106,16 +106,16 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 もちろん俺は Java しかできないので Java で組みます． 
 
 ===HGR 解析===
-  *[Sony IPS GPS Data Format|http://happy.emu.id.au/neilp/gps/ipsformat2.htm] ... IPS-2010 解析 
-  *[IPS Format|http://www.asahi-net.or.jp/~KN6Y-GTU/ips/ipsformat.txt] ... IPS 解析 
+  *[http://happy.emu.id.au/neilp/gps/ipsformat2.htm Sony IPS GPS Data Format] ... IPS-2010 解析 
+  *[http://www.asahi-net.or.jp/~KN6Y-GTU/ips/ipsformat.txt IPS Format] ... IPS 解析 
   *[AnyGPS|http://www.vector.co.jp/soft/win95/home/se150051.html] ... いろんな GPS のコンバータみたい 
   *[PCQlib|http://www.ht.sfc.keio.ac.jp/~nandu/gps/gps.html] ... Linux 用の HGR コントロールライブラリ 
   *[USB Sniffer|http://benoit.papillault.free.fr/usbsnoop/index.en.php] ... Navin'You とのセッションの解析に使用 
-  *[HGR 解析|http://navi.org/aizu/gps/] ... ==私のメールリクエストに答えて復活していただきました！感謝！== 
+  *[HGR 解析|http://navi.org/aizu/gps/] ... xx私のメールリクエストに答えて復活していただきました！感謝！xx
 ===Navin'You 5.5 と HGR3S の USB セッション===
 ||コマンド||I/O||データ||
-||パワーオン{ROWS:9},←,!POWON\r\n  
-||→{ROWS:8},ROM    OK\r\n
+||パワーオン{ROWS:9}||←||!POWON\r\n||  
+||→{ROWS:8}||ROM    OK\r\n||
 ||RS232C OK\r\n
 ||CLOCK  NG\r\n
 ||\r\n
@@ -123,11 +123,11 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 ||\r\n
 ||                               (C)Copyright 1991,1997   Sony Corporation.\r\n
 ||\r\n
-||,,
-||,, 
-||???{ROWS:2},←,!PC\r\n  
-||→,OK\r\n  
-||ID 取得{ROWS:2},←,!ID\r\n  
+|| || ||
+|| || ||
+||???{ROWS:2}||←||!PC\r\n  ||
+||→||OK\r\n  ||
+||ID 取得{ROWS:2}||←||!ID\r\n  
 ||→,IDDTPCQ-HGR3,1.0.00.07281\r\n  
 ||???{ROWS:2},←,!GP  
 ||→,OK\r\n  
@@ -150,10 +150,10 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 ||→,
 
 ==NMEA==
-  *[Understanding NMEA 0183|http://pcptpp030.psychologie.uni-regensburg.de/trafficresearch/NMEA0183/index.html] ... 
-  *[GM-38:マーキュリー取扱説明書|http://www.spa-japan.co.jp/DataBank/GM38m5.html] ... 
-  *[NMEA-0183フォーマット|http://bg66.soc.i.kyoto-u.ac.jp/forestgps/nmea.html] ... 
-  *[GARMIN GPS 12 XL|http://www.ne.jp/asahi/gps/nori/GARMIN/] ... 閉鎖
+  *[http://pcptpp030.psychologie.uni-regensburg.de/trafficresearch/NMEA0183/index.html Understanding NMEA 0183] ... 
+  *[http://www.spa-japan.co.jp/DataBank/GM38m5.html GM-38:マーキュリー取扱説明書] ... 
+  *[http://bg66.soc.i.kyoto-u.ac.jp/forestgps/nmea.html NMEA-0183フォーマット] ... 
+  *[http://www.ne.jp/asahi/gps/nori/GARMIN/ GARMIN GPS 12 XL] ... 閉鎖
 ==開発状況==
   *03/15 やっと HGR3S パワーオンできた．こんなペースで大丈夫か？ 
   *03/21 AutoRoute に[現在位置表示|http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/ar.png]できました！(プライバシー全開なんで自動車アイコンの位置はずらしてあります．それにしてもヨーロッパ用のソフトの地図に今住んでいる場所の地名が載っていることにちょっと感動) 
