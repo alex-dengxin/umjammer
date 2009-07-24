@@ -245,13 +245,13 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 
 || ||Java||Scala||
 ||interface|| ||`trait`||
-||継承||`class C extends A, B implements I, J`||`class C extends A with B with C with I with J`||
+||継承||`class C extends A, B implements I, J`||`class C extends A with B with I with J`||
 || ||`final`||`val`||
 || ||`int` ||`Int`||
 || ||`byte`||`Byte`||
 || ||`char` ||`Char`||
 || ||`byteValue = (byte) integerValue`|| `byteValue = integerValue.asInstanceOf[Byte]`||
-||keyword重複||無し||`Thread.``yield``()`||
+||keyword重複||無し||`Thread.`````yield`````()`||
 ||Method||`int foo(int bar) { ... }`||` def foo(bar:Int):Int { ... }`||
 ||型指定宣言||`byte b = 0`||`var b:Byte = 0`||
 ||配列||`array[index]`|| `array(index)`||
