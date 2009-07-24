@@ -1,5 +1,5 @@
 #labels Java,GPS
-# ヨーロッパでカーナビドライブ
+=ヨーロッパでカーナビドライブ=
 
 ----
 みなさんこんにちは，私来月(2003/3/15 執筆)から一ヶ月間ヨーロッパへ旅行に行きます．レンタカーを借りて旅しようと思っています．SONY のハンディ GPS を持っているので旅の軌跡をこいつに記録させようかと思い立ちました．ついでにカーナビとして使えないかと検討し始めたらハマリました．あと一ヶ月もないのに，レンタカーもまだ予約してないのに，ソフトもまだぜんぜん出来上がってないのに，大丈夫か？ 
@@ -16,7 +16,8 @@ GPS は[http://www.nmea.org/ NMEA] xx2.0 or later とかいう規格xxでない�
 ==SONY PCQ-HGR3S==
 =PCQ-HGR3S とは？=
 SONY 製のハンディ GPS レシーバです．Navin'You 買ったときについてきた奴です．せっ，生産中止．．．いきなりかい．どうも Navin'You 関連は VAIO の販促用だったみたいである． 
-!PCQ-HGR3S を NMEA GPS として MS AutoRoute につなぐ
+
+===PCQ-HGR3S を NMEA GPS として MS AutoRoute につなぐ===
 
 xxたぶん以下のようにすればいけるはず． 
 {{{
@@ -53,6 +54,7 @@ xxたぶん以下のようにすればいけるはず．
   * 汎用 USB ドライバ 
   * HGR -> NMEA フォーマットコンバータ 
   * COM ポートをクロスケーブルでつないだように見せかけるドライバxx
+
 こっちのほうがオールフリーでいけるので良さげ 030321 
 
 {{{
@@ -135,17 +137,17 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 ||→||OK\r\n  ||
 ||???{ROWS:4}||→||@VF040\r\n  ||
 ||←{ROWS:3}||\r\n||
-||@VF040\r\n
-||\r\n
-||
-||
+||@VF040\r\n||
+||\r\n||
+|| ||
+|| ||
 ||測地系の設定{ROWS:2}||→||@SKB\r\n  ||
 ||← || ||
 || || ||
 ||測地系の設定 (2 回しないと効かない？){ROWS:4}||→||@SKB\r\n  ||
 ||←{ROWS:3}||\r\n||
-||@SKB\r\n
-||\r\n
+||@SKB\r\n||
+||\r\n||
 || ||
 || || ||
 ||パワーオフ{ROWS:2}||←||!PUOFF\r\n||  
@@ -159,7 +161,7 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 ==開発状況==
   * 03/15 やっと HGR3S パワーオンできた．こんなペースで大丈夫か？ 
   * 03/21 AutoRoute に[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/ar.png 現在位置表示]できました！(プライバシー全開なんで自動車アイコンの位置はずらしてあります．それにしてもヨーロッパ用のソフトの地図に今住んでいる場所の地名が載っていることにちょっと感動) 
-  * 03/26 [マルチキャスト機能|http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/gps.png]をつけてみた．クライアントは [http://www.surveytec.com/groom/gsoft/nmmoni/index.html NmMonitor] (NMEA), Navin'You (IPS-5000), MS AutoRoute (NMEA) の 3 つ．ちなみに Navin'You と AutoRoute は別パソコン上 
+  * 03/26 [http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/gps.png マルチキャスト機能]をつけてみた．クライアントは [http://www.surveytec.com/groom/gsoft/nmmoni/index.html NmMonitor] (NMEA), Navin'You (IPS-5000), MS AutoRoute (NMEA) の 3 つ．ちなみに Navin'You と AutoRoute は別パソコン上 
   * 04/10 M$ AutoRoute の欠点として方向が出ません。私結構方向音痴なので困ってしまって、旅行中に[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/gps2.png こんなの]作りました(made in France (笑))。Navin' You でいう天空図ですね。 
 ==TODO==
   * まだ AutoRoute に Altitude と Time of fix が表示されていない xx(NMEA センテンスが足りない？)xx
@@ -175,22 +177,28 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
   * HGR 生データのロガープラグイン(ナビソフトに任すのではなく自分で取っておく) 
 
 ==COM ポートをクロスケーブルでつないだように見せかけるドライバ==
+
 シェアか製品しかないみたい，何でこんなものに１万円近く払わにゃならんのか？xxどうせ一ヶ月なんで試用モードで２回インストールすることに決定．開発時は本物の COM ポートをクロスケーブルでつないでやることにする．(持っていくノートにはもちろんCOM ポートなど無い)xx
 
   * [http://www.mks.zp.ua/vspdxp.php VSPD XP3] ... 試用期間 14 日，起動時にウザいダイアログあり 
   * [http://www.ise-ics.co.jp/ics/system/virtualcomportcontents.html VCP 300] ... 試用制限 5 分，和製 
-  * [http://www.vector.co.jp/soft/win95/hardware/se150050.html NULL_COM 仮想シリアルポートドライバ|] ... この開発者俺の欲しいものばっか作ってるがシェアだし 9x 用 
+  * [http://www.vector.co.jp/soft/win95/hardware/se150050.html NULL_COM 仮想シリアルポートドライバ] ... この開発者俺の欲しいものばっか作ってるがシェアだし 9x 用 
+
 ==ネットワークアクセス可能な仮想 COM ポートドライバ==
+
 別に COM to COM じゃなくでも Network to COM でよかったことに気付いた．こちらはフリーがあります．つーか，はるかにこっちのほうがいろんな事できる(GPS データを違うマシンに飛ばしたり，GPS クライアントを複数にしたり)．なんで COM to COM だと有料で，これだと無料なんだろうね？ 
 
   * [http://www.lantronix.com/support/utils/devicecomm/ DeviceComm Manager] ... 使い勝手いいです．フリー！ 
   * [http://www.yk.rim.or.jp/~kurohara/npcomm.html NPCOMM] ... 和製，シェア(今はフリー？)，なぜかインストールできなかったので断念 
   * [http://www.brianpoe.com/comfoolery/ Comfoolery!] ... これもか？ 
+
 ==ソフトウェア==
 準備中 
 
 ----
+
 ==結果報告==
+
 とりあえずは大成功か？M$ AutoRoute はヨーロッパではめちゃくちゃ役に立ちます．これなしでは旅できなくなるくらい便利でした． 
 
 あと本当は飛行機内で GPS 記録したかったんだけどあの窓では HGR は衛星捉えてくれませんでした．マッハで移動する軌跡取りたかったのに．．． 
@@ -198,26 +206,33 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 とった記録を[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/replay.png 再現]してみた。パリ−ツールズの移動の一部です。再現ソフトは[http://gpsmap.sourceforge.net/ こちら]。下記「疑問」の補正はしてないのでちょっとずれている。右上のにぎやかそうなところがパリです。見ればわかるがパリ以外ホント田舎ばっか。 
 
 ==疑問==
+
 ===@VF コマンド===
+
 なんか AutoRoute に表示されているポイントが実際より SW 400m 位ずれてたんだよね．そんでふと思って，起動時に @VF040 ってあったよなぁ？その 4 って400m の 4 かもって．@VF000 ってやってみたら案の定ポイントぴったり合いやがんの(でも，WGS84 と Tokyo Datum の差異は '''NW''' 約400m じゃなかったっけ？)．これに気付いたのが 4/26 ごろ．もう旅終わりやん．記録データ全部補正してやらんといかん．くっそー．なまじっか M$ AutoRoute にマップ補正機能があったのも気付くの遅れた原因だよなぁ． 
+
 ==おまけ(その１) ．．．アウトレット==
+
 イタリアの有名ブランドアウトレットショップ行ってきたので紹介しちゃおう．とはいってもここは技術志向サイト(笑)なので緯度経度で表示してみた．だって他のサイトみたいに住所書かれてもさっぱりわからんしね(イタリアでは，アメリカみたいに家に番号が振られているのが少ないのでわかりづらい)．駐車場に停めた地点なので確実です．ホント田舎なのだがさすがブランド大好き日本人，どちらも数名に出会ってしまった． 
+
 ===The Mall (GUCCI, GIORGIO ARMANI, Yves Saint Laurant等)===
-  *[http://maps.google.co.jp/maps?hl=ja&q=N43.70217,+E11.46401&lr=&ie=UTF8&z=17&ll=43.702172,11.464008&spn=0.005468,0.009677&t=k&om=1&iwloc=A Latitude 43.70217 North]
-  *[http://maps.google.co.jp/maps?hl=ja&q=N43.70217,+E11.46401&lr=&ie=UTF8&z=17&ll=43.702172,11.464008&spn=0.005468,0.009677&t=k&om=1&iwloc=A Longitude 11.46401 East]
+
+  * [http://maps.google.co.jp/maps?hl=ja&q=N43.70217,+E11.46401&lr=&ie=UTF8&z=17&ll=43.702172,11.464008&spn=0.005468,0.009677&t=k&om=1&iwloc=A Latitude 43.70217 North]
+  * [http://maps.google.co.jp/maps?hl=ja&q=N43.70217,+E11.46401&lr=&ie=UTF8&z=17&ll=43.702172,11.464008&spn=0.005468,0.009677&t=k&om=1&iwloc=A Longitude 11.46401 East]
 
 ここは田舎にぽつんとあるので分かりやすい．現在建て増し工事中である． 
 
 ===I PELLETTIERI D'ITALIA (Prada, MiuMiu, JIL SANDER)===
-  *[http://maps.google.co.jp/maps?hl=ja&ie=UTF8&q=N43.51292,+E11.59702&z=16&ll=43.51292,11.59702&spn=0.010971,0.019355&t=k&om=1 Latitude 43.51292 North]
-  *[http://maps.google.co.jp/maps?hl=ja&ie=UTF8&q=N43.51292,+E11.59702&z=16&ll=43.51292,11.59702&spn=0.010971,0.019355&t=k&om=1 Longitude 11.59702 East]
+
+  * [http://maps.google.co.jp/maps?hl=ja&ie=UTF8&q=N43.51292,+E11.59702&z=16&ll=43.51292,11.59702&spn=0.010971,0.019355&t=k&om=1 Latitude 43.51292 North]
+  * [http://maps.google.co.jp/maps?hl=ja&ie=UTF8&q=N43.51292,+E11.59702&z=16&ll=43.51292,11.59702&spn=0.010971,0.019355&t=k&om=1 Longitude 11.59702 East]
 
 こっちは看板がない(見えない？)のでちょっと難しいかも．Montevarchi から見て右手に Agip のガスステ，左手にぎざぎざ(いわゆる工場)屋根の工場があるところの，ぎざぎざ屋根の工場の奥のほうである． 
-
 
 ここの情報得るのにアメリカのあるサイトを見たんだがそこの説明が秀逸．「前述の方法で見つけられなければ車をとめて待つことである．しばらくすると若いカップル(たぶん日本人)が乗ったタクシーが通るであろうから，それについて行けば良い」だって．．． 
 
 ==おまけ(その２) ．．．流行ちう==
+
 パリの女子高校生の間でベルボトムが大流行ちうである．ベルボトムの中のスニーカーはまさしくガンダムと呼べるほどどデカイのを履いている．でも高校卒業したような年齢の人は全然そんなことはない．ここら辺は女子高生間で流行ったものは若年世代すべてに流行ってしまう日本と違うところか？ 
 
 フランス全体ではインラインスケートやっている人がものすげー目立った．それも移動手段として．イタリアに行くと極端に減る．[http://www.heelys.jp/ ヒーリーズ]持ってけば良かったと少し後悔．．． 
