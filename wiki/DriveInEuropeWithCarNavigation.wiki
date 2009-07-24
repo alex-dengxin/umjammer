@@ -117,18 +117,17 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
   * [http://navi.org/aizu/gps/ HGR 解析] ... ~~私のメールリクエストに答えて復活していただきました！感謝！~~
 
 ===Navin'You 5.5 と HGR3S の USB セッション===
-||コマンド||I/O||データ||
-||パワーオン||←||!POWON\r\n||  
-|| ||→||ROM    OK\r\n||
-|| || ||RS232C OK\r\n||
-|| || ||CLOCK  NG\r\n||
-|| || ||\r\n||
-|| || ||        ----< SONY GLOBAL POSITIONING SYSTEM >-----\r\n||
-|| || ||\r\n||
-|| || ||                               (C)Copyright 1991,1997   Sony Corporation.\r\n||
-|| || ||\r\n||
-|| || ||
-|| || ||
+||*コマンド*||*I/O*||*データ*||
+||パワーオン||←||`!POWON\r\n`||  
+|| ||→||`ROM    OK\r\n`||
+|| || ||`RS232C OK\r\n`||
+|| || ||`CLOCK  NG\r\n`||
+|| || ||`\r\n`||
+|| || ||`        ----< SONY GLOBAL POSITIONING SYSTEM >-----\r\n`||
+|| || ||`\r\n`||
+|| || ||`                               (C)Copyright 1991,1997   Sony Corporation.\r\n`||
+|| || ||`\r\n`||
+|| || || ||
 ||???||←||!PC\r\n  ||
 || ||→||OK\r\n  ||
 ||ID 取得||←||!ID\r\n  ||
@@ -139,19 +138,17 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 || ||←||\r\n||
 || || ||@VF040\r\n||
 || || ||\r\n||
-|| ||
-|| ||
+|| || || ||
 ||測地系の設定||→||@SKB\r\n  ||
 || ||← || ||
-|| || ||
+|| || || ||
 ||測地系の設定 (2 回しないと効かない？)||→||@SKB\r\n  ||
 || ||←||\r\n||
 || || ||@SKB\r\n||
 || || ||\r\n||
-|| ||
-|| || ||
+|| || || ||
 ||パワーオフ||←||!PUOFF\r\n||  
-|| ||→||
+|| ||→|| ||
 
 ==NMEA==
   * [http://pcptpp030.psychologie.uni-regensburg.de/trafficresearch/NMEA0183/index.html Understanding NMEA 0183] ... 
