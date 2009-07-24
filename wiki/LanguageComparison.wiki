@@ -133,7 +133,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 
   * Java + Delphi のこだわり
    * partial なじめない
-  * メソッド名の最初大文字許せない
+   * メソッド名の最初大文字許せない
   * version MS 3.5, mono 2.01
 
 || ||Java||C#||
@@ -147,7 +147,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 ||Comment||`/** ... */`||` ///`||
 
   # IO というよりリソースクロージングのための構文糖衣みたい
-   * ([http://support.microsoft.com/kb/837908/ja ここ] に書いてあるがまさに「日本語でOK」状態...)
+  # ([http://support.microsoft.com/kb/837908/ja ここ] に書いてあるがまさに「日本語でOK」状態...)
 {{{
  <?xml version="1.0" encoding="utf-8"?>
  <configuration>
