@@ -157,7 +157,7 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
   * [http://www.ne.jp/asahi/gps/nori/GARMIN/ GARMIN GPS 12 XL] ... 閉鎖
 ==開発状況==
   * 03/15 やっと HGR3S パワーオンできた．こんなペースで大丈夫か？ 
-  * 03/21 AutoRoute に[http://picasaweb.google.co.jp/lh/photo/nABPQK905aRMiCXNcWqrbQ?feat=directlink 現在位置表示]できました！(プライバシー全開なんで自動車アイコンの位置はずらしてあります．それにしてもヨーロッパ用のソフトの地図に今住んでいる場所の地名が載っていることにちょっと感動) 
+  * 03/21 AutoRoute に[http://picasaweb.google.co.jp/lh/photo/KjHB64wqxOBmLRBpzgL2UA?feat=directlink 現在位置表示]できました！(プライバシー全開なんで自動車アイコンの位置はずらしてあります．それにしてもヨーロッパ用のソフトの地図に今住んでいる場所の地名が載っていることにちょっと感動) 
   * 03/26 [http://picasaweb.google.co.jp/lh/photo/nABPQK905aRMiCXNcWqrbQ?feat=directlink マルチキャスト機能]をつけてみた．クライアントは [http://www.surveytec.com/groom/gsoft/nmmoni/index.html NmMonitor] (NMEA), Navin'You (IPS-5000), MS AutoRoute (NMEA) の 3 つ．ちなみに Navin'You と AutoRoute は別パソコン上 
   * 04/10 M$ AutoRoute の欠点として方向が出ません。私結構方向音痴なので困ってしまって、旅行中に[http://picasaweb.google.co.jp/lh/photo/NKwNoK6dki95aEbGr8hP1g?feat=directlink こんなの]作りました(made in France (笑))。Navin' You でいう天空図ですね。 
 ==TODO==
