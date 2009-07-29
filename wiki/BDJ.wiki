@@ -1,0 +1,71 @@
+= BD-J=
+
+System Software Update v2.50 以降 AVCHD がディスク以外から？再生されなくなりました。よって終了〜
+
+  * MP3 再生のソースまで書いたのに...
+
+== PS3==
+
+  * ADA
+   * 1016832 bytes
+== Info==
+
+=== javax.tv===
+
+  * codec
+
+||type||codec||
+||audio||ima4|| ||
+||video||cinepak||
+
+  * content
+
+||type||codec||
+||video||quicktime||
+
+  * protocol
+
+||type||
+||file||
+||http||
+
+== Develop==
+
+  * [https://hdcookbook.dev.java.net/ hdcookbook]
+  * bdj-ps3
+  * [http://xletview.sourceforge.net/ xletview]
+
+  * off screen image は Component#createImage を使う
+   * new BufferedImage() はダメっぽい
+  * Conponent#getToolkit() が NoSuchMethodError
+   * xletview ==だけ？？？== → xletview のバグ
+  * GZipInputStream でエラーが起きる
+   * on PS3
+  * String のメソッドのバージョン
+   * replace → 自作
+   * split → StringTalknizer
+
+  * お約束の LodeRunner
+{{ref_image 2008082323530000.png }}
+
+=== xletview===
+
+  * bugs
+   * RandomAccessFile
+   * constructor(File,String) not such method
+   * user.dir not set like FileInputStream
+   * javassist によって xjava.* に置換されるクラスのうち自クラスの型もしくは配列を返すメソッドがダメになる
+    * File#listFiles() x3
+    * Toolkit#getToolkit()
+
+  * differences
+   * ColorModel
+    * PS3 ではαが効いてる
+    * xletview はαなくても OK な場合がある -> BufferedImage#getRGB/setRGB
+
+== Idea==
+
+  * Virtual Keyboard
+   * via network
+   * PBP has ServerSocket
+   * http://synergy2.sourceforge.net/
