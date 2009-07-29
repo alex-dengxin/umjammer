@@ -1,0 +1,16 @@
+=Java Variation=
+
+=== Doja to MIDP2.0===
+
+||javax.microedition.midlet.Midlet||com.nttdocomo.ui.IApplication||
+||Choic||ListBox(ListBox.CHECK_BOX | ListBox.MULTI_SELECTION)||
+||TextField||TextBox||
+||TextField#set/getString||TextBox#set/getText||
+||STAR||Display.KEY_ASTERISK||
+||NUM#||Display.KEY_#||
+||searviceRepaint|| ||
+||Alart||Dialog||
+||Display.getDispaly(this).setCurrent||Display.setCurrent||
+||Timer||com.nttdocomo.util.Timer||
+||TimerTask||com.nttdocomo.util.TimerListener||
+||Midlet#getGameAction||Canvas#getKeypadState||
