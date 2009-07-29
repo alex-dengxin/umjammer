@@ -1,3 +1,4 @@
+#labels Java,BD-J
 = BD-J=
 
 System Software Update v2.50 以降 AVCHD がディスク以外から？再生されなくなりました。よって終了〜
@@ -15,7 +16,7 @@ System Software Update v2.50 以降 AVCHD がディスク以外から？再生�
   * codec
 
 ||type||codec||
-||audio||ima4|| ||
+||audio||ima4, ||
 ||video||cinepak||
 
   * content
@@ -38,7 +39,7 @@ System Software Update v2.50 以降 AVCHD がディスク以外から？再生�
   * off screen image は Component#createImage を使う
    * new BufferedImage() はダメっぽい
   * Conponent#getToolkit() が NoSuchMethodError
-   * xletview ==だけ？？？== → xletview のバグ
+   * xletview ~~だけ？？？~~ → xletview のバグ
   * GZipInputStream でエラーが起きる
    * on PS3
   * String のメソッドのバージョン
@@ -54,7 +55,7 @@ System Software Update v2.50 以降 AVCHD がディスク以外から？再生�
    * RandomAccessFile
    * constructor(File,String) not such method
    * user.dir not set like FileInputStream
-   * javassist によって xjava.* に置換されるクラスのうち自クラスの型もしくは配列を返すメソッドがダメになる
+   * javassist によって xjava.`*` に置換されるクラスのうち自クラスの型もしくは配列を返すメソッドがダメになる
     * File#listFiles() x3
     * Toolkit#getToolkit()
 
