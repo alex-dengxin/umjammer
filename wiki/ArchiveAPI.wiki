@@ -1,0 +1,73 @@
+#labels Java,Archiver
+= 統合アーカイバプロジェクト=
+----
+==経緯==
+えっ？どっかで聞いた事あるって？そう[http://www.csdinc.co.jp/archiver/ アレ]です，アレのパクリ Java バージョンです．なんで始めたかというと WinZip が バージョン 8.1 になって俺の趣向と違ってしまった`*`1ため，オリジナルのアーカイバを作ろうと思った次第である． 
+
+  #1
+   * D&D した後に作業ディレクトリが残る、
+   * Lha が16 Bit でしか動かなくなった(アホかと) 
+
+でも操作性から言えば WinZip はピカイチなのでユーザインターフェースは WinZip そのまんまとする．せっかく Java で作るんだから圧縮形式はプラグイン方式にして何でもござれの，動的ロードと行きたいね． 
+
+==ところが==
+Java であんまし圧縮形式そろってないのね．．． 
+
+||* 形式 *||* Java ライブラリ *||その他ライブラリ||アーカイブ形式||圧縮形式||エンコード形式||拡張子||*プロジェクトで対応 *  ||
+||ZIP||J2SE 付属||C [http://www.csdinc.co.jp/archiver/ 統] etc...||○||○||×||.zip||● J2SE||
+||LHA||[http://homepage1.nifty.com/dangan/ jLha] [http://home.att.ne.jp/star/nosue/dev/java/lha/ その2] [http://www.tcn-catv.ne.jp/~TURNER/download.html#lha その3]||C [http://www.csdinc.co.jp/archiver/ 統] [http://member.nifty.ne.jp/hippo2000/prm.htm COM] etc...||○||○||×||.lzh||● [http://homepage1.nifty.com/dangan/ jlha]||
+||RAR||無い？||[http://packages.debian.org/unstable/utils/unrar C] [http://www.csdinc.co.jp/archiver/ 統] DLL [http://member.nifty.ne.jp/hippo2000/prm.htm COM]||○||○||×||.rar||● KBA||
+||[http://www.emit.jp/gca/gca.html GCA]||当然無い||[http://www.csdinc.co.jp/archiver/ 統] [http://www.emit.jp/gca/gcasdk.html C&.NET]||○||○||×||.gca||△ DLL wrap||
+||BZ2||[http://jakarta.apache.org/commons/sandbox/compress/ Jakarta]||C [http://www.csdinc.co.jp/archiver/ 統]||×||○||×||.bz2||● Jakarta||
+||7ZIP||[http://sourceforge.net/projects/p7zip/ java_lzma]|| [http://sourceforge.net/projects/p7zip/ C] [http://www.csdinc.co.jp/archiver/ 統]||○||○||×||.7z||● DLL wrap||
+||ARJ||無い？||[http://www.csdinc.co.jp/archiver/ 統] [http://www.wotsit.org/download.asp?f=arj Doc]||○||○||×||.arj||○||
+||ACE||無い？||[http://www.winace.com/ DLL] [http://www.wotsit.org/download.asp?f=ace Doc]||○||○||×||.ace||   ||
+||TAR||[http://jakarta.apache.org/commons/sandbox/compress/ Jakarta]||[http://www.csdinc.co.jp/archiver/ 統] [http://member.nifty.ne.jp/hippo2000/prm.htm COM] etc...||○||×||×||.tar||○ Jakarta||
+||CAB||[http://www.xwt.org/ xwt]||[http://www.wotsit.org/download.asp?f=cab C] [http://www.geekshop.be/rien/lcab/ lcab] [http://www.kyz.uklinux.net/libmspack/ libmspack] [http://www.csdinc.co.jp/archiver/ 統] [http://member.nifty.ne.jp/hippo2000/prm.htm COM] etc...||○||○||×||.cab||●||
+||JAR||J2SE 付属||-||○||○||×||.jar||● J2SE||
+||GZIP||J2SE 付属||C [http://www.csdinc.co.jp/archiver/ 統]||×||○||×||.gz||○ J2SE||
+||Base64||[http://jakarta.apache.org/commons/codec/index.html Jakarta]||-||×||×||○||.uu|| Jakarta||
+||Install Shield|| ||[http://www.alltheweb.com/search?avkw=fogg&advanced=1&cat=ftp&jsact=&cs=utf-8&q=i6comp&ftype=4&ld=&lp=&ls1=&ls2=&dfr%5Bd%5D=1&dfr%5Bm%5D=1&dfr%5By%5D=1980&dto%5Bd%5D=23&dto%5Bm%5D=12&dto%5By%5D=2003&hits=15&matches=&hitsprmatch= i6comp] [http://protools.anticrack.de/decompilers.htm i5comp] ||○||？||×||.cab||   ||
+||WISE|| ||ewize||○||？||×|| || ||
+||ISH|| ||[http://www.vector.co.jp/soft/unix/util/se004518.html C] [http://www.csdinc.co.jp/archiver/ 統]||×||×||○|| || ||
+||Mac Binary|| ||[http://homepage1.nifty.com/glass/tom_neko/web/web_05.html Doc]|| || || ||.bin|| ||   
+||BinHex|| ||[http://www.wotsit.org/download.asp?f=hqx Doc] [http://www.google.com/search?q=mcvert&hl=ja macutils] [http://www.google.com/search?q=mcvert&hl=ja mcvert]||×||×||○||.hqx|| ||
+||StuffIt|| ||[http://www.google.co.jp/search?ie=UTF-8&oe=UTF-8&q=unsit&lr= unsit] [http://www.stuffit.com/win/sdk/index.html C(本家SDK)]||○||？||×||.sit||△ DLL wrap||
+||RPM|| || || || || ||.rpm|| ||
+||Mac DiskImage|| || || || || ||.dmg||対応したい。というか Mac で Java 作ってる人[http://homepage.mac.com/pocho/XMessenger/ これで配布しないでほしい]んですけど？Java ってあらゆるプラットフォームで動くものでしょ？  ||
+
+==いざ==
+サービスプロバイダインターフェース作成
+java.util.zip や java.util.jar パッケージを参考にする． 
+
+===J2SE API 組み込み===
+SPI 自体こいつ等のインターフェース参考にしてるのでほぼそのまま委譲してやればよい．ZIP, JAR 完成． 
+
+===既存 Java ライブラリ組み込み===
+jLha でやってみる．ぜんぜん簡単．LHA は完了． 
+
+===C を Java に移植して組み込み===
+UNIX 用の unrar のソースがあるのでやろうとしたが，~~俺には無理． ~~
+→ 一応コンパイル通したけど、最近の圧縮形式に対応してないやん...
+
+現在 StuffIt 作成中... 
+
+===コマンドライン実行ファイルフロントエンドとして組み込み===
+RAR と GCA でやってみたがファイルのリストぐらいならできた．でも GCA はファイル名が長いとダメだし，ネットワークフォルダで使用できないし． 
+
+===Java - COM ブリッジを利用して組み込み===
+[http://member.nifty.ne.jp/hippo2000/prm.htm KBA] という統合アーカイバ DLL の COM フロントエンドがあります．これと [http://danadler.com/jacob/ Jacob] を使うとあら簡単．しかし GCA と 7ZIP に対応していない．．．ソース公開してくんないかな？ 
+
+===DLL をラップして JNI で組み込み===
+GCA と 7ZIP の為しゃーない． 
+
+===残りは？===
+だリィのでもうやめ．普段そんなに使わないし．困ったことのあるのは Mac の StuffIt 形式とディスクイメージ形式だけだし．．． 
+
+===つーか===
+めんどーなんで誰か本気で Java のライブラリ作りません？もっと言うと，圧縮形式乱立しすぎ．このブロードバンド時代に高々数パーセントちっちゃくなってうれしいか(画像圧縮はまた別だと思うけど)？アーカイブファイル形式とか統一して圧縮メソッドのみで勝負すりゃいいのにね． 
+
+==ぷれびゅー==
+[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/jwinzip.png わかりづらい．．．]
+----
+2003/02/12 
