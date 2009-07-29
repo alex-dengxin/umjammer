@@ -15,3 +15,28 @@
 ||Timer||com.nttdocomo.util.Timer||
 ||TimerTask||com.nttdocomo.util.TimerListener||
 ||Midlet#getGameAction||Canvas#getKeypadState||
+
+== android==
+
+=== Info ===
+|| ||Java||android||
+|| ||java.awt.Image||Bitmap||
+|| ||Graphics||Canvas||
+|| ||Graphics#drawImage||Canvas#drawBitmap||
+
+  * MediaPlayer
+||type||status||
+||.au||NG||
+||.wav||OK||
+||.mid||OK||
+
+=== はまったところ===
+
+  * Rect は (x, y, w, h) じゃなくて (l, t, r, b)
+  * キー入力のおまじない setFocusable(true);
+
+=== はじめてのあんどろいど===
+
+  * [http://hccweb1.bai.ne.jp/~hcj64001/umjammer/lr/index.html LodeRunner] (右)を移植してみた(左下)
+  * ついでに iαppli にも移植してみた(左上)
+   * DOJA は android に比べると J2SE に近いね
