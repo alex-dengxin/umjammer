@@ -26,7 +26,7 @@ AV プレイヤーとして使用することをコンセプトにインスト�
 ===os===
   * http://cell.fixstars.com/ps3linux/index.php/PS3_Linux%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB
   * http://wiki.cellfan.info/index.php/PS3_Linux_FAQ
-  * [fedora 6|http://wiki.cellfan.info/index.php/FC6%E3%81%AE%E7%BD%A0]
+  * [http://wiki.cellfan.info/index.php/FC6%E3%81%AE%E7%BD%A0 fedora 6]
 
 === others===
   * http://yun.cup.com/ps3sdl.html
@@ -209,7 +209,7 @@ AV プレイヤーとして使用することをコンセプトにインスト�
 
   * IBM の Java でコンパイルできん...
    * 結局消したもともとの Java 開発系を復活...
-  * IBM J2SE 64bit Swing を[何とかして動かしちゃう人|http://blog.usopyon.net/?eid=411466]に触発されてやってみたがIBM の JVM で動かし方が分からん...
+  * IBM J2SE 64bit Swing を[http://blog.usopyon.net/?eid=411466 何とかして動かしちゃう人]に触発されてやってみたがIBM の JVM で動かし方が分からん...
 {{{
  GConf2-devel.ppc
  GConf2-devel.ppc64
@@ -508,7 +508,7 @@ AV プレイヤーとして使用することをコンセプトにインスト�
    * 確かに iPod の調子は悪いのだが Windows からは OK ってことは、やっぱり SONY が iPod を嫌ってるとしか思えん...
 
   * xorg.conf のローカルセッティングはどこに書く？
-   * ~~mkfont* で毎回上書きされる...orz~~
+   * ~~mkfont`*` で毎回上書きされる...orz~~
    * ~~reboot ？で毎回上書きされる...orz~~
     * kudzu スクリプトが書き換えてるみたい
 {{{
