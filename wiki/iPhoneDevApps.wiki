@@ -4,15 +4,15 @@
   * すべて cygwin の [iPod touch dev toolchain]
   * システムライブラリは自分の touch のイメージ Snowbird
   * たくさんあるがインストールマニアではない、すべて Java と gnash のための布石である。(quasi88 はオマケだけどね;-P)
-  * after llvm-gcc install
+  * after `llvm-gcc install`
 {{{
  mv /usr/local/lib/{libstd++*,libiberty*} /usr/local/arm-apple-darwin/lib
 }}}
 
 == Applications==
 
-  * undefined ___eprintf は assert.h の assert() が GNU C の場合それに置換されオブジェクトが無い？？？ため
-  * --prefix=/usr/local/arm-apple-darwin すると実機上でもそうなってしまうんだが、そうしないとクロス環境でコンフリクトするしどうすりゃいいんだ？？？
+  * `undefined ___eprintf` は assert.h の `assert()` が GNU C の場合それに置換されオブジェクトが無い？？？ため
+  * `--prefix=/usr/local/arm-apple-darwin` すると実機上でもそうなってしまうんだが、そうしないとクロス環境でコンフリクトするしどうすりゃいいんだ？？？
    * 実機からソースフォルダをマウントして make install を実機上で行うってのは邪道？？？
 
 ===  [http://iphone.fiveforty.net/wiki/index.php/UIKit_Hello_World HelloApplication]===
@@ -22,7 +22,7 @@
 ===[http://www.ff.iij4u.or.jp/~nrt/lv/ lv]===
   * version 4.51
   * CC を arm-apple-darwon-gcc に変更
-  * -ltermcap を -lncurses に変更
+  * `-ltermcap` を `-lncurses` に変更
   * 動作確認
 
   * [http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/lv lv (arm-apple-darwin,sjis default)]
