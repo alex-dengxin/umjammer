@@ -296,7 +296,7 @@
 
   * クロスで /usr/local にインストールする布石
   * configure 中の smbmount, mount.cifs の linux チェックに darwin 追加
-  * うーん、無理そう (include linux/*.h が鬼門)
+  * うーん、無理そう (include `linux/*.h` が鬼門)
    * touch に mount.hfs があったから作れるはずなんだけどね
 {{{
  $ export CFLAGS="-DBIND_8_COMPAT -NDEBUG"
