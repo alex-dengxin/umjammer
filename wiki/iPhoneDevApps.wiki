@@ -17,7 +17,7 @@
 
 ===  [http://iphone.fiveforty.net/wiki/index.php/UIKit_Hello_World HelloApplication]===
 開発環境構築に苦労したわりにはあっさり動きやがった...
-{{ref_image touch_hello.jpg,iPod touch}}
+[http://picasaweb.google.co.jp/lh/photo/Gz0Sdjz65_OtT7qO_fhipg?feat=directlink iPod touch]
 
 ===[http://www.ff.iij4u.or.jp/~nrt/lv/ lv]===
   * version 4.51
@@ -328,7 +328,7 @@
   :
  $ make
 }}}
-{{ref_image quasi88.jpg,iPod touch}}
+[http://picasaweb.google.co.jp/lh/photo/ou7bEhzf9bysSfMt5wX8LA?feat=directlink iPod touch]
 ===[http://lame.sourceforge.net/index.php lame]===
 
   * ffmpeg の布石
