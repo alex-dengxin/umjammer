@@ -410,7 +410,7 @@ AV プレイヤーとして使用することをコンセプトにインスト�
    * gtk+ のエラーダイアログは出た
 == Kernel Update==
 
-= [ftp://ftp.uk.linux.org/pub/linux/Sony-PS3 Addon 20070425]=
+=== [ftp://ftp.uk.linux.org/pub/linux/Sony-PS3 Addon 20070425]===
 
   * 説明書には FC6 が入っていたとしても install-fc をやれと書いてある
    * アホか、カーネルアップデートで毎回クリーンインストールしろってか！
