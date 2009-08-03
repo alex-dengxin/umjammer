@@ -15,24 +15,24 @@
   * --prefix=/usr/local/arm-apple-darwin すると実機上でもそうなってしまうんだが、そうしないとクロス環境でコンフリクトするしどうすりゃいいんだ？？？
    * 実機からソースフォルダをマウントして make install を実機上で行うってのは邪道？？？
 
-=  [http://iphone.fiveforty.net/wiki/index.php/UIKit_Hello_World HelloApplication]=
+===  [http://iphone.fiveforty.net/wiki/index.php/UIKit_Hello_World HelloApplication]===
 開発環境構築に苦労したわりにはあっさり動きやがった...
 {{ref_image touch_hello.jpg,iPod touch}}
 
-=[http://www.ff.iij4u.or.jp/~nrt/lv/ lv]=
+===[http://www.ff.iij4u.or.jp/~nrt/lv/ lv]===
   * version 4.51
   * CC を arm-apple-darwon-gcc に変更
   * -ltermcap を -lncurses に変更
   * 動作確認
 
   * [http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/lv lv (arm-apple-darwin,sjis default)]
-=[http://www01.tcp-ip.or.jp/~furukawa/nkf_utf8/ nkf (utf8)]=
+===[http://www01.tcp-ip.or.jp/~furukawa/nkf_utf8/ nkf (utf8)]===
   * version 2.0
   * CC を arm-apple-darwon-gcc に変更
   * 動作確認
 
-=[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/nkf nkf (arm-apple-darwin,sjis default)]=
-=[http://jamvm.sourceforge.net/ jamvm]=
+===[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/nkf nkf (arm-apple-darwin,sjis default)]===
+===[http://jamvm.sourceforge.net/ jamvm]===
 
   * version 1.5.0, 1.5.1
   * 動作確認！
@@ -45,9 +45,9 @@
    * zlib 使ってるはず？なのに
    * 浮動小数点系？ arm 難い...
   * [http://code.google.com/android/ android] の dalvik 今の[http://www.cdmatech.com/products/msm7200_chipset_solution.jsp ターゲット] [http://d.hatena.ne.jp/eggman/20071108/1194556626 arm] やんけ！ elf を march-o に変換できりゃ iTouch で動くんか？？？
-** ~~Jazelle 対応してるんかなぁ？~~
-** ~~↑してたらすげぇよなぁ、オープンソースで Jazelle 手に入るぞ！~~
-** ~~JBlend とか涙目？？？~~
+   * ~~Jazelle 対応してるんかなぁ？~~
+   * ~~↑してたらすげぇよなぁ、オープンソースで Jazelle 手に入るぞ！~~
+   * ~~JBlend とか涙目？？？~~
 {{{
  $ cp -rp src/os/bsd/arm src/os/darwin/ # 1.5.1 から要らない
  $ vi src/os/darwin/arm/callNative.S
@@ -87,7 +87,7 @@
  $ scp -r /usr/local/arm-apple-darwin/classpath touch:/usr/local/arm-apple-darwin/
 }}}
   * ~~がー、 CP932 入ってねぇ... orz~~
-=SDL ([http://code.google.com/p/iphone-sdl-mame/ iphone-sdl-mame] の物を使用)=
+===SDL ([http://code.google.com/p/iphone-sdl-mame/ iphone-sdl-mame] の物を使用)===
 
   * gnash の布石
   * jsdl の布石
@@ -110,7 +110,7 @@
     * けどバッファリングがうまく行かないのか重いのかぶつぶつだよ(･∀･)
   * thread 関連がうまく行ってなさそうな気がするのだが...
 
-=SDL (iphone-sdl-mame の構造が変わった)=
+===SDL (iphone-sdl-mame の構造が変わった)===
 {{{
  $ svn checkout -r 81 http://iphone-sdl-mame.googlecode.com/svn/trunk
  $ export CFLAGS "-DDEPRECATED_IN_MAC_OS_X_VERSION_10_5_AND_LATER= \
@@ -119,7 +119,7 @@
  $ ./configure --host=arm-apple-darwin \
                --prefix=/usr/local/arm-apple-darwin
 }}}
-= [http://www.libpng.org/pub/png/libpng.html libpng]=
+=== [http://www.libpng.org/pub/png/libpng.html libpng]===
   * SDL_image の布石
 {{{
  $ export LDFLAGS="-L$SNOWBIRD/usr/lib -L/usr/local/arm-apple-darwin/lib"
@@ -128,7 +128,7 @@
  $ make
  $ make install
 }}}
-= [http://www.ijg.org/ libjpeg]=
+=== [http://www.ijg.org/ libjpeg]===
 
   * SDL_image の布石
   * shared がうまく作れん...
@@ -149,7 +149,7 @@
  $ make install-lib
 }}}
 
-= [http://www.remotesensing.org/libtiff/ libtiff]=
+=== [http://www.remotesensing.org/libtiff/ libtiff]===
   * SDL_image の布石
 {{{
  $ export CFLAGS=-DNDEBUG
@@ -159,7 +159,7 @@
  $ make
  $ make install
 }}}
-= [http://www.libsdl.org/projects/SDL_image/ SDL_image]=
+=== [http://www.libsdl.org/projects/SDL_image/ SDL_image]===
   * jsdl の布石
 {{{
  $ export CFLAGS=-DNDEBUG
@@ -169,7 +169,7 @@
  $ make
  $ make install
 }}}
-= [http://www.freetype.org/ freetype2]=
+=== [http://www.freetype.org/ freetype2]===
 
   *SDL_ttf の布石
 {{{
@@ -178,16 +178,16 @@
  $ make
  $ make install
 }}}
-= [http://www.libsdl.org/projects/SDL_ttf/ SDL_ttf]=
+=== [http://www.libsdl.org/projects/SDL_ttf/ SDL_ttf]===
 
-=jsdl の布石=
+  * jsdl の布石
 {{{
  $ export LIBS="-lSDLmain"
  $ ./configure --host=arm-apple-darwin --prefix=/usr/local/arm-apple-darwin --with-freetype-prefix=/usr/local/arm-apple-darwin --with-sdl-prefix=/usr/local/arm-apple-darwin
  $ make
  $ make install
 }}}
-=[http://www.libsdl.org/projects/SDL_mixer/ SDL_mixer]=
+===[http://www.libsdl.org/projects/SDL_mixer/ SDL_mixer]===
   * jsdl の布石
 {{{
  $ export LDFLAGS="-L/usr/local/arm-apple-darwin/lib -lstdc++"
@@ -196,7 +196,7 @@
  $ make
  $ make install
 }}}
-=[http://www.ferzkopp.net/joomla/content/view/19/14/ SDL_gfx]=
+===[http://www.ferzkopp.net/joomla/content/view/19/14/ SDL_gfx]===
 
   * jsdl の布石
   * shared が作れん...
@@ -207,7 +207,7 @@
  $ make
  $ make install
 }}}
-= [http://svn.macports.org/repository/macports/distfiles/smpeg/ smpeg]=
+=== [http://svn.macports.org/repository/macports/distfiles/smpeg/ smpeg]===
 
   * jdsl の布石
   * ~~本家はよくわからんサイトだ~~ → [http://icculus.org/smpeg/ こっち]が本家やんか！いい加減な情報流しやがって...
@@ -242,7 +242,7 @@
  $ make install
 }}}
 
-=[http://jsdl.sourceforge.net/ jsdl]=
+===[http://jsdl.sourceforge.net/ jsdl]===
   * sdlawt の布石
   * ぐまー、これ古いのかよ！今は sdljava らしい...
   * makefile を arm-apple-darwin 対応に (x264 参照)
@@ -253,7 +253,7 @@
  s@\<SDL@\<SDL/SDL@
  $ make
 }}}
-=[http://sdljava.sourceforge.net/ sdljava]=
+===[http://sdljava.sourceforge.net/ sdljava]===
 
   * sdlawt の布石
   * Makefile を arm-apple-darwin に対応
@@ -268,7 +268,7 @@
  $ cd src/sdljava/native
  $ make
 }}}
-=[http://sourceforge.net/projects/sdlawt/ sdlawt]=
+===[http://sourceforge.net/projects/sdlawt/ sdlawt]===
 
   * 未完製品、というかぜんぜん手がつけられてへんのとちゃうんか？？？
   * ~~jamvm がスペシャル遅い件、萎えた...~~
@@ -303,7 +303,7 @@
  $ export LDFLAGS="-L$SNOWBIRD/usr/lib -framework CoreFoundation"
  $ ./configure --host=arm-apple-darwin --enable-static --with-smbmount --with-cifsmount --without-utmp --with-readline --with-libiconv --without-krb5 
 }}}
-= [http://code.google.com/p/macfuse/ macfuse]=
+=== [http://code.google.com/p/macfuse/ macfuse]===
 
   * クロスで /usr/local にインストールする布石
   * samba がダメなら
@@ -319,7 +319,7 @@
 
  $ ./darwin_configure.sh /usr/local/arm-apple-darwin/src/macfuse/core/10.5/fusefs
 }}}
-=[http://www.117.ne.jp/~show/pc8801/pc88emu.html quasi88]=
+===[http://www.117.ne.jp/~show/pc8801/pc88emu.html quasi88]===
 
   * ~~画面の初期化でエラー終了~~
   * SDL device "iphone" を追加
@@ -342,7 +342,7 @@
  $ make
  $ make install
 }}}
-=[http://www.audiocoding.com/ faad2]=
+===[http://www.audiocoding.com/ faad2]===
 
   * ffmpeg の布石
 {{{
@@ -350,7 +350,7 @@
  $ make
  $ make install
 }}}
-=[http://www.audiocoding.com/ faac]=
+===[http://www.audiocoding.com/ faac]===
 
   * ffmpeg の布石
   * なんか frontend で linker warning 出るけど使わないから無視
@@ -362,7 +362,7 @@
  $ make
  $ make install
 }}}
-=[http://www.videolan.org/developers/x264.html x264]=
+===[http://www.videolan.org/developers/x264.html x264]===
 
   * ffmpeg の布石
   * めんどくさ
@@ -429,14 +429,14 @@ config.mak
  $ make
  $ make install
 }}}
-=[http://www.xvid.org/ xvid]=
+===[http://www.xvid.org/ xvid]===
 
   * ffmpeg の布石
-=[http://www.penguin.cz/~utx/amr.en.html amr]=
+===[http://www.penguin.cz/~utx/amr.en.html amr]===
 
   * ffmpeg の布石
   * ボイスレコーダの変換に使えるみたいだけど iTouch には無用...
-=[http://ffmpeg.sourceforge.net/index.php ffmpeg]=
+===[http://ffmpeg.sourceforge.net/index.php ffmpeg]===
 
   * gnash の布石
   * m4a の変換は faad2 だけだとダメみたい、faac が必要。
@@ -481,7 +481,7 @@ config.mak
  SDL_LIBS = -lSDL -lSDLmain -framwork UIKit
  $ make ffplay
 }}}
-= [http://www.boost.org/ boost]=
+=== [http://www.boost.org/ boost]===
 
   * gnash の布石
   * jam ってなんやねん... コンパイル大変だ...
@@ -495,6 +495,6 @@ config.mak
  $ ./configure --prefix=arm-apple-darwin --with-python=no --with-icu=$SNOWBIRD/usr/lib --with-toolset=arm-apple-darwin 
  $ make
 }}}
-= [http://www.gnashdev.org/ gnash]=
+=== [http://www.gnashdev.org/ gnash]===
   * boost 要るのか...
    * [PS3Linux PS3 Linux] でどうしたんだっけ？ yum ったのかな？
