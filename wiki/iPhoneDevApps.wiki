@@ -73,7 +73,7 @@
   * JIT 付きもあるね ... [http://www.cacaojvm.org/ cacao]
   * [http://sources.redhat.com/libffi/ libffi] ... jni のみに影響？
   * -Xmx8M -Xss256K が結構重要 → かなり動くぞこいつ！
-=[http://www.gnu.org/software/classpath/ GNU classpath]=
+===[http://www.gnu.org/software/classpath/ GNU classpath]===
   * version 0.96.1
   * jamvm の布石
 {{{
@@ -277,7 +277,7 @@
   * [http://harmony.apache.org/subcomponents/classlibrary/awt.html Harmony AWT]
   * [http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/awt/package-summary.html SWT_AWT] ... ちょっと違う
 
-= [http://www.isc.org/index.pl?/sw/bind/index.php bind]=
+=== [http://www.isc.org/index.pl?/sw/bind/index.php bind]===
 
   * mount.cifs の布石
   * configure の /dev/random チェック、クロスで通らないからはずす
@@ -292,7 +292,7 @@
  $ export BUILD_CC gcc
  $ ./configure --host=arm-apple-darwin --prefix=/usr/local/arm-apple-darwin --enable-threads
 }}}
-= [http://us4.samba.org/samba/ mount.cifs]=
+=== [http://us4.samba.org/samba/ mount.cifs]===
 
   * クロスで /usr/local にインストールする布石
   * configure 中の smbmount, mount.cifs の linux チェックに darwin 追加
@@ -329,7 +329,7 @@
  $ make
 }}}
 {{ref_image quasi88.jpg,iPod touch}}
-=[http://lame.sourceforge.net/index.php lame]=
+===[http://lame.sourceforge.net/index.php lame]===
 
   * ffmpeg の布石
 {{{
