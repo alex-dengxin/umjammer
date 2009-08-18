@@ -9,9 +9,9 @@
 次章にその実例を挙げる． 
 ==お題 ==
 以下の文をシステムとして捉えオブジェクト指向言語で表現せよ 
-{{{
- The quick brown fox jumps over the lazy dog. 
-}}}
+
+ _The quick brown fox jumps over the lazy dog._
+
 良くある例じゃん．狐は敏捷性と色のプロパティを持っててジャンプする能力があると．犬は敏捷性のプロパティか．．． 
 {{{
  class Fox {
