@@ -328,7 +328,7 @@
   :
  $ make
 }}}
-[http://picasaweb.google.co.jp/lh/photo/ou7bEhzf9bysSfMt5wX8LA?feat=directlink iPod touch]
+  * [http://picasaweb.google.co.jp/lh/photo/ou7bEhzf9bysSfMt5wX8LA?feat=directlink iPod touch]
 ===[http://lame.sourceforge.net/index.php lame]===
 
   * ffmpeg の布石
