@@ -31,7 +31,7 @@
   * CC を arm-apple-darwon-gcc に変更
   * 動作確認
 
-  *[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/nkf nkf (arm-apple-darwin,sjis default)]
+  * [http://hccweb1.bai.ne.jp/~hcj64001/umjammer/files/nkf nkf (arm-apple-darwin,sjis default)]
 ===[http://jamvm.sourceforge.net/ jamvm]===
 
   * version 1.5.0, 1.5.1
