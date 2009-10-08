@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2006 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- mobilehackerz                                                          -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	060910	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="mobilehackerz" default="compile" basedir=".">
+
+  <!-- プロパティの定義 -->
+  <property file="local.properties" />
+
+  <property name="dir.src" value="src/java" />
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="${vavi.dir}/java" />
+<!--
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+-->
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}" deprecation="true">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="${dir.src}" />
+    </javac>
+  </target>
+
+  <!-- atom changer -->
+  <target name="changer" depends="compile" description="プログラムの実行">
+    <java classname="ATOMChanger" fork="yes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="build" />
+      </classpath>
+      <arg value="${henkankun.in.file}" />
+      <arg value="${henkankun.out.file}" />
+      <arg value="${henkankun.ini.file}" />
+    </java>
+  </target>
+
+  <!-- 3gpp flatten -->
+  <target name="flatten" depends="compile" description="プログラムの実行">
+    <java classname="ATOMChanger" fork="yes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="build" />
+      </classpath>
+      <arg value="${henkankun.in.file}" />
+    </java>
+  </target>
+
+  <!-- findbugs -->
+  <target name="findbugs" depends="compile">
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+    <findbugs home="${findbugs.home}"
+              output="text"
+              outputFile="tmp/findbugs.txt" >
+      <auxClasspath refid="project.class.path" />
+      <sourcePath path="src/java" />
+      <class location="${dir.build}" />
+    </findbugs>
+  </target>
+
+</project>
+
+<!-- -->
