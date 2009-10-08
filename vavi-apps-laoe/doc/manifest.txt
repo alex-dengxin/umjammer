@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Class-Path: . oli4Ui.jar oli4Io.jar oli4UiGraph.jar laoeAudio.jar laoeClip.jar laoeOperation.jar laoePlugin.jar javalayer.jar tritonus_share.jar tritonus_mp3.jar tritonus_gsm.jar tritonus_vorbis.jar jorbis-0.0.12.jar jogg-0.0.5.jar  
+Main-Class: ch.laoe.ui.GMain
+
+
+
+
+
+

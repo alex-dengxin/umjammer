@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2005 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- laoe                                                                   -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	050905	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="run" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="../.." />
+    <pathelement location="${dir.build}" />
+    <fileset dir="lib">
+      <include name="*.jar" />
+      <exclude name="laoe*.jar" />
+    </fileset>
+    <pathelement location="${dir.vavi}" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete>
+      <fileset dir=".">
+        <include name="stunnet.jar" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}" encoding="MS932">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src/java" />
+    </javac>
+    <copy todir="${dir.build}">
+      <fileset dir="src/conf">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="パッケージング">
+    <jar jarfile="laoe.jar">
+      <fileset dir="build">
+        <include name="**/*" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="packaging" description="test">
+    <java classname="ch.laoe.ui.GMain" fork="yes">
+      <classpath>
+        <pathelement location="laoe.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
