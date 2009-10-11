@@ -1,0 +1,13 @@
+# OID : DESCRIPTIVE NAME
+
+2.5.4.6 : countryName
+2.5.4.8 : stateOrProvinceName
+2.5.4.7 : localityName
+2.5.4.10 : organizationName
+2.5.4.11 : organizationalUnitName
+2.5.4.3 : commonName
+1.2.840.10040.4.1 : dsaEncryption
+1.2.840.10040.4.3 : dsaWithSHA1
+1.2.840.113549.1.1.5 : SHA1WithRSA
+
+2.5.29.19 : basicConstraints
