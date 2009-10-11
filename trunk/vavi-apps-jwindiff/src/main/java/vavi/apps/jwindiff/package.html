@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<link rev="MADE" href="mailto:vavivavi@yahoo.co.jp">
+<link rel="INDEX" href="orverview.html">
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="../../vavi.css">
+<title>JWinDiff</title>
+<!--
+ * Copyright (c) 2002 by Naohide Sano, All rights reserved.
+ *
+ * Written by Naohide Sano
+ *
+ * @description	JWinDiff のクラス
+ * @status	動作確認
+ *
+ * @author	<a href=mailto:"vavivavi@yahoo.co.jp">Naohide Sano</a>(nsano)
+ *
+ * @version	0.00	020430	nsano	initial version
+-->
+</head>
+
+<body>
+
+<p>
+JWinDiff のクラスを提供します．
+</p>
+
+<h2>
+これから実装すること
+</h2>
+
+<ul>
+<li><del>JFileChooserTextField の TextField を CombpBox 化</del></li>
+<li><del>ヒストリ付 ComboBox</del></li>
+<li><del>ComboBox にポップアップメニュー</del></li>
+<li>ヒストリのセーブ</li>
+<li><del>JFontChooser</del></li>
+<li><del>ディレクトリのソート</del></li>
+<li><del>ポップアップメニュー</del></li>
+<li>JCheckBoxMenuItem と普通の JMeniItem のアラインメント → <a href=C:\tmp\111\justsystem\ark11src\jp\co\justsystem\uiparts\EmptyIcon.java>EmptyIcon.java</a></li>
+<li>InputMap <a href=http://www.hcn.zaq.ne.jp/no-ji/reseach/20000206.htm>@see</a></li>
+<li>Moved line</li>
+<li>Left ファイル Right ファイルのグラフィックを分ける</li>
+<li><del>正規表現マッチが微妙に違う</del></li>
+<li>ダイアログのデフォルトフォーカス</li>
+<li>デフォルトボタンも微妙に動作が違う</li>
+<li>リストをテーブルに</li>
+<li><del>JFileChooserHistoryComboBox へのドラッグアンドドロップ <a href="http://www5.big.or.jp/~tera/Labo/Java2/j2dnd.html">参考</a></del></li>
+<li>MVC 完全分離</li>
+<li></li>
+<li></li>
+</ul>
+
+<h2>
+分かったこと
+</h2>
+
+<ul>
+<li>JPopupMenu がうまくいってなかったのはたぶん<a href="http://developer.java.sun.com/developer/bugParade/bugs/4632782.html">こいつ</a>のせい</li>
+<li>File#getCanonicalPath はめっちゃ重い</li>
+<li></li>
+</ul>
+
+<h2>
+MVC 考察
+</h2>
+
+<h3>Controller</h3>
+<ul>
+<li>C は M を弄るものだから M とは密接な関係を持つ ... Controller#setModelProperty() </li>
+<li>V を持ってもいけない</li>
+<li>FooController
+ <p>
+ たいていのプラットフォームの場合 View と Controller は同じコンポーネントで
+ 構成されているためその部分を抜き出したもの。i.e. SwingController
+ </p>
+</li>
+</ul>
+<h3>Model</h3>
+<ul>
+<li>M は POJO でありたい</li>
+<li>ViewListener を持ちたくない → AOP ？</li>
+<li>画面遷移、画面の見栄えのみのモデルもある(通常のモデルはセーブされるデータ)</li>
+</ul>
+<h3>View</h3>
+<ul>
+<li>ViewListener は V に属するべき</li>
+<li>C はもってたらあかんやろ</li>
+</ul>
+
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+#
+# Copyright (c) 2002 by Naohide Sano, All rights reserved.
+#
+# Programmed by Naohide Sano
+#
+# Message resources for Java version of windiff.
+#
+# @author	<a href=mailto:vavivavi@geocities.co.jp>Vavi</a>
+# @version	0.00	020428	vavi	initial version <br>
+#
+
+pair.description.only={0} にのみ存在
+pair.description.notFile=(読み取り不能)
+pair.description.identical=同じ
+pair.description.differentBlanks=ブランク行のみ異なる
+pair.description.different=差異あり ({0} の方が新しい)
+pair.description.differentSametime=差異あり (タイムスタンプは同じ)
+pair.description.error=内部エラー!
+
+frame.title.scanning=JWinDiff: WinDiff: スキャン中
+frame.title.compare=JWinDiff: 比較中... {0} と {1}
+frame.title.default=JWinDiff
+
+menu.file.text=ファイル(F)
+menuItem.compareTargets.text=比較(T)...
+menuItem.abort.text=中止(A)
+menuItem.saveFileList.text=ファイル リストの保存(S)...
+menuItem.copyFiles.text=ファイルのコピー(C)...
+menuItem.print.text=印刷(P)
+menuItem.exit.text=JWinDiff の終了(X)
+
+menu.edit.text=編集(E)
+menuItem.editLeftFile.text=左側のファイルを編集(L)
+menuItem.editRightFile.text=右側のファイルを編集(R)
+menuItem.editCompositeFile.text=合成ファイルを編集(C)
+menuItem.setEditor.text=エディタの設定(S)...
+
+menu.view.text=表示(V)
+menuItem.outline.text=概要表示(O)
+menuItem.expand.text=詳細表示(E)
+menuItem.picture.text=ピクチャ
+menuItem.previousChange.text=変更の検索<上>(P)
+menuItem.nextChange.text=変更の検索<下>(N)
+menuItem.rescanSelectedFile.text=選択されたファイルの再走査(R)
+
+menu.expand.text=詳細表示(X)
+menuItem.leftFileOnly.text=左側のファイルのみ(F)
+menuItem.rightFileOnly.text=右側のファイルのみ(H)
+menuItem.bothFiles.text=両方のファイル(O)
+menuItem.leftLineNumbers.text=左の行番号(L)
+menuItem.rightLineNumbers.text=右の行番号(R)
+menuItem.noLineNumbers.text=行番号なし(N)
+
+menu.opts.text=オプション(O)
+menuItem.ignoreBlanks.text=空白文字を無視(B)
+menuItem.monoColours.text=モノクロ(M)
+menuItem.showIdenticalFiles.text=同じファイルを表示(I)
+menuItem.showLeftOnlyFiles.text=左側にのみ存在するファイル(L)
+menuItem.showRightOnlyFiles.text=右側にのみ存在するファイル(R)
+menuItem.showDifferentFiles.text=異なるファイルを表示(D)
+
+menu.mark.text=マーク(K)
+menuItem.markFile.text=ファイルのマーク(M)
+menuItem.markPattern.text=マーク パターン(P)...
+menuItem.hideMarkedFiles.text=マークされたファイルを隠す(H)
+menuItem.toggleMarkedState.text=マーク状態の切り替え(T)
+
+menu.help.text=ヘルプ(H)
+menuItem.contents.text=目次(C)...
+menuItem.about.text=バージョン情報(A)...
+
+menuItem.showMoveDest.text=移動した行を表示(S)
+
+button.changeMode.text.outline=ファイルリスト(D)
+button.changeMode.text.expand=詳細(D)
+
+frame.jWinDiff.iconImage=/JWinDiff.png
+panel.jWinDiff.font.name=ＭＳ ゴシック
+
+message.usage=JWinDiff file_or_directory1 [file_or_directory2]
+message.error=one of {0}, {1} is neither file nor directory
+
+dialog.targets.title=パスの選択
+dialog.targets.label.0.text=現在のディレクトリ:
+dialog.targets.label.1.text=パス 1(1)
+dialog.targets.label.2.text=パス 2(2)
+
+dialog.seveList.title=ファイル リストの保存
+dialog.seveList.label.0.text=ファイル名(F)
+dialog.seveList.label.1.text=リストに含めるファイル:
+dialog.seveList.checkBox.0.text=同じファイル(I)
+dialog.seveList.checkBox.1.text=異なるファイル(D)
+dialog.seveList.checkBox.2.text=左 のみのファイル(O)
+dialog.seveList.checkBox.3.text=右 のみのファイル(O)
+dialog.seveList.checkBox.4.text=マークされたファイルを無視(M)
+
+dialog.editor.title=エディタ起動のためのコマンドを入力してください
+
+dialog.pattern.title=サブストリングまたは正規表現を入力してください
+
+dialog.common.button.ok.text=OK
+dialog.common.button.cancel.text=キャンセル
+
+filelist.header=-- {0} : {1} -- 
+filelist.message.0=同一
+filelist.message.1=差異あり
+filelist.message.2=左のみ
+filelist.message.3=右のみ
+filelist.message.4=のファイルがリストに含まれています
+filelist.footer=-- 合計 {0,number} ファイル\n
+
+##

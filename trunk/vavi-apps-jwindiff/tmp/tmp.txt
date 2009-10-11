@@ -1,0 +1,34 @@
+
+    /** TODO view -> model */
+    private void setOptionsToModel() {
+    
+        // expand
+        if (view.showBoth.getState()) {
+            controller.setShowLeft(true);
+            controller.setShowRight(true);
+        } else {
+            controller.setShowLeft(view.showLeft.getState());
+            controller.setShowRight(view.showRight.getState());
+        }
+        // number
+        if (view.hideNums.getState()) {
+            controller.setShowLeftNums(false);
+            controller.setShowRightNums(false);
+        } else {
+            controller.setShowLeftNums(view.showLeftNums.getState());
+            controller.setShowRightNums(view.showRightNums.getState());
+        }
+        controller.setIgnoreBlanks(view.ignoreBlanks.getState());
+        controller.setShowIdentical(view.showIdentical.getState());
+        controller.setShowLeftNums(view.showLeftOnly.getState());
+        controller.setShowRightOnly(view.showRightOnly.getState());
+        controller.setShowDifferent(view.showDifferent.getState());
+        controller.setHideMarked(view.hideMarked.getState());
+    
+        // history
+        controller.clearPatternHistory();
+        for (int i = 0; i < 10; i++) {
+            String value = (String) view.patternField.getItemAt(i);
+            controller.addPatternHistory(value);
+        }
+    }
