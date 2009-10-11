@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<html lang="ja">
+
+<head>
+<link rev="MADE" href="mailto:vavivavi@yahoo.co.jp" />
+<link rel="INDEX" href="orverview.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../vavi.css" />
+<title>com.boyter.mscrypto</title>
+<!--
+ * Copyright (c) 2005 by Naohide Sano, All rights reserved.
+ *
+ * Written by Naohide Sano
+ *
+ * @description	com.boyter.mscrypto パッケージ
+ * @status	動作確認
+ *
+ * @author	<a href=mailto:"vavivavi@yahoo.co.jp">Naohide Sano</a>(nsano)
+ *
+ * @version	0.00	050318	nsano	initial version
+-->
+</head>
+
+<body>
+
+<p>M$ の証明書を扱うクラスを提供します．</p>
+
+<h2>わかったこと</h2>
+
+<ul>
+ <li>キーストアには管理用パスワードがあり、<code>$JAVA_HOME/jre/lib/security/cacerts</code>のデフォルトパスワードは
+ <pre>
+changeit
+</pre> である. keytoolsは,<code>-keystore</code>オプションでキーストアファイルを指定しない場合、<code>$HOME/.keystore</code>
+ ファイルをキーストアファイルとして使用する(なければ作成する)。一方、Javaアプリケーションはデフォルトで <code>$JAVA_HOME/jre/lib/security/cacerts</code>
+ をキーストアファイルとして使用する(※)。 Java アプリケーションに任意のキーストアファイルを指定するにはシステムプロパティを指定する。<br/><br/>
+ <ul>
+  <li><code>javax.net.ssl.trustStore</code>
+  <p>トラストストアファイル</p>
+  </li>
+  <li><code>javax.net.ssl.trustStorePassword</code>
+  <p>トラストストアファイルのパスワード</p>
+  </li>
+  <li><code>javax.net.ssl.keyStore</code>
+  <p>キーストアファイル</p>
+  </li>
+  <li><code>javax.net.ssl.keyStorePassword</code>
+  <p>キーストアファイルのパスワード</p>
+  <p>どうも気持が悪いが,トラストストアは信頼できるサーバ証明書を格納したキーストアであり、SSL通信のためには<code>trustStore</code>、<code>trustStorePassword</code>を指定する。
+  <code>trustStorePassword</code>は指定
+  しなくても動作可能で、指定した場合はトラストストアファイルの整合性を検証できるらしい。</p>
+  </li>
+ </ul>
+ </li>
+
+ <li>.cer ファイルは keytool でインポートできる。 <pre>
+$ keytool -import -trustcacerts -file ca.cer -alias ca
+</pre></li>
+</ul>
+
+<h2>参考</h2>
+
+<ul>
+ <li>../100/t13.java - JSSE</li>
+ <li><a
+  href="http://www.ftponline.com/javapro/2002_07/magazine/features/bboyter/default_pf.aspx">Integrate
+ Java Cryptography with Windows</a></li>
+</ul>
+
+<h2>これから実装すること</h2>
+
+<ul>
+ <li>プライベートキーエクスポートできるようにしとかな使われへんやん</li>
+ <li>↑ホンマにそうか？実験しる！</li>
+ <li><code>-Ddeployment.security.browser.keystore.use=true</code>
+ はいつ効くねん</li>
+</ul>
+
+<h2>一次ライセンス</h2>
+
+<a
+ href="http://www.ftponline.com/javapro/2002_07/magazine/features/bboyter/default_pf.aspx">mscrypto</a>
+
+<pre>
+/*
+ * Copyright (c) 2001 Brian Boyter
+ * All rights reserved
+ *
+ * This software is released subject to the GNU Public License.  See
+ * the full license included with this distribution.
+ */
+ </pre>
+</body>
+
+</html>

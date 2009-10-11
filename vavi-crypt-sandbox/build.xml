@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- ssl                                                                    -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	031109	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="run" basedir=".">
+
+  <property file="../../local.properties" />
+  <property file="local.properties" />
+
+  <property name="dir.native" value="src" />
+  <property name="dir.build" value="build" />
+
+  <path id="project.class.path">
+    <pathelement location="../.." />
+    <fileset dir="${maven.repo}">
+      <include name="junit/jars/junit-3.8.1.jar" />
+    </fileset>
+    <fileset dir="lib">
+      <include name="*.jar" />
+      <exclude name="mscrypto.jar" />
+    </fileset>
+  </path>
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete file="${signjar.jar}" />
+    <delete file="gi.jar" />
+    <fileset dir="src">
+      <include name="**/*.class" />
+    </fileset>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の">
+    <mkdir dir="${dir.build}" />
+    <delete file="${signjar.jar}" />
+    <delete file="gi.jar" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" description="true" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src" />
+    </javac>
+    <copy todir="${dir.build}" preservelastmodified="true">
+      <fileset dir="src">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- javah -->
+  <target name="javah" depends="compile" description="Makeing Header">
+    <javah destdir="src">
+      <classpath>
+        <pathelement location="src" />
+        <path refid="project.class.path" />
+      </classpath>
+      <class name="com.boyter.mscrypto.MSCryptoManager" />
+    </javah>
+  </target>
+
+  <!-- gcc -->
+  <target name="compile.native" depends="javah" description="コンパイル C">
+    <apply executable="gcc" dest="${dir.native}" parallel="false">
+      <arg value="-c" />
+      <arg line="-g -Wall -O2" />
+      <arg line="-mwindows -mno-cygwin"/>
+      <arg value="-Isrc" />
+      <arg value="-I${mingw.include}" />
+      <arg value="-I${w32api.include}" />
+      <arg value="-I${jdk.home}/include" />
+      <arg value="-I${jdk.home}/include/win32" />
+      <arg value="-o"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="${dir.native}" includes="*.c"/>
+      <mapper type="glob" from="*.c" to="*.o"/>
+    </apply>
+  </target>
+
+  <!-- link -->
+  <target name="link" depends="compile.native" description="Makeing DLL">
+    <apply executable="dllwrap" dest="lib">
+      <arg value="--add-stdcall-alias" />
+      <arg line="--driver-name gcc" />
+      <arg line="-mwindows --target=i386-mingw32" />
+      <arg line="-o" />
+      <targetfile />
+      <srcfile />
+      <arg value="lib/libcrypt32.a" />
+      <arg value="${windows.home}/crypt32.dll" />
+      <arg line="-s -mno-cygwin" />
+      <fileset dir="${dir.native}" includes="*.o"/>
+      <mapper type="glob" from="*.o" to="*.dll"/>
+    </apply>
+  </target>
+
+  <!-- packaging.gi -->
+  <target name="packaging.gi" depends="" description="Packaging">
+    <jar jarfile="gi.jar" manifest="etc/manifest.mf">
+      <fileset dir="${dir.build}">
+        <include name="GenericInstrumentation*.class" />
+        <include name="PropertiesClassFileTransformer*.class" />
+        <include name="PropertiesSecurityProviderAdder*.class" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- packaging.mscrypto -->
+  <target name="packaging.mscrypto" depends="" description="Packaging">
+    <jar jarfile="${signjar.jar}">
+      <fileset dir="${dir.build}">
+        <include name="com/boyter/mscrypto/**/*.class" />
+      </fileset>
+    </jar>
+    <signjar jar="${signjar.jar}"
+             alias="${signjar.keystore.alias}"
+             storepass="${signjar.keystore.password}"
+             keystore="${signjar.keystore.file}" />
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="パッケージング">
+    <antcall target="packaging.gi" />
+    <antcall target="packaging.mscrypto" />
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="packaging" description="msrsatest">
+    <java classname="msrsatest" fork="yes">
+      <env key="PATH" path="lib" />
+      <jvmarg value="-Djavax.net.ssl.trustStore=${signjar.keystore.file}"/>
+      <jvmarg value="-Djava.security.manager" />
+      <jvmarg value="-Djava.security.policy=gi.policy"/>
+      <jvmarg value="-Djava.security.policy=mscrypto.policy"/>
+      <jvmarg value="-javaagent:gi.jar"/>
+      <classpath>
+        <pathelement location="mscrypto.jar" />
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="pkcs12" />
+    </java>
+  </target>
+
+  <!-- t2 -->
+  <target name="t2" depends="packaging" description="ssl test using mscrypto">
+    <java classname="t113_2" fork="yes">
+      <env key="PATH" path="lib" />
+<!--
+      <jvmarg value="-Ddeployment.security.browser.keystore.use=true" />
+      <jvmarg value="-Dsecurity.provider.1=com.boyter.mscrypto.MSKeyManagerProvider" />
+      <jvmarg value="-Dsecurity.provider.2=com.boyter.mscrypto.MSTrustManagerProvider" />
+      <jvmarg value="-Dsecurity.provider.3=com.boyter.mscrypto.MSRSACipherProvider" />
+      <jvmarg value="-Dsecurity.provider.4=com.boyter.mscrypto.MSRSASignProvider" />
+-->
+      <jvmarg value="-javaagent:gi.jar" />
+      <jvmarg value="-Djava.security.manager" />
+      <jvmarg value="-Djava.security.policy=mscrypto.policy" />
+      <classpath>
+        <pathelement location="mscrypto.jar" />
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="${t2.url}" />
+    </java>
+  </target>
+
+  <!-- t2' -->
+  <target name="t2d" depends="packaging" description="ssl test using mscrypto original">
+    <java classname="t113_2" fork="yes">
+      <env key="PATH" path="lib" />
+<!--
+      <jvmarg value="-Ddeployment.security.browser.keystore.use=true" />
+      <jvmarg value="-Dsecurity.provider.1=com.boyter.mscrypto.MSKeyManagerProvider" />
+      <jvmarg value="-Dsecurity.provider.2=com.boyter.mscrypto.MSTrustManagerProvider" />
+      <jvmarg value="-Dsecurity.provider.3=com.boyter.mscrypto.MSRSACipherProvider" />
+      <jvmarg value="-Dsecurity.provider.4=com.boyter.mscrypto.MSRSASignProvider" />
+-->
+      <jvmarg value="-javaagent:gi.jar" />
+      <jvmarg value="-Djava.security.manager" />
+      <jvmarg value="-Djava.security.policy=mscrypto.policy" />
+        <classpath>
+        <pathelement location="lib/mscrypto.jar" />
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+        <fileset dir="${dir.build}">
+          <exclude name="com/**/*" />
+          <exclude name="org/**/*" />
+        </fileset>
+      </classpath>
+      <arg value="${t2.url}" />
+    </java>
+  </target>
+
+  <!-- t3 -->
+  <target name="t3" depends="compile,packaging.gi" description="ssl test using opensign">
+    <java classname="t113_3" fork="yes">
+      <env key="PATH" path="lib" />
+      <jvmarg value="-javaagent:gi.jar" />
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.zip" />
+        </fileset>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="${t2.url}" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
