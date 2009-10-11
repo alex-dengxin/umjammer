@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- vavi.apps.registryViewer                                               -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	020522	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="run" basedir=".">
+
+<!-- クラスパスの定義 -->
+<path id="project.class.path">
+    <!-- 必要なライブラリを定義する -->
+    <pathelement location="../../.." />
+</path>
+
+<!-- ターゲットの定義 -->
+
+<!-- clean -->
+<target name="clean" description="ビルド環境のクリア">
+  <delete file="RegistroyViewer.jar" />
+  <delete>
+   <fileset dir=".">
+    <include name="*.class" />
+   </fileset>
+  </delete>
+</target>
+
+<!-- javac -->
+<target name="compile" description="コンパイル">
+  <javac debug="on">
+    <classpath refid="project.class.path" />
+    <include name="*.java" />
+    <include name="vavi/util/win32/registry/*.java" />
+    <src path="." />
+    <src path="../../.." />
+  </javac>
+</target>
+
+<!-- jar -->
+<target name="packaging" depends="compile" description="パッケージング">
+  <jar jarfile="./RegistryViewer.jar" manifest="manifest.mf" compress="false">
+    <fileset dir=".">
+      <exclude name="**/**" />
+    </fileset>
+    <fileset dir="../../..">
+      <include name="vavi/apps/registryViewer/*.class" />
+      <include name="vavi/apps/registryViewer/images/*.gif" />
+      <include name="vavi/util/Debug*.class" />
+      <include name="vavi/util/RegexFileFilter*.class" />
+      <include name="vavi/util/win32/registry/*.class" />
+    </fileset>
+  </jar>
+</target>
+
+<!-- run -->
+<target name="run" depends="compile" description="プログラムの実行">
+  <java classname="vavi.apps.registryViewer.RegistryViewer" fork="yes">
+    <jvmarg value="-Duser.home=c:/home/nsano" />
+    <classpath refid="project.class.path"/>
+    <arg value="USER.DAT" />
+  </java>
+</target>
+
+<!-- go -->
+<target name="go" depends="packaging" description="プログラムの実行">
+  <java classname="vavi.apps.registryViewer.RegistryViewer" fork="yes">
+    <classpath>
+      <fileset dir=".">
+        <include name="RegistroyViewer.jar" />
+      </fileset>
+    </classpath>
+    <arg value="USER.DAT" />
+  </java>
+</target>
+
+</project>
+
+<!-- -->

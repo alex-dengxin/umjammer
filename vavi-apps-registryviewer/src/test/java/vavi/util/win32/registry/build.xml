@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- vavi.util.win32.registry                                               -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	020620	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="compile" basedir=".">
+
+<!-- クラスパスの定義 -->
+<path id="project.class.path">
+    <pathelement location="../../../.." />
+</path>
+
+<!-- ターゲットの定義 -->
+
+<!-- clean -->
+<target name="clean" description="ビルド環境のクリア">
+  <delete>
+   <fileset dir=".">
+    <include name="*.class" />
+   </fileset>
+  </delete>
+</target>
+
+<!-- javac -->
+<target name="compile" description="コンパイル">
+  <javac debug="on">
+    <classpath refid="project.class.path" />
+    <include name="*.java" />
+    <src path="." />
+  </javac>
+</target>
+
+</project>
+
+<!-- -->
