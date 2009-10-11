@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- vavi-util-scrrenscraping                                               -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	030225	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="vavi-util-scrrenscraping" default="run" basedir="."
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property file="local.properties" />
+  <property name="dir.build" value="target/classes" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement location="${dir.build}" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+    <ivy:settings file="ivy-settings.xml" />
+    <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
+    <ivy:retrieve />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="*.java" />
+      <src path="src/main/java" />
+    </javac>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="compile" description="transration">
+    <java classname="vavi.util.translation.InfoseekJapanTranslator" fork="yes">
+<!--
+      <jvmarg value="-verbose" />
+-->
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.run.en}" />
+      <arg value="${java.test.108.run.ja}" />
+    </java>
+  </target>
+
+  <!-- t1 -->
+  <target name="t1" depends="compile" description="translation .ini">
+    <java classname="t108_1" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.t1.in}" />
+      <arg value="${java.test.108.t1.out}" />
+    </java>
+  </target>
+
+  <!-- t3 -->
+  <target name="t3" depends="compile" description="translation .properties">
+    <java classname="t108_3" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.t3.in}" />
+      <arg value="${java.test.108.t3.out}" />
+    </java>
+  </target>
+
+  <!-- t2 -->
+  <target name="t2" depends="compile" description="JXPath">
+    <java classname="t108_2" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="tmp/sample.xml" />
+    </java>
+  </target>
+
+  <!-- cutter -->
+  <target name="cutter" depends="compile" description="HTML Cutter">
+    <java classname="vavi.util.translation.JXPathUrlTranslator" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${cutter.file}" />
+      <arg value="${cutter.xpath}" />
+    </java>
+  </target>
+
+  <!-- cutter2 -->
+  <target name="cutter2" depends="compile" description="HTML Cutter">
+    <java classname="vavi.util.translation.JaxenUrlTranslator" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${cutter.file}" />
+      <arg value="//H1/B/text()" />
+    </java>
+  </target>
+
+  <!-- xpath -->
+  <target name="xpath" depends="compile" description="xpath">
+    <java classname="xpe.gui.XPEFrame" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.xpath.url}" />
+    </java>
+  </target>
+
+  <!-- tidy -->
+  <target name="tidy" depends="compile" description="HTML Cutter">
+    <java classname="t108_4" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.tidy.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.t4.url}" />
+    </java>
+  </target>
+
+  <!-- dom viewer -->
+  <target name="dv" depends="compile" description="DOM Viewer">
+    <java classname="vavi.xml.util.DOMViewer" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.domviewer.url}" />
+    </java>
+  </target>
+
+  <!-- google transator -->
+  <target name="google" depends="compile" description="google transration">
+    <java classname="vavi.util.translation.GoogleTranslator" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+      <arg value="${java.test.108.run.en}" />
+      <arg value="${java.test.108.run.ja}" />
+    </java>
+  </target>
+
+  <!-- proxy -->
+  <target name="proxy" depends="compile" description="proxy">
+    <java classname="vavi.util.screenscrape.ProxyChanger" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
