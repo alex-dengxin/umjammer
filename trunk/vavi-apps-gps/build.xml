@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- JSR80 Win32 Implement                                                  -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	030314	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="run" basedir=".">
+
+  <property name="windows.home" value="c:/WINNT/system32" />
+  <property name="jdk.home" value="c:/usr/local/java" />
+  <property name="cygwin.home" value="c:/usr/local/cygwin" />
+  <property name="mingw.include" value="${cygwin.home}/usr/include/mingw" />
+  <property name="w32api.include" value="${cygwin.home}/usr/include/w32api" />
+  <property name="mingw.lib" value="${cygwin.home}/lib/mingw" />
+  <property name="jni.uusbd.package" value="vavi/uusbd" />
+  <property name="jni.usb.package" value="src/jni" />
+
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="../.." />
+    <pathelement location="${java.home}/lib/comm.jar" />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete>
+      <fileset dir="lib">
+        <include name="*.dll" />
+        <exclude name="uusbd.dll" />
+      </fileset>
+    </delete>
+    <delete>
+      <fileset dir="src">
+        <include name="**/*.o" />
+        <include name="**/vavi_*.h" />
+        <exclude name="src/jni/JavaxUsb.h" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="準備">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac vavi.util -->
+  <target name="compile.vavi.util"
+          description="コンパイル vavi.util">
+    <ant dir="../../vavi/util" target="compile" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare,compile.vavi.util"
+          description="コンパイル">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <exclude name="**/jusb/**/*.java" />
+      <exclude name="**/sample/**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- javah -->
+  <target name="javah" depends="compile" description="Makeing Header">
+    <javah destdir="src/${jni.uusbd.package}">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <class name="vavi.uusbd.Usb" />
+      <class name="vavi.uusbd.Pipe" />
+      <!-- class name="vavi.jusb.os.win32.JavaxUsb" / -->
+    </javah>
+  </target>
+
+  <!-- gcc -->
+  <target name="compile.native" depends="javah" description="コンパイル C">
+    <apply executable="gcc" dest="src/${jni.uusbd.package}" parallel="false">
+      <env key="LANG" value="C" />
+      <arg value="-c" />
+      <arg line="-g -Wall -O2" />
+      <arg line="-mno-cygwin"/>
+      <arg value="-I." />
+      <arg value="-Ietc/include" />
+      <arg value="-I${mingw.include}" />
+      <arg value="-I${w32api.include}" />
+      <arg value="-I${jdk.home}/include" />
+      <arg value="-I${jdk.home}/include/win32" />
+      <arg value="-o"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="src/${jni.uusbd.package}" includes="*.c"/>
+      <mapper type="glob" from="*.c" to="*.o"/>
+    </apply>
+  </target>
+
+  <!-- link -->
+  <target name="link" depends="compile.native" description="Makeing DLL">
+    <apply executable="dllwrap" dest="lib">
+      <env key="LANG" value="C" />
+      <arg value="--add-stdcall-alias" />
+      <arg line="--driver-name gcc"/>
+      <arg line="-mwindows --target=i386-mingw32" />
+      <arg line="-o" />
+      <targetfile />
+      <srcfile />
+      <arg value="lib/uusbd.lib" />
+      <arg line="-s -mno-cygwin" />
+      <fileset dir="src/${jni.uusbd.package}" includes="*.o"/>
+      <mapper type="glob" from="*.o" to="*.dll"/>
+    </apply>
+  </target>
+
+  <!-- dist -->
+  <target name="dist" depends="compile,link" description="Distribution">
+    <copy todir="${dir.build}" preservelastmodified="true">
+      <fileset dir="src">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="dist" description="Run program">
+    <java classname="vavi.apps.gps.GpsFormatConverter" fork="yes">
+      <env key="PATH" path="lib" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- hgr -->
+  <target name="hgr" depends="compile,link" description="test program">
+    <java classname="vavi.gps.vendor.sony.Hgr" fork="yes">
+      <env key="PATH" path="lib" />
+      <classpath refid="project.class.path" />
+      <arg value="0" />
+    </java>
+  </target>
+
+  <!-- util -->
+  <target name="util" depends="compile" description="run utility">
+    <java classname="vavi.apps.gps.HgrUtil" fork="yes">
+      <env key="PATH" path="lib;/usr/local/cygwin/bin" />
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- dummy2 -->
+  <target name="dummy2" depends="compile" description="test dummy2">
+    <java classname="vavi.gps.vendor.test.DummyHgrInputStream2" fork="yes">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- nmea -->
+  <target name="nmea" depends="compile" description="test nmea">
+    <java classname="vavi.gps.vendor.nmea.NmeaGpsFormat" fork="yes">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- cc -->
+  <target name="cc" description="Compile C">
+    <apply executable="gcc" dest="src/sample" parallel="false">
+      <env key="LANG" value="C" />
+      <env key="PATH" path="${cygwin.home}/bin" />
+      <env key="CYGWIN_HOME" path="${cygwin.home}" />
+      <arg value="-Ietc/include" />
+      <arg value="-I${mingw.include}" />
+      <arg value="-I${w32api.include}" />
+      <arg value="-I${jdk.home}/include" />
+      <arg value="-I${jdk.home}/include/win32" />
+      <arg value="-mno-cygwin" />
+      <arg value="-o" />
+      <targetfile/>
+      <srcfile/>
+      <arg value="lib/uusbd.lib" />
+      <fileset dir="src/sample" includes="*.c"/>
+      <mapper type="glob" from="*.c" to="*.exe"/>
+    </apply>
+  </target>
+
+  <!-- dump -->
+  <target name="dump" depends="cc" description="usb dump by C">
+    <exec executable="src/sample/pipedump">
+      <env key="PATH" path="lib" />
+    </exec>
+  </target>
+
+  <!-- out -->
+  <target name="out" depends="cc" description="usb out by C">
+    <exec executable="src/sample/pipeout">
+      <env key="PATH" path="lib" />
+      <arg value="!PUON" />
+    </exec>
+  </target>
+
+  <!-- javac.usb -->
+  <target name="compile.usb" depends="prepare"
+          description="コンパイル jusb">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <include name="**/jusb/**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- javah.usb -->
+  <target name="javah.usb" depends="compile.usb" description="Makeing Header">
+    <javah destdir="${jni.usb.package}">
+      <classpath refid="project.class.path" />
+      <class name="vavi.jusb.os.win32.JavaxUsb" />
+    </javah>
+  </target>
+
+  <!-- gcc.usb -->
+  <target name="compile.native.usb" depends="javah.usb"
+          description="Compile C for usb">
+    <apply executable="gcc" dest="${jni.usb.package}" parallel="false">
+      <env key="LANG" value="C" />
+      <arg value="-c" />
+      <arg line="-g -Wall -O2" />
+      <arg line="-mno-cygwin"/>
+      <arg value="-I." />
+      <arg value="-Ietc/include" />
+      <arg value="-I${mingw.include}" />
+      <arg value="-I${w32api.include}" />
+      <arg value="-I${jdk.home}/include" />
+      <arg value="-I${jdk.home}/include/win32" />
+      <arg value="-o"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="${jni.usb.package}" includes="*.c"/>
+      <mapper type="glob" from="*.c" to="*.o"/>
+    </apply>
+  </target>
+
+  <!-- link.usb -->
+  <target name="link.usb" depends="compile.native.usb" description="Makeing DLL">
+    <exec executable="dllwrap">
+      <env key="LANG" value="C" />
+      <arg value="--add-stdcall-alias" />
+      <arg line="--driver-name gcc"/>
+      <arg line="-mwindows --target=i386-mingw32" />
+      <arg line="-o lib/JavaxUsb.dll" />
+      <arg line="${jni.usb.package}/JavaxUsbTopology.o" />
+      <arg line="${jni.usb.package}/JavaxUsbError.o" />
+      <arg value="lib/uusbd.lib" />
+      <arg line="-s -mno-cygwin" />
+    </exec>
+  </target>
+
+  <!-- javac sample -->
+  <target name="compile.sample" depends="compile.usb, link.usb"
+          description="コンパイル sample">
+    <javac debug="on">
+      <classpath refid="project.class.path" />
+      <include name="*.java" />
+      <src path="src/sample" />
+    </javac>
+  </target>
+
+  <!-- s1 -->
+  <target name="s1" depends="compile.sample" description="ShowTopology">
+    <java classname="ShowTopology" fork="yes">
+      <env key="PATH" path="lib" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="src/sample" />
+        <pathelement location="lib" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- s2 -->
+  <target name="s2" depends="compile.sample" description="FindUsbDevice">
+    <java classname="FindUsbDevice" fork="yes">
+      <env key="PATH" path="lib" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="src/sample" />
+        <pathelement location="lib" />
+      </classpath>
+      <arg line="idVendor=0x054c idProduct=0x0040 bDeviceClass=0x09 manufacturer=Kashiwano" />
+    </java>
+  </target>
+
+  <!-- s3 -->
+  <target name="s3" depends="compile.sample" description="FindUsbInterface">
+    <java classname="FindUsbInterface" fork="yes">
+      <env key="PATH" path="lib" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="src/sample" />
+        <pathelement location="lib" />
+      </classpath>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
