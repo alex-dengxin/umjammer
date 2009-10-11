@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="Windows-31J" ?>
+
+<a>
+  <b>
+    <c id="0001" name="test">
+      aaa
+      <d>
+        ddd
+      </d>
+    </c>
+    <c id="0006" name="test2">
+      bbb
+    </c>
+  </b>
+</a>
