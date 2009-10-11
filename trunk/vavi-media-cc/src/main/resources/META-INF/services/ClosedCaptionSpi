@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2003 by Naohide Sano, All rights reserved.
+#
+# Loader
+#
+# 0.00	030228	nsano	initial version
+#
+
+vavi.media.ui.cc.LyricsSpi
+vavi.media.ui.cc.SRTSpi
+vavi.media.ui.cc.SSASpi
+vavi.media.ui.cc.SUBSpi
