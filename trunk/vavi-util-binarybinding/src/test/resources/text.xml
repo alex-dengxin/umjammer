@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<TextFormat>
+  <class name="read">
+    <field name="time" type="int" regex="\[\w ms\]" />
+  </class>
+</TextFormat>

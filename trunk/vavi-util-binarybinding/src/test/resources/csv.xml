@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!--
+    <String>あい</String>
+    <String>うえ</String>
+    <String>かき</String>
+
+      <formats>
+        <String>yyyy-MM-dd</String>
+        <String>yyyy/MM/dd</String>
+        <String>yyyy年MM月dd日</String>
+      </formats>
+
+      <pattern>[A-Za-z]+</pattern>
+-->
+
+<CsvFormat>
+  <count>5</count>
+  <validators>
+    <validator>
+      <sequence>0</sequence>
+    </validator>
+    <validator>
+      <sequence>1</sequence>
+    </validator>
+  </validators>
+</CsvFormat>

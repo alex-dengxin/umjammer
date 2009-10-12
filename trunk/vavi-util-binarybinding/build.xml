@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2003 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- XML Bindings                                                           -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	031008	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="test.110" default="run" basedir=".">
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="." />
+    <pathelement location="src" />
+    <pathelement location="../.." />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  
+  <!-- ターゲットの定義 -->
+  
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete>
+      <fileset dir=".">
+        <include name="**/*.class" />
+      </fileset>
+    </delete>
+  </target>
+  
+  <!-- javac supports -->
+  <target name="compile.supports" description="コンパイル src/**/*.java">
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+  
+  <!-- javac vavi.util -->
+  <target name="compile.vavi.util" description="コンパイル vavi.util">
+    <ant dir="../../vavi/util" target="compile" />
+  </target>
+  
+  <!-- javac -->
+  <target name="compile" depends="compile.vavi.util,compile.supports"
+          description="コンパイル">
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="*.java" />
+      <src path="." />
+    </javac>
+  </target>
+  
+  <!-- run -->
+  <target name="run" depends="compile" description="binary binding">
+    <java classname="t110_2" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="binary.xml" />
+    </java>
+  </target>
+  
+  <!-- t1 -->
+  <target name="t1" depends="compile" description="csv reader test">
+    <java classname="t110_1" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="csv.xml" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
