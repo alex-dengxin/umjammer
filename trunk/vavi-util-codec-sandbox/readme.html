@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<link rev="MADE" href="mailto:vavivavi@yahoo.co.jp">
+<link rel="INDEX" href="orverview.html">
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="../../vavi.css">
+<title>Easy Huffman</title>
+<!--
+ * Copyright (c) 2003 by Naohide Sano, All rights reserved.
+ *
+ * Written by Naohide Sano
+ *
+ * @description	Easy Huffman 関連のクラス
+ * @status	動作確認(未テスト)
+ *
+ * @author	<a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ *
+ * @version	0.00	030930	nsano	initial version
+-->
+</head>
+
+<body>
+
+<h2>Easy Huffman 関連のクラスを提供します</h2>
+
+<ol>
+<li>概要
+ <p>
+　携帯電話には、通信サイズの制限がありがちです。
+  <pre>
+	Docomo : 10kB
+	J-Phone : 
+  </pre>
+  <p>
+　このツールを使えば、PCやサーバでデータを符号化して、携帯
+　端末で展開することができるようになります。
+　携帯端末Javaアプリへの導入が容易になるように、次の点に配慮
+　しました。
+  </p>
+  <ul>
+	<li>ソースの変更は最小限にとどめる</li>
+	<li>ソースサイズの増加も極力小さくする</li>
+  </ul>
+
+  <ul>
+　 <li>注意そのイチ<br>
+	gifやzipとかに比べると、圧縮率は圧倒的にしょぼいので、
+	すでにエンコードされたファイルには使用しないでください。
+	ファイルサイズが元のファイルより大きくなります。
+   </li>
+　 <li>注意そのニ<br>
+	BMPでも色数が多いほど圧縮率は悪くなります。あんまり色数
+	多いと、やっぱりファイルサイズが元のファイルより大きく
+	なってしまいます。
+   </li>
+　 <li>注意そのサン<br>
+	符号化データは、ヘッダに符号化データ(最大1kBほど)を
+	持っています。そのため、あんまり小さいファイルを符号化
+	すると、データの減少分よりヘッダの追加分の方が大きく
+	なって、ファイルサイズが元ファイルより大きくなります。
+   </li>
+  </ul>
+　ファイルサイズが10kB以上で、色数が32色以下のBMPを符号化
+　すると、それなりの効果が期待できます。
+
+　<h4>こういうときにお役に立ちます</h4>
+  <p>
+	504 の 3D API で使うことができるテクスチャは、BMP 形式のみ
+	(D を除く)です。テクスチャのサイズは最大 128 x 128 なので、
+	約17kB程度になります。
+	ところが i-mode Java の制限で、一度に通信で取得できるデータ
+	は10kBに限られているので、テクスチャ画像を一度に取得する
+	ことはできません。
+	適切なデータに Huffman 符号化を施せば、データサイズは 10 kB 弱に
+	なります。
+  </p>
+ </li>
+<hr>
+
+<li>使い方
+
+<ul>
+ <li>圧縮
+  <ul>
+   <li>コマンドラインから
+<pre>
+> java HuffmanEncoder 入力ファイル名
+</pre>
+　　出力ファイル名：入力ファイル名.hff
+   </li>
+  </ul>
+ </li>
+
+ <li>展開
+
+  <ul>
+   <li>コマンドラインから
+    <pre>
+> java HuffmanDecoder 入力ファイル名
+
+　　出力ファイル名：入力ファイル名.dec
+    </pre>
+   </li>
+   <li>Doja, MIDP から
+    <ol>
+ 　 <li>Decoder.java の decode() メソッドをまるごとiAppli, midlet の
+	ソースにコピー。
+     </li>
+　  <li>ハフマン符号化したデータをバイト配列に読み込む。
+	(仮に byte[] encとする)。
+     </li>
+ 　 <li>byte[] dec = decode(enc);
+	で、展開されたデータがバイト配列decに格納される。
+     </li>
+    </ol>
+   </li>
+  </ul>
+
+ </li>
+</ul>
+
+</li>
+
+<hr>
+
+<li>クラス概要
+
+<ul>
+ <li>HuffmanEncoder.java<br>
+　入力ファイルからデータを読み込んで、バイト配列にし、
+　Encode.javaのencode()メソッドを呼び出す。
+　しかるのち、戻り値（バイト配列）をファイルに書き出す。
+ </li>
+ <li>HuffmanDecoder.java<br>
+　入力ファイルからデータを読み込んで、バイト配列にし、
+　Decode.javaのdecode()メソッドを呼び出す。
+　しかるのち、戻り値（バイト配列）をファイルに書き出す。
+ </li>
+ <li>Encoder.java<br>
+　圧縮プログラム本体。
+ </li>
+ <li>Decoder.java<br>
+　展開プログラム本体。
+　iAppliとかで使うときは、decode()メソッドをそのままコピーする。
+　decode()メソッドをiAppliのソースに追加してビルドしたところ、
+　jarの増加分は800バイト程度だった。
+ </li>
+</ul>
+
+</li>
+
+<hr>
+
+<li>データ形式</li>
+
+以下の順序でデータが記録される。
+
+<ol>
+ <li>頻度情報データ形式 </li>
+	1バイト
+
+ <li>頻度情報データ</li>
+　頻度情報データ形式が0の場合
+	int型x256 = 1024バイト
+
+　頻度情報データ形式が1の場合
+	(byte型+int型)x出現する数
+	
+　（合計サイズが小さくなるほうが自動的に選ばれる）
+
+ <li>符号化データ</li>
+</ol>
+
+<hr>
+
+<li>圧縮率</li>
+
+サンプル3Dアプリの犬用のテクスチャ画像を圧縮してみた。
+<ul>
+<li>元テクスチャ画像(245色)</li>
+17462バイト（圧縮前）→14015バイト（圧縮後）[80%]
+
+<li>32色に減色</li>
+16572バイト（圧縮前）→9178バイト（圧縮後）[55%]
+
+<li>16色に減色</li>
+16508バイト（圧縮前）→7470バイト（圧縮後）[45%]
+</ul>
+</ol>
+
+<h2>これから実装すること</h2>
+
+<ul>
+  <li></li>
+  <li></li>
+</ul>
+
+</body>
+
+</html>
