@@ -200,7 +200,9 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 
 あと本当は飛行機内で GPS 記録したかったんだけどあの窓では HGR は衛星捉えてくれませんでした．マッハで移動する軌跡取りたかったのに．．． 
 
-とった記録を[http://picasaweb.google.co.jp/lh/photo/QH_tzRETvupadl-l4zP-hA?feat=directlink 再現]してみた。パリ−ツールズの移動の一部です。再現ソフトは[http://gpsmap.sourceforge.net/ こちら]。下記「疑問」の補正はしてないのでちょっとずれている。右上のにぎやかそうなところがパリです。見ればわかるがパリ以外ホント田舎ばっか。 
+とった記録を再現してみた。パリ−ツールズの移動の一部です。再現ソフトは[http://gpsmap.sourceforge.net/ こちら]。下記「疑問」の補正はしてないのでちょっとずれている。右上のにぎやかそうなところがパリです。見ればわかるがパリ以外ホント田舎ばっか。 
+
+http://lh3.ggpht.com/_JchUHfE3WF4/SmmqJM5pBlI/AAAAAAAAAFc/YY_Uox3hbxo/s288/replay.png
 
 ==疑問==
 
