@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FooFX" default="default" basedir=".">
+
+  <description>Builds FooFX applet</description>
+
+  <property name="lib.dir" location="${basedir}/extlib" />
+  <property name="build.dir" location="${basedir}/build" />
+  <property name="dist.dir" location="${basedir}/dist" />
+
+  <property name="jfx.dir" location="${basedir}/jfx" />
+
+  <property name="jvm.path" value="c:\Program Files\Java\jre6\bin\java" />
+  <property name="jvm.args" value="" />
+
+  <path id="compile.classpath">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${jfx.dir}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <path id="run.classpath">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${jfx.dir}">
+      <include name="*.jar" />
+      <!-- <exclude name="javafxc.jar"/> bug: runtime has dependency on javafxc -->
+    </fileset>
+  </path>
+
+  <property name="compile.path" refid="compile.classpath" />
+
+  <fileset id="jars2pack" dir="${dist.dir}">
+    <include name="**/*.jar" />
+  </fileset>
+
+  <taskdef name="javafxc"
+           classname="com.sun.tools.javafx.ant.JavaFxAntTask"
+           classpathref="compile.classpath" />
+
+  <target name="clean" unless="no.clean">
+    <delete dir="${build.dir}" />
+    <delete dir="${dist.dir}" />
+  </target>
+
+  <target name="init" unless="no.clean">
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${dist.dir}" />
+  </target>
+
+  <target name="default" depends="dist" description="Build FooFX" />
+
+  <target name="dist"
+          description="Build distribution bundles"
+          depends="jar, copy-dist" />
+
+  <target name="copy-dist" depends="jar">
+    <mkdir dir="${dist.dir}/lib" />
+    <copy todir="${dist.dir}/lib">
+      <path refid="run.classpath" />
+    </copy>
+    <copy todir="${dist.dir}">
+      <fileset dir="${basedir}/applet">
+        <include name="*.gif" />
+        <include name="*.jnlp" />
+        <include name="*.htm" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="run"
+          depends="compile, copy-resources"
+          description="Run the main FX class">
+    <java classname="${class.name}"
+          dir="${build.dir}"
+          failonerror="true"
+          fork="true"
+          maxmemory="500m">
+      <jvmarg line="${jvm.args}" />
+      <classpath>
+        <path refid="run.classpath" />
+        <path location="${build.dir}" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="run-jar" depends="jar" description="Run the main FX class">
+    <java classname="${class.name}"
+          dir="${basedir}"
+          failonerror="true"
+          fork="true"
+          maxmemory="500m">
+      <jvmarg line="${jvm.args}" />
+      <classpath>
+        <path refid="run.classpath" />
+        <path path="${dist.dir}/${ant.project.name}.jar" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="compile" depends="clean, init">
+    <javac srcdir="${basedir}/src"
+           destdir="${build.dir}"
+           debug="true"
+           source="1.6">
+      <classpath refid="compile.classpath" />
+      <include name="**/*.java" />
+      <exclude name="**/*Test.java" />
+    </javac>
+
+    <javafxc debug="true"
+             deprecation="false"
+             destdir="${build.dir}"
+             excludes=""
+             includeantruntime="false"
+             includes="**/*.fx"
+             source="${basedir}/src"
+             sourcepath=""
+             srcdir="${basedir}/src"
+             target="1.6"
+             classpath="${build.dir};${compile.path}"
+             compilerclasspath="${build.dir};${compile.path}" />
+  </target>
+
+  <target name="copy-resources" depends="clean, init">
+    <!-- Configuration and resource files needed by the application -->
+    <copy todir="${build.dir}">
+      <fileset dir="${basedir}/src/">
+        <!-- Excluding Java and JavaFX source files from the resources -->
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.fx"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile, copy-resources">
+    <jar jarfile="${dist.dir}/${ant.project.name}.jar" >
+      <manifest>
+        <attribute name="Project" value="${ant.project.name}"/>
+        <attribute name="Built-by" value="${user.name}"/>
+      </manifest>
+
+      <!-- Java classes -->
+      <zipfileset dir="${build.dir}"/>
+    </jar>
+  </target>
+
+</project>
