@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<html lang="ja">
+
+<head>
+<link rev="MADE" href="mailto:vavivavi@yahoo.co.jp" />
+<link rel="INDEX" href="orverview.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" type="text/css" href="../../vavi.css" />
+<title>STUN for Java</title>
+<!--
+ * Copyright (c) 2005 by Naohide Sano, All Rights Reserved.
+ *
+ * Written by Naohide Sano
+ *
+ * @description	STUN for Java
+ * @status	動作確認
+ *
+ * @author	<a href=mailto:vavivavi@yahoo.co.jp>Naohide Sano</a>(nsano)
+ *
+ * @version	0.00	050728	nsano	initial version
+-->
+</head>
+
+<body>
+
+<p>
+STUN for Java
+</p>
+
+<h2>参照</h2>
+
+<ul>
+  <li>http://www.ht.sfc.keio.ac.jp/~suno/term/2003s/</li>
+</ul>
+
+<h2>これから実装すること</h2>
+
+<ul>
+  <li><del>URLConnection 化</del></li>
+  <li>Connection Close 時リスナーを解放してる？</li>
+  <li>分散ハッシュ？</li>
+</ul>
+
+<h2>一次ライセンス</h2>
+<ul>
+<li>記載なし？</li>
+</ul>
+
+</body>
+
+</html>

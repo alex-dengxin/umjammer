@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2005 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- stunnet                                                                -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	050728	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="packaging" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="../.." />
+    <pathelement location="${dir.build}" />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+    <pathelement location="${dir.vavi}" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete>
+      <fileset dir=".">
+        <include name="stunnet.jar" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- compile.support -->
+  <target name="compile.support" description="ビルド環境の">
+    <ant dir="${dir.vavi}/vavi/util" target="compile" />
+  </target>
+
+      <!-- javac -->
+  <target name="compile" depends="prepare,compile.support" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}" encoding="MS932">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src/java" />
+      <src path="src/samples" />
+    </javac>
+    <copy todir="${dir.build}">
+      <fileset dir="src">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="パッケージング">
+    <jar jarfile="stunnet.jar">
+      <fileset dir="build">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="${dir.vavi}">
+        <include name="vavi/util/RingBuffer*.class" />
+        <include name="vavi/util/Debug*.class" />
+        <include name="vavi/util/StringUtil.class" />
+        <include name="vavi/util/StringUtil.properties" />
+        <include name="vavi/util/logging/*.class" />
+        <include name="vavi/util/logging/*.properties" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- global -->
+  <target name="global" depends="packaging" description="as server, ip must be global">
+    <java classname="SampleApplication" fork="yes">
+      <jvmarg value="-Djava.protocol.handler.pkgs=vavi.net.www.protocol" />
+      <classpath>
+        <pathelement location="stunnet.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <jvmarg value="-Djava.awt.headless=true" />
+      <arg value="stun:${stunnet.name}?node=localhost:2000:2001:1:2&amp;type=GLOBAL" />
+      <arg value="-c" />
+    </java>
+  </target>
+
+  <!-- global.gui -->
+  <target name="global.gui" depends="packaging" description="as server, ip must be global">
+    <java classname="SampleApplication" fork="yes">
+      <jvmarg value="-Djava.protocol.handler.pkgs=vavi.net.www.protocol" />
+      <classpath>
+        <pathelement location="stunnet.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <arg value="stun:${stunnet.name}?node=localhost:2000:2001:1:2&amp;type=GLOBAL" />
+    </java>
+  </target>
+
+  <!-- node.cui -->
+  <target name="node.cui" depends="packaging" description="connect as client using global">
+    <java classname="SampleApplication" fork="yes">
+      <jvmarg value="-Djava.protocol.handler.pkgs=vavi.net.www.protocol" />
+      <classpath>
+        <pathelement location="stunnet.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <jvmarg value="-Djava.awt.headless=true" />
+      <arg value="stun:${stunnet.name}?node=${stunnet.gip}:2000:2001:2002:2003" />
+      <arg value="-c" />
+    </java>
+  </target>
+
+  <!-- node.gui -->
+  <target name="node.gui" depends="packaging" description="connect as client using global">
+    <java classname="SampleApplication" fork="yes">
+      <jvmarg value="-Djava.protocol.handler.pkgs=vavi.net.www.protocol" />
+      <classpath>
+        <pathelement location="stunnet.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <arg value="stun:${stunnet.name}?node=${stunnet.gip}:2000:2001:2002:2003" />
+    </java>
+  </target>
+
+  <!-- url -->
+  <target name="url" depends="packaging" description="stun url">
+    <java classname="vavi.net.www.protocol.stun.Handler" fork="yes">
+      <jvmarg value="-Djava.protocol.handler.pkgs=vavi.net.www.protocol" />
+      <classpath>
+        <pathelement location="stunnet.jar"/>
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <jvmarg value="-Djava.awt.headless=true" />
+      <arg value="stun:localhost:2000:2001:1:2?id=nsano" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
