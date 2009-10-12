@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- Huffman codec                                                          -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	031001	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="test.106" default="compile" basedir=".">
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="." />
+    <pathelement location="../.." />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete>
+      <fileset dir="src">
+        <include name="**/*.class" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- javac -->
+  <target name="compile" description="コンパイル">
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- test -->
+  <target name="test" depends="compile" description="プログラムのテスト">
+    <java classname="HuffmanEncoder" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="" /> 
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
