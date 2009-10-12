@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!--
+  <string name="IconSys" property="id" start="0x000000" end="0x000003"
+          offset="0x10" relativeOffset="-10" />
+  <skip />
+  <int endian="little" />
+  <iterate times="2" under="0x3c4" />
+  <field type="java.awt.Color" />
+-->
+
+<BinaryFormat>
+  <blocks>
+    <block>
+      <name>IconSys</name>
+      <currentOffset>0</currentOffset>
+
+      <readerTypes>
+
+        <readerType>
+	  <type>String</type>
+	  <name>id</name>
+	  <length>4</length>
+        </readerType>
+
+        <readerType>
+	  <type>byte</type>
+	  <name>unknown</name>
+	  <length>188</length>
+        </readerType>
+
+        <readerType>
+	  <type>String</type>
+	  <name>name</name>
+	  <length>64</length>
+	  <properties>
+	    <property>
+	      <name>encoding</name>
+	      <value>SJIS</value>
+	    </property>
+ 	    <property>
+	      <name>terminateByZero</name>
+	      <value>true</value>
+	    </property>
+	  </properties>
+        </readerType>
+
+        <readerType>
+	  <type>iterate</type>
+	  <name>iconNames</name>
+	  <length>64</length>
+	  <properties>
+	    <property>
+	      <name>under</name>
+	      <value>0x3c4</value>
+	    </property>
+	    <property>
+	      <name>type</name>
+	      <value></value>
+	    </property>
+	    <property>
+	      <name>encoding</name>
+	      <value>SJIS</value>
+	    </property>
+ 	    <property>
+	      <name>terminateByZero</name>
+	      <value>true</value>
+	    </property>
+	  </properties>
+        </readerType>
+
+      </readerTypes>
+    </block>
+  </blocks>
+
+</BinaryFormat>
