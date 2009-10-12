@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2006 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- Podcast                                                                -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	060304	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="compile" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.web" value="webapp/WEB-INF"/>
+  <property name="dir.lib" value="${dir.web}/lib"/>
+  <property name="dir.classes" value="${dir.web}/classes"/>
+
+  <!-- クラスパスの定義 -->
+  <path id="tomcat.class.path">
+    <fileset dir="${tomcat.home}/common/lib">
+      <include name="servlet-api.jar" />
+      <include name="jsp-api.jar" />
+    </fileset>
+  </path>
+
+  <path id="project.class.path">
+    <pathelement location="../../vavi/java" />
+    <fileset dir="${dir.lib}">
+      <include name="*.jar" />
+    </fileset>
+    <path refid="tomcat.class.path" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- javac -->
+  <target name="compile" depends="" description="コンパイル">
+    <javac debug="on"
+           destdir="${dir.classes}">
+      <classpath refid="project.class.path" />
+      <include name="vavix/**/*.java" />
+      <src path="src/java" />
+    </javac>
+  </target>
+
+</project>
+
+<!-- -->
