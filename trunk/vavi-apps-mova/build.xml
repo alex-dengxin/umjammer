@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naomi Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- MovaDevice                                                             -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	040309	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="compile.all" basedir=".">
+
+  <!-- Properties -->
+  <property file="local.properties" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="." />
+    <pathelement location="../.." />
+    <pathelement location="src" />
+    <pathelement location="../999/build" />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete>
+      <fileset dir=".">
+        <include name="**/*.class" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- javac.support -->
+  <target name="compile.support" description="コンパイル support">
+    <ant dir="../999" target="dist" />
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- javac -->
+  <target name="compile" description="コンパイル">
+    <javac debug="on" deprecation="on">
+      <classpath refid="project.class.path" />
+      <include name="*.java" />
+      <src path="." />
+    </javac>
+  </target>
+
+  <!-- javac.all -->
+  <target name="compile.all" depends="compile.support,compile"
+          description="コンパイル all">
+    <native2ascii encoding="Windows-31J"
+                  src="."
+                  dest="."
+                  includes="**/*.properties.sjis"
+                  ext="" />
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="compile.all" description="run t1">
+    <antcall target="t1" />
+  </target>
+
+  <!-- t1 -->
+  <target name="t1" depends="compile.all" description="test DevicePlug">
+    <java classname="t907_1" fork="yes">
+      <env key="PATH" path="../999/lib;/usr/local/cygwin/bin" />
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- t2 -->
+  <target name="t2" depends="compile.all" description="test MovaDevice">
+    <java classname="MovaDevice" fork="yes">
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- rec -->
+  <target name="rec" depends="compile.all" description="record by mova">
+    <java classname="MovaDeviceUI" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="${device.mova}" />
+    </java>
+  </target>
+
+  <!-- play -->
+  <target name="play" depends="compile.all" description="playback test.xml">
+    <java classname="MovaDeviceController" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="${device.move}" />
+      <arg value="test.xml" />
+    </java>
+  </target>
+
+  <!-- rec.foma -->
+  <target name="rec.foma" depends="compile.all" description="record by foma">
+    <java classname="FomaDeviceUI" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="${device.foma}" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->

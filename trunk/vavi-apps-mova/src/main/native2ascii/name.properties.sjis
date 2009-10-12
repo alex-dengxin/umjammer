@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2004 by Naohide Sano, All rights reserved.
+#
+# Written by Naohide Sano
+#
+# @author	<a href=mailto:"vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+# @version	0.00	040315	nsano	initial version
+#
+
+UP=Å™
+LEFT=Å©
+RIGHT=Å®
+DOWN=Å´
+NUMPAD0=0
+NUMPAD1=1
+NUMPAD2=2
+NUMPAD3=3
+NUMPAD4=4
+NUMPAD5=5
+NUMPAD6=6
+NUMPAD7=7
+NUMPAD8=8
+NUMPAD9=9
+ASTERISK=*
+SHARP=#
+ONHOOK=Åõ
+OFFHOOK=Å~
+CENTER=Å°
+NW=NW
+NE=NE
+SW=SW
+SE=SE
+CLEAR=∏ÿ±

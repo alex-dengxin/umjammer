@@ -1,0 +1,10 @@
+#
+# Copyright (c) 2004 by Naohide Sano, All rights reserved.
+#
+# Written by Naohide Sano
+#
+# @author	<a href=mailto:"vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+# @version	0.00	040328	nsano	initial version
+#
+
+device=COM1
