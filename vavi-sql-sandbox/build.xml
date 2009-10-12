@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- jdbc front end                                                         -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	040620	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="compile" basedir=".">
+
+<!-- クラスパスの定義 -->
+<path id="project.class.path">
+  <pathelement location="../.." />
+  <pathelement location="src/java" />
+  <pathelement location="src/test" />
+  <fileset dir="lib">
+    <include name="*.jar" />
+  </fileset>
+</path>
+
+<!-- ターゲットの定義 -->
+
+<!-- clean -->
+<target name="clean" description="ビルド環境のクリア">
+  <delete>
+    <fileset dir="src">
+      <include name="**/*.class" />
+    </fileset>
+  </delete>
+</target>
+
+<!-- javac -->
+<target name="compile" description="コンパイル src">
+  <javac debug="on" deprecation="on">
+    <classpath refid="project.class.path" />
+    <include name="**/*.java" />
+    <src path="src/java" />
+  </javac>
+</target>
+
+<!-- javac.test -->
+<target name="compile.test" description="コンパイル test">
+  <javac debug="on" deprecation="on">
+    <classpath refid="project.class.path" />
+    <include name="**/*.java" />
+    <src path="src/test" />
+  </javac>
+</target>
+
+<!-- test -->
+<target name="test" depends="compile,compile.test" description="test">
+  <java classname="Test" fork="yes">
+    <classpath refid="project.class.path" />
+  </java>
+</target>
+
+</project>
+
+<!-- -->
