@@ -1,0 +1,74 @@
+
+---- BD Live 用 2ch 実況ビューア ----
+
+Copyright (c) 2008 by うんじゃまらみお (umjammer)
+http://vavivavi.blogspot.com/
+
+とりあえず実況版のみ
+
+● TODO
+
+        スクロールバックさせたいねぇ
+        AA をちゃんと表示するとか
+        自分で保存した .dat の再生とか
+
+
+● 使用方法
+
+        PS3 のボタンしか考えてない...
+
+        １．起動
+        
+        ２．板選択画面
+       
+                ○       板選択、スレ選択画面へ
+                ↑       カーソルアップ       
+                ↓       カーソルダウン
+                ←       前ページ       
+                →       次ページ
+
+        ３．スレ選択画面
+       
+                ○       スレ選択、実況ビュー画面へ
+                □       板選択画面へ
+                ↑       カーソルアップ       
+                ↓       カーソルダウン
+                ←       前ページ       
+                →       次ページ
+
+        ４．実況ビュー画面
+        
+                □       スレ選択画面へ
+                ←       スクロールスピードダウン       
+                →       スクロールスピードアップ
+
+● 参考
+
+        Nanashi-soft様
+        http://yun.cup.com/bdj.html
+
+        ぶーにゃん様
+        http://bu-nyan.m.to/BD-J/bdj.htm
+
+● 使用、参照
+
+        C#|２ちゃんねる専用ブラウザを作ってみた
+        あにす様
+        http://blogs.dion.ne.jp/anis7742/archives/7484691.html
+
+        Sjis.java
+        Shinichi Hagiwara様
+        http://www.din.or.jp/~hagi3/Java/JavaLab/Applets/shinSoft/net/Sjis.java
+
+        Cp932.java
+        風間 一洋様
+        http://java-house.jp/ml/archive/j-h-b/014452.html
+
+        オリジナルフォント みかちゃん
+        http://www001.upp.so-net.ne.jp/mikachan/
+
+● 履歴
+
+0.00    2008/08/09
+
+        初版公開
