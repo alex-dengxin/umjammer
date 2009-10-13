@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">PuyoPuyo 09-01-06</string>
+  <string name="main_activity_n">2</string>
+  <string name="main_activity_w">456</string>
+  <string name="main_activity_s">0</string>
+  <string name="main_activity_h">272</string>
+  <string name="main_activity_v">1</string>
+  <string name="main_activity_p">2</string>
+</resources>
