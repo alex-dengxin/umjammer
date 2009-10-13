@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">AppleII 08-10-20</string>
+  <string name="props_cpuRom">apple2e.rom</string>
+  <string name="props_diskDrive1">lode_runner.dsk</string>
+  <string name="props_displayColorMode">1</string>
+  <string name="props_displayScale">1</string>
+  <string name="props_cpuDebugEnabled">true</string>
+  <string name="props_displayStatMode">true</string>
+  <string name="props_cpuSpeed">1000</string>
+  <string name="props_displayRefreshRate">10</string>
+<!--
+  <string name="props_cpuStepMode">true</string>
+  <string name="props_displayGlare">true</string>
+-->
+</resources>
