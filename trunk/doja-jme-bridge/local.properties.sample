@@ -1,0 +1,3 @@
+cldc.home=c:/usr/win32/iDK
+dir.base=.
+dir.src=${dir.base}/src

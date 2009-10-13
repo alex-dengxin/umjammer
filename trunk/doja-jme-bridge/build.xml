@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- MIDP - DOJA bridge                                                     -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	040924	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="project" default="packaging" basedir=".">
+
+  <!-- プロパティの定義 -->
+  <property file="local.properties" />
+  <property name="dir.build" value="build" />
+  <property name="jar.name" value="midp-doja" />
+
+  <!-- クラスパスの定義 -->
+  <path id="cldc.class.path">
+    <fileset dir="${cldc.home}/lib">
+      <include name="*.zip" />
+    </fileset>
+  </path>
+
+  <path id="emulator.class.path">
+    <fileset dir="${cldc.home}/lib">
+      <include name="dojaemu.jar" />
+    </fileset>
+  </path>
+
+  <path id="project.class.path">
+    <path refid="emulator.class.path" />
+    <path refid="cldc.class.path" />
+    <pathelement location="../.." />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete file="${jar.name}.jar" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" depends="clean" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+    <mkdir dir="${dir.build}/classes" />
+    <mkdir dir="${dir.build}/java" />
+    <mkdir dir="${dir.build}/preverified" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <fileset id="source.fileset" dir="${dir.src}">
+      <include name="**/*.java" />
+    </fileset>
+    <pathconvert pathsep=" " property="sourcefiles" refid="source.fileset"/>
+    <exec executable="java">
+      <arg line="-Dfile.encoding=${encoding}" />
+      <arg line="-classpath ${java.home}/../lib/tools.jar${ps}${cldc.home}/lib/dojaconv.jar" />
+      <arg value="sun.tools.javac.Main" />
+      <arg line="-bootclasspath ${cldc.home}/lib/classes.zip${ps}${cldc.home}/lib/doja_classes.zip" />
+<!--
+      <arg value="-g:none" />
+-->
+      <arg value="-g" />
+      <arg line="-encoding SJIS_i" />
+      <arg line="-d ${dir.build}/classes" />
+      <arg line="-sourcepath ${dir.src}" />
+      <arg line="${sourcefiles}" />
+    </exec>
+  </target>
+
+  <!-- preverify -->
+  <target name="preverify" depends="compile" description="Preverify">
+    <exec executable="${preverify.bin}">
+      <arg line="-classpath ${cldc.home}/lib/classes.zip${ps}${cldc.home}/lib/doja_classes.zip" />
+      <arg line="-d ${dir.build}/preverified" />
+      <arg line="${dir.build}/classes" />
+    </exec>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="preverify" description="パッケージング">
+    <zip destfile="${jar.name}.jar">
+      <fileset dir="${dir.build}/preverified">
+        <include name="**/*.class" />
+      </fileset>
+    </zip>
+  </target>
+
+</project>
+
+<!-- -->
