@@ -1,0 +1,118 @@
+
+---- BD-J AppleII Emulator ----
+
+Copyright (c) 2008 by umjammer
+http://vavivavi.blogspot.com/
+
+* ORIGINAL
+
+        AppleIIGo
+        
+                http://www-personal.umich.edu/~mressl/appleiigo/
+
+* LISENCE
+
+        GPL (AppleIIGo is GPL)
+
+* TODO
+
+        .gz reader (why doesn't work???)
+        virtual keyboard (details)
+
+* DONE
+
+	improve pad control
+        disk selection mode
+        virtual keyboard
+	.nib reader
+
+* INSTALL
+
+	1. unpack bdjappleii-x.xx.rar
+	
+        2. copy AVCHD directory into
+        
+            (SD Card) /PRIVATE directory
+            (Memory Stick) / (ROOT) directory
+            (other USBz) i don't know... maybe / (ROOT) directory
+
+        3. copy APPLE2E.ROM into .../AVCHD directory
+        
+        4. copy your .dsk image into .../AVCHD directory
+
+        5. modify .../AVCHD/appleii.properties
+        
+            diskDrive1=your .dsk or .nib image 
+
+        6. select AVCHD on your PS3 XMB Video Menu
+
+* USAGE (SIXAXIS)
+
+        1. first you are in NORMAL MODE.
+        
+            CIRCLE              Right Pad Button
+            SQUARE              Left Pad Button
+            UP                  Pad Up
+            DOWN                Pad Down
+            LEFT                Pad Left
+            RIGHT               Pad Right
+            BLUE Button         Goto VIRTUAL KEYBORD MODE
+            GREEN Button        Restart
+            YELLOW Button       Reset
+
+        2. VIRTUAL KEYBORD MODE
+        
+            CIRCLE              Push selected key
+            UP                  Key selection Up
+            DOWN                Key selection Down
+            LEFT                Key selection Left
+            RIGHT               Key selection Right
+            BLUE Button         Goto DISK DRIVE 1 MODE
+            GREEN Button        Restart
+
+	3. DISK DRIVE 1 MODE
+
+            CIRCLE              Select disk image
+            SQUARE              Release disk image
+            UP                  Previous disk image
+            DOWN                Next disk image
+            BLUE Button         Goto DISK DRIVE 2 MODE
+            GREEN Button        Restart
+
+	4. DISK DRIVE 2 MODE
+
+            CIRCLE              Select disk image
+            SQUARE              Release disk image
+            UP                  Previous disk image
+            DOWN                Next disk image
+            BLUE Button         Goto NORMAL MODE
+            GREEN Button        Restart
+
+* ROMz
+
+        http://apple2.org.za/gswv/a2zine/System/
+	ftp://ftp.apple.asimov.net/pub/apple_II/
+        
+* GAMEz
+
+        http://www.virtualapple.org/
+
+* HISTORY
+
+0.12    09-Oct-2008
+
+	improve pad control (i fogot keyReleased() method calling at base ;-P)
+
+0.11    28-Sep-2008
+
+        source code more MVC separation
+
+0.10    26-Sep-2008
+
+        virtual keyboard
+	add disk selection mode
+	.nib reader
+
+0.00    15-Sep-2008
+
+        initial version
