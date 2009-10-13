@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<beans>
+
+  <service xmlns="http://xfire.codehaus.org/config/1.0">
+    <name>Ggps</name>
+    <scope>session</scope>
+    <serviceClass>vavi.apps.ggps.ws.xfire.Ggps</serviceClass>
+    <serviceFactory>org.codehaus.xfire.jaxws.JAXWSServiceFactory</serviceFactory>
+  </service>
+
+</beans>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2007 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- GGPS                                                                   -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	070304	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="ggps" default="run" basedir=".">
+
+  <property file="local.properties" />
+
+<!--
+  <import file="cxf.xml"/>
+-->
+  <property name="dir.dist" value="target" />
+  <property name="dir.build" value="build" />
+  <property name="dir.lib" value="lib" />
+  <property name="dir.src" value="src/main/java" />
+  <property name="dir.webapp" value="src/main/webapp" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="${dir.lib}">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete dir="${dir.dist}" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+    <mkdir dir="${dir.dist}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on"
+           destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <src path="${dir.src}" />
+    </javac>
+    <copy todir="${dir.build}">
+      <fileset dir="${dir.src}">
+        <include name="*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="パッケージング ggps">
+    <jar jarfile="lib/ggps.jar">
+      <fileset dir="${dir.build}">
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- install -->
+  <target name="install" depends="packaging" description="Install">
+    <copy todir="${dir.dist}">
+      <fileset dir="${dir.webapp}" />
+    </copy>
+    <copy todir="${dir.dist}/WEB-INF/lib">
+      <fileset dir="lib">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/xfire">
+        <include name="*.jar" />
+      </fileset>
+        <fileset dir="lib/xfire/lib">
+          <include name="*.jar" />
+          <exclude name="servlet-api-2.3.jar" />
+        </fileset>
+      <fileset dir="lib/xfire/modules">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/cxf">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/hibernate">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/asm">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/aopalliance">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/jakarta-commons">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/cglib">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/mysql">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/spring">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/aspectj">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    <copy todir="${dir.dist}/WEB-INF/classes">
+      <fileset dir="src/main/resources">
+        <include name="applicationContext-persistence.xml" />
+        <include name="META-INF/**/*" />
+        <include name="commons-logging.properties" />
+        <include name="log4j.properties" />
+        <include name="hibernate.cfg.xml" />
+        <include name="oscache.properties" />
+      </fileset>
+    </copy>
+    <!-- webapp xfire -->
+    <antcall target="packaging.ws" />
+    <copy todir="${dir.dist}/WEB-INF/lib" file="tmp/ggps-ws.jar" />
+  </target>
+
+  <!-- runtime class path -->
+  <path id="run.class.path">
+    <path refid="project.class.path" />
+    <pathelement location="src/main/resources" />
+  </path>
+
+  <!-- javac.ws -->
+  <target name="compile.ws" depends="prepare" description="コンパイル WS">
+    <javac debug="on" destdir="src/main/ws" deprecation="true">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src/main/ws" />
+    </javac>
+  </target>
+
+  <!-- jar.ws -->
+  <target name="packaging.ws" depends="compile.ws" description="パッケージング WS">
+    <jar jarfile="tmp/ggps-ws.jar">
+      <fileset dir="src/main/ws">
+        <include name="vavi/apps/ggps/ws/**/*.class" />
+        <include name="META-INF/**/*" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- wsdl2java -->
+  <target name="wsdl2java" description="WebService を作成します。">
+    <wsdl2java name="Ggps" />
+  </target>
+
+  <!-- wsdl2java -->
+  <macrodef name="wsdl2java">
+    <attribute name="name" />
+    <attribute name="dirname" default="" />
+    <sequential>
+      <taskdef name="wsgen" classname="org.codehaus.xfire.gen.WsGenTask" 
+               classpathref="run.class.path" />
+      <wsgen outputDirectory="src/test/java/"
+             wsdl="http://${xfire.urlBase}/services/@{name}?wsdl"
+             package="vavi.apps.ggps.ws.client.stub"
+             overwrite="true"
+             generateserverstubs="false" />
+    </sequential>
+  </macrodef>
+
+  <!-- java2wsdl -->
+  <target name="java2wsdl" depends="compile">
+    <exec executable="${cxf.bin.java2wsdl}">
+      <arg line="-o tmp/ggps.wsdl"/>
+      <arg line="-cp ${dir.build}"/>
+      <arg value="vavi.apps.ggps.GgpsSEI"/>
+    </exec>
+  </target>
+
+  <!-- xsd2java -->
+  <target name="xsd2java"
+          description="Generate Java source files from XSD.">
+<!--
+    <xsd2jibx package="vavi.apps.ggps.jibx"
+              url="http://www.topografix.com/GPX/1/1/gpx.xsd"
+              xsd="tmp/gpx.xsd" />
+    <xsd2castor dir="vavi/apps/ggps/castor"
+                package="vavi.apps.ggps.castor"
+                url="http://www.topografix.com/GPX/1/1/gpx.xsd"
+                xsd="tmp/gpx.xsd" />
+-->
+    <xsd2jaxb xsd="tmp/gpx.xsd" package="vavi.apps.ggps.jaxb"/>
+  </target>
+
+  <!-- xsd2jibx -->
+  <macrodef name="xsd2jibx" description="TODO need to wait new version">
+    <attribute name="package" />
+    <attribute name="url" /> 
+    <attribute name="xsd" />
+    <sequential>
+      <get src="@{url}" dest="@{xsd}" />
+      <java classname="org.jibx.xsd2jibx.Generate" fork="true">
+        <classpath refid="run.class.path" />
+        <arg line="-d ${dir.src}"/>
+        <arg line="-n @{package}"/>
+        <arg value="@{xsd}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- xsd2castor -->
+  <macrodef name="xsd2castor" description="TODO need to write mapping file">
+    <attribute name="dir" /> 
+    <attribute name="package" />
+    <attribute name="url" /> 
+    <attribute name="xsd" />
+    <sequential>
+      <taskdef name="castor-srcgen"
+               classname="org.castor.anttask.CastorCodeGenTask"
+               classpathref="run.class.path" />
+      <get src="@{url}" dest="@{xsd}" />
+      <mkdir dir="${dir.src}/@{dir}" />
+      <delete dir="${dir.src}/@{dir}" includes="**/*.java" />
+      <castor-srcgen file="@{xsd}"
+                     todir="${dir.src}"
+                     package="@{package}"
+                     types="j2"
+                     warnings="true" />
+    </sequential>
+  </macrodef>
+
+  <!-- xsd2jaxb -->
+  <macrodef name="xsd2jaxb" description="works fine">
+    <attribute name="package" />
+    <attribute name="xsd" />
+    <sequential>
+      <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+        <classpath refid="run.class.path" />
+      </taskdef>
+      <xjc schema="@{xsd}" target="${dir.src}" package="@{package}"/>
+    </sequential>
+  </macrodef>
+
+  <!-- javac test -->
+  <target name="compile.test" depends="prepare" description="コンパイル test">
+    <javac debug="on"
+           destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <src path="src/test/java" />
+    </javac>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="compile,compile.test" description="プログラムの実行">
+    <java classname="vavi.apps.ggps.Test" fork="yes">
+      <jvmarg value="-Dgoogle.token=${google.token}"/>
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+        <fileset dir="${ant.home}/lib">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+      <arg value="${test.in}"/>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->

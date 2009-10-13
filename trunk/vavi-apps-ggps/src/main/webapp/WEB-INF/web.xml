@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+  version="2.4">
+
+  <display-name>ggps</display-name>
+
+  <!-- xfire -->
+  <servlet>
+    <servlet-name>XFireServlet</servlet-name>
+    <display-name>XFire Servlet</display-name>
+    <servlet-class>
+        org.codehaus.xfire.transport.http.XFireConfigurableServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- cxf -->
+<!--
+  <servlet>
+    <servlet-name>CXFServlet</servlet-name>
+    <display-name>CXF Servlet</display-name>
+    <servlet-class>
+      org.apache.cxf.transport.servlet.CXFServlet
+    </servlet-class>
+  </servlet>
+-->
+
+  <!-- xfire -->
+  <servlet-mapping>
+    <servlet-name>XFireServlet</servlet-name>
+    <url-pattern>/servlet/XFireServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>XFireServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- cxf -->
+<!--
+  <servlet-mapping>
+    <servlet-name>CXFServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+-->
+
+</web-app>

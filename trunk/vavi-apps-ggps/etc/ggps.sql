@@ -1,0 +1,7 @@
+CREATE DATABASE ggps;
+
+GRANT ALL PRIVILEGES ON ggps.*
+TO ggps@localhost
+IDENTIFIED BY 'ggps' WITH GRANT OPTION;
+
+USE ggps;

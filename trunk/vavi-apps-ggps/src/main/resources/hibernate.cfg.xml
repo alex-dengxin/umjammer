@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+      <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+      <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+      <property name="hibernate.connection.username">ggps</property>
+      <property name="hibernate.connection.password">ggps</property>
+      <property name="hibernate.connection.url">jdbc:mysql://localhost/ggps</property>
+
+      <property name="hibernate.show_sql">true</property>
+      <property name="hibernate.format_sql">true</property>
+      <property name="hibernate.hbm2ddl.auto">update</property>
+
+      <property name="hibernate.bytecode.provider">javassist</property>
+
+      <property name="hibernate.cache.use_query_cache">true</property>
+
+<!--
+      <property name="hibernate.c3p0.min_size">5</property>
+      <property name="hibernate.c3p0.max_size">20</property>
+      <property name="hibernate.c3p0.timeout">1800</property>
+      <property name="hibernate.c3p0.max_statements">50</property>
+-->
+      <property name="hibernate.dbcp.maxActive">10</property>
+      <property name="hibernate.dbcp.maxIdle">10</property>
+      <property name="hibernate.dbcp.maxWait">180000</property>
+      <property name="hibernate.dbcp.whenExhaustedAction">1</property>
+      <property name="hibernate.dbcp.ps.maxActive">10</property>
+      <property name="hibernate.dbcp.ps.maxIdle">10</property>
+      <property name="hibernate.dbcp.ps.maxWait">180000</property>
+      <property name="hibernate.dbcp.ps.whenExhaustedAction">1</property>
+
+      <property name="hibernate.cache.provider_class">org.hibernate.cache.OSCacheProvider</property>
+
+    </session-factory>
+
+</hibernate-configuration>

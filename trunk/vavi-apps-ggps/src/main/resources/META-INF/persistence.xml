@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<persistence version="1.0"
+  xmlns="http://java.sun.com/xml/ns/persistence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+  <persistence-unit name="ggps" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+    <class>vavi.apps.ggps.models.GpxFragment</class>
+
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+    <properties>
+      <property name="hibernate.ejb.cfgfile" value="hibernate.cfg.xml" />
+    </properties>
+
+  </persistence-unit>
+
+</persistence>
