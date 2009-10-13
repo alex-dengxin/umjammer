@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:tool="http://www.springframework.org/schema/tool"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+                        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                        http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-2.0.xsd">
+
+  <!-- tx -->
+  <bean id="jpaVendorAdapter"
+        class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+
+  <bean id="transactionManager"
+        class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory" />
+  </bean>
+
+  <tx:advice id="txAdvice"
+             transaction-manager="transactionManager">
+    <tx:attributes>
+      <tx:method name="is*"
+                 read-only="true" />
+      <tx:method name="get*"
+                 read-only="true" />
+      <tx:method name="find*"
+                 read-only="true" />
+      <tx:method name="*" />
+    </tx:attributes>
+  </tx:advice>
+
+  <aop:config>
+    <aop:pointcut id="daoPointcut"
+                  expression="execution(* vavi.persistence.impl.*DaoBase.*(..))" />
+    <aop:pointcut id="servicePointcut"
+                  expression="execution(* vavi.apps.ggps.services.impl.*ServiceImpl.*(..))" />
+    <aop:advisor advice-ref="txAdvice"
+                 pointcut-ref="daoPointcut" />
+    <aop:advisor advice-ref="txAdvice"
+                 pointcut-ref="servicePointcut" />
+  </aop:config>
+
+  <!-- jpa -->
+  <bean id="entityManagerFactory"
+        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="persistenceUnitName" value="ggps" />
+    <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+  </bean>
+
+  <bean id="daoFactory"
+        class="vavi.persistence.impl.SpringDaoFactory">
+    <property name="entityManagerFactory"
+              ref="entityManagerFactory" />
+  </bean>
+
+  <!-- my daos -->
+  <bean id="ggpsDao"
+        class="vavi.persistence.impl.SpringDaoFactoryBean">
+    <property name="daoFactory"
+              ref="daoFactory" />
+    <property name="entityClass"
+              value="vavi.apps.ggps.GpxFragment" />
+  </bean>
+
+  <!-- my services -->
+  <bean id="ggpsService"
+        class="vavi.apps.ggps.GgpsService">
+    <property name="ggpsDao"
+              ref="ggpsDao" />
+  </bean>
+
+</beans>

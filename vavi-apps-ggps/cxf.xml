@@ -1,0 +1,78 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements. See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership. The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License. You may obtain a copy of the License at
+ 
+  http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project name="cxf macro file">
+
+    <macrodef name="wsdl2java">
+        <attribute name="srcdestdir"/>
+        <attribute name="destdir"/>
+        <attribute name="file"/>
+        <attribute name="bindingfile" default=""/>
+        <attribute name="dir"/>
+        <attribute name="package" default="NOT_SPECIFIED"/>
+        <sequential>
+            <mkdir dir="@{destdir}"/>
+            <mkdir dir="@{srcdestdir}"/>
+            <condition property="package.arg.@{file}" value="-p @{package}">
+                <not>
+                    <equals arg1="@{package}" arg2="NOT_SPECIFIED"/>
+                </not>
+            </condition>
+            <property name="package.arg.@{file}" value=""/>
+            <condition property="binding.arg" value="-b @{bindingfile}">
+                <not>
+                    <equals arg1="@{bindingfile}" arg2=""/>
+                </not>
+            </condition>
+            <property name="binding.arg" value=""/>
+
+            <java failonerror="true" classname="org.apache.cxf.tools.wsdl2java.WSDLToJava" fork="yes">
+                <classpath>
+                    <path refid="cxf.classpath" />
+                </classpath>
+                <sysproperty key="java.util.logging.config.file" value="${cxf.etc.dir}/logging.properties"/>
+                <arg line="${package.arg.@{file}}"/>
+                <arg line="${binding.arg}"/>
+                <arg value="-verbose"/>
+                <arg value="-d"/>
+                <arg value="@{srcdestdir}"/>
+                <arg value="@{dir}/@{file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="cxfwar">
+        <attribute name="filename"/>
+        <attribute name="wsdl"/>
+        <attribute name="dir" default="${war.dir}"/>
+        <attribute name="classesdir" default="${build.classes.dir}"/>
+        <sequential>
+            <mkdir dir="@{dir}"/>
+            <war destfile="@{dir}/@{filename}" webxml="${cxf.home}/etc/web.xml">
+                <classes dir="@{classesdir}"/>
+                <webinf dir="${wsdl.dir}">
+                    <include name="cxf-servlet.xml"/>
+                </webinf>
+                <webinf dir="${wsdl.dir}/..">
+                    <include name="wsdl/@{wsdl}"/>
+                </webinf>
+            </war>
+        </sequential>
+    </macrodef>
+
+</project>
