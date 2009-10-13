@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- VNC for DoJa                                                           -->
+<!--                                                                        -->
+<!-- @author    Naohide Sano                                                -->
+<!-- @version   0.00    040208  nsano   initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="dist" name="DoJa VNC">
+
+  <property file="local.properties"/>
+
+  <!-- -->
+  <path id="project.class.path">
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${cldc.home}/lib">
+      <include name="*.zip" />
+    </fileset>
+    <pathelement location="${bridge.classes}" />
+    <pathelement location="../.." />
+  </path>
+
+  <!-- -->
+  <property file="${user.home}/j2mevnc-build.properties"/>
+  <property name="proguard-home" value="."/>
+
+  <!-- -->
+  <property name="src" value="src"/>
+  <property name="translated" value="build/translated"/>
+  <property name="appname" value="VNC"/>
+  <property name="lib" value="lib"/>
+  <property name="misc" value="etc"/>
+  <property name="dist" value="build/dist"/>
+  <property name="unverified" value="build/unverified"/>
+  <property name="verified" value="build/verified"/>
+  <property name="res" value="etc/res"/>
+  <property name="j2mewtk.home" value="${cldc.home}"/>
+  <property name="lang" value="en"/>
+  <property name="local.res" value="etc/lres"/>
+  <property name="lang.list" value="en,el,pl,de,fr"/>
+
+  <!-- init -->
+  <target name="init" depends="clean2">
+    <echo message="Running with base dir ${basedir}"/>
+    <!-- ensure some dirs exist -->
+    <mkdir dir="${unverified}"/>
+    <mkdir dir="${verified}"/>
+    <mkdir dir="${dist}"/>
+    <available file="${proguard-home}/lib/proguard.jar" property="obfuscating.proguard"/>
+    <copy file="${misc}/${appname}.jad" tofile="${dist}/${appname}${lang}.jad"/>
+    <replace file="${dist}/${appname}${lang}.jad" token="VNC.jar" value="${appname}${lang}.jar"/>
+    <copy file="${misc}/MANIFEST.MF" tofile="${dist}/MANIFEST.MF"/>
+    <replace file="${dist}/MANIFEST.MF" token="VNC.jar" value="${appname}${lang}.jar"/>
+  </target>
+
+  <!-- init -->
+  <target name="compile.support">
+     <ant dir="${bridge.project}"/>
+  </target>
+
+  <!-- translate -->
+  <target name="translate" depends="init">
+    <echo message="Translating source to ${lang}"/>
+    <native2ascii dest="${local.res}"
+                  encoding="Unicode"
+                  src="${local.res}/native"/>
+    <translate bundle="${local.res}/strings"
+               bundlelanguage="${lang}"
+               destencoding="ASCII"
+               endtoken="#"
+               forceoverwrite="yes"
+               starttoken="#"
+               toDir="${translated}">
+      <fileset dir="${src}">
+        <include name="**/*.java"/>
+      </fileset>
+    </translate>
+  </target>
+
+  <!-- compile -->
+  <target name="compile" depends="compile.support,translate">
+    <javac bootclasspath="${j2mewtk.home}/lib/classes.zip"
+           destdir="${unverified}"
+           encoding="ASCII"
+           source="1.2"
+           srcdir="${translated}"
+           target="1.1"
+           debug="true">
+      <classpath refid="project.class.path" />
+    </javac>
+  </target>
+
+  <!-- obfuscate -->
+  <target name="obfuscating-with-proguard"
+  	  depends="compile"
+          if="obfuscating.proguard">
+    <taskdef classname="proguard.ant.ProGuardTask"
+             classpath="${proguard-home}/lib/proguard.jar"
+             name="proguard"/>
+    <echo message="obfuscating with proguard"/>
+    <zip basedir="${unverified}" destfile="in.zip"/>
+    <delete file="in.zip"/>
+  </target>
+
+  <!-- verify -->
+  <target name="verify" depends="obfuscating-with-proguard">
+    <exec executable="${j2mewtk.home}/bin/preverify">
+      <arg line="-classpath ${j2mewtk.home}/lib/classes.zip;${j2mewtk.home}/lib/doja_classes.zip;${bridge.classes}" />
+      <arg line="-d ${verified}" />
+      <arg line="${unverified}" />
+      <arg line="${bridge.classes}" />
+    </exec>
+  </target>
+
+  <!-- dist -->
+  <target name="dist" depends="verify">
+    <!-- jar up the stuff -->
+    <jar jarfile="${dist}/${appname}${lang}.jar">
+      <fileset dir="${verified}"/>
+      <fileset dir="${res}"/>
+    </jar>
+  </target>
+
+  <!-- clean -->
+  <target name="clean" depends="clean2">
+    <delete dir="${dist}"/>
+  </target>
+
+  <!-- clean2 -->
+  <target name="clean2" description="clean up nside of build directory">
+    <delete dir="${verified}"/>
+    <delete dir="${unverified}"/>
+    <delete dir="${translated}"/>
+    <delete file="in.zip"/>
+    <delete file="out.zip"/>
+  </target>
+
+  <!--
+    - The Build All and ZIP task requires
+    - ForEach from: http://ant-contrib.sourceforge.net
+    -->
+
+  <!-- all -->
+  <target name="all">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    <foreach delimiter="," list="${lang.list}" param="lang" target="dist"/>
+  </target>
+  <target depends="all" name="zips">
+    <foreach delimiter="," list="${lang.list}" param="lang" target="zip"/>
+  </target>
+
+  <!-- zip -->
+  <target name="zip" description="">
+    <tstamp/>
+    <zip destfile="${dist}/${appname}-${lang}-${DSTAMP}.zip">
+      <fileset file="${dist}/${appname}${lang}.jar"/>
+      <fileset file="${dist}/${appname}${lang}.jam"/>
+      <fileset file="gpl.txt"/>
+      <fileset file="mit.txt"/>
+      <fileset file="ChangeLog.txt"/>
+    </zip>
+  </target>
+
+  <!--
+    - Run task, currently uses UNIX file names reguardless of OS.
+    -->
+
+  <!-- descriptor -->
+  <target name="descriptor" depends="dist"
+	  description="Make application descriptor">
+    <tstamp>
+      <format property="today" pattern="EEE, dd MMM yyyy HH:mm:ss" locale="en"/>
+    </tstamp>
+    <taskdef name="fileproperties"
+             classname="vavi.tools.ant.FilePropertiesTask"
+             classpathref="project.class.path" />
+<!--
+<sleep milliseconds="1000" />
+-->
+    <fileproperties file="${dist}/${appname}${lang}.jar" name="jar" />
+    <filter token="appli.url" value="${dist}/${appname}${lang}.jar" />
+    <filter token="appli.name" value="${appname}" />
+    <filter token="appli.version" value="0.1" />
+    <filter token="appli.class" value="tk.wetnet.j2me.vnc.${appname}" />
+    <filter token="appli.lastmodified" value="${today}" />
+<!--
+<echo message="${jar.length}" />
+-->
+    <filter token="appli.size" value="${jar.length}" />
+    <filter token="appli.param" value="" />
+    <copy file="etc/template.jam"
+         tofile="${dist}/${appname}${lang}.jam"
+	 filtering="true"
+	 overwrite="true" />
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="descriptor">
+    <exec executable="${j2mewtk.home}/bin/doja">
+      <arg line="-i ${dist}/${appname}${lang}.jam" />
+    </exec>
+  </target>
+
+  <!-- debug -->
+  <target name="debug" depends="descriptor">
+    <exec executable="${j2mewtk.home}/bin/doja_g">
+      <arg value="-debugger" />
+      <arg line="-debugport 3030" />
+      <arg line="-i ${dist}/${appname}${lang}.jam" />
+    </exec>
+  </target>
+
+</project>
