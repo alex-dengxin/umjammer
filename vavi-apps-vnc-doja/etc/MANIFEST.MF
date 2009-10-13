@@ -1,0 +1,11 @@
+MIDlet-1: VNC, /VNC.png, tk.wetnet.j2me.vnc.VNC
+MIDlet-2: About VNC, /VNC.png, tk.wetnet.j2me.vnc.About
+MIDlet-Description: A remote display system which allows you to view a computing desktop environment.
+MIDlet-Info-URL: http://j2mevnc.sourceforge.net/
+MIDlet-Name: VNC
+MIDlet-Vendor: Michael Lloyd Lee
+MIDlet-Version: 3.0.3
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0
+MIDlet-Icon: /VNC.png
+MIDlet-Permissions: javax.microedition.io.Connector.socket
