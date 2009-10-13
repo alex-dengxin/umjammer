@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+<project basedir='.' default='all' name='WinFormsPuyoPuyo'>
+  <property name='nant.settings.currentframework' value='mono-2.0'/>
+  <property name='build' value='bin/Release'/>
+  <property name='src' value='src'/>
+  <property name='res' value='res'/>
+  <target depends='target' name='all'/>
+  <target name='target'>
+    <csc debug='true' optimize='true' output='${build}/PuyoPuyo.exe' target='exe' warninglevel='4' codepage="utf8">
+      <sources>
+        <include name='${src}/**/*.cs'/>
+      </sources>
+      <resources dynamicprefix='true'>
+        <include name='${res}/drawable/*.gif'/>
+        <include name='${res}/raw/*.wav'/>
+        <include name='${res}/raw/*.mid'/>
+        <include name='${res}/chain/**/*.au'/>
+      </resources>
+      <references>
+        <include name='System.dll'/>
+        <include name='System.Data.dll'/>
+        <include name='System.Drawing.dll'/>
+        <include name='System.Linq.dll'/>
+        <include name='System.Windows.Forms.dll'/>
+        <include name='System.XML.dll'/>
+      </references>
+    </csc>
+  </target>
+  <target depends='target' name='run'>
+    <exec program='mono' workingdir='${build}'>
+      <environment>
+        <variable name="LANG" value='ja_JP.utf8'/>
+      </environment>
+      <arg value='--debug'/>
+      <arg value='PuyoPuyo.exe'/>
+    </exec>
+  </target>
+</project>
