@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2003 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- javaswf                                                                -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	030911	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="go" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete file="*.jar" />
+    <delete>
+      <fileset dir="${dir.build}">
+        <nclude name="**/*" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="パッケージング">
+    <jar jarfile="./javaswf.jar">
+      <fileset dir="${dir.build}">
+        <include name="com/**/*" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- javac.sample -->
+  <target name="compile.sample" depends="packaging" description="Compile Sample">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath>
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <include name="*.java" />
+      <src path="." />
+    </javac>
+  </target>
+
+  <!-- go -->
+  <target name="go" depends="compile.sample" description="Run program">
+    <java classname="DumpSWF" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="javaswf.jar" />
+      </classpath>
+      <arg value="${run.swf.in}"/>
+    </java>
+  </target>
+
+  <!-- toXML -->
+  <target name="toXML" depends="compile.sample" description="Run program">
+    <java classname="Swf2Xml" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="javaswf.jar" />
+      </classpath>
+      <arg value="${run.swf.in}"/>
+      <arg value="${run.xml.out}"/>
+    </java>
+  </target>
+
+  <!-- toSWF -->
+  <target name="toSWF" depends="compile.sample" description="Run program">
+    <java classname="Xml2Swf" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="javaswf.jar" />
+        <pathelement location="${ant.library.dir}/xercesImpl.jar" />
+      </classpath>
+      <arg value="${run.xml.in}"/>
+      <arg value="${run.swf.out}"/>
+    </java>
+  </target>
+
+  <!-- javadoc -->
+  <target name="javadoc" description="ドキュメントの生成">
+    <javadoc encoding="Windows-31J"
+             packagenames="
+com.anotherbigidea,
+com.anotherbigidea.flash,
+com.anotherbigidea.flash.interfaces,
+com.anotherbigidea.flash.movie,
+com.anotherbigidea.flash.readers,
+com.anotherbigidea.flash.sound,
+com.anotherbigidea.flash.structs,
+com.anotherbigidea.flash.writers,
+com.anotherbigidea.io,
+com.anotherbigidea.util
+"
+             destdir="doc/javadoc"
+             source="1.4"
+             author="true"
+             version="true"
+             use="true"
+             private="false"
+             windowtitle="javaswf2">
+      <link href="http://java.sun.com/j2se/1.4/ja/docs/ja/api/"/>
+      <sourcepath>
+        <pathelement location="src" />
+      </sourcepath>
+      <classpath>
+        <fileset dir="">
+          <include name="*.jar" />
+        </fileset>
+      </classpath>
+    </javadoc>
+  </target>
+
+</project>
+
+<!-- -->
