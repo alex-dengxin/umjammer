@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- myPod                                                                  -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	041225	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="myPod" default="run" basedir=".">
+
+  <!-- プロパティの定義 -->
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="${dir.build}" />
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+    <path location="${vavi.dir}" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="準備">
+    <mkdir dir="${dir.build}" />
+<!--
+    <delete>
+      <fileset dir="data">
+        <include name="playlists.xml.*" />
+        <include name="data.*" />
+      </fileset>
+    </delete>
+-->
+  </target>
+
+  <!-- javac.id3tag -->
+  <target name="compile.id3tag" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <include name="vavi/util/tag/id3/**/*.java" />
+      <include name="*.java" />
+      <src path="src" />
+    </javac>
+
+    <copy todir="${dir.build}" preservelastmodified="true">
+      <fileset dir="src">
+        <include name="vavi/util/tag/id3/**/*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- compile.mypod -->
+  <target name="compile.mypod" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="project.class.path" />
+      <exclude name="vavi/util/tag/id3/**/*.java" />
+      <exclude name="*.java" />
+      <src path="src" />
+    </javac>
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="compile.id3tag,compile.mypod" description="コンパイル" />
+
+  <!-- resource -->
+  <target name="resource" description="Distribution">
+    <native2ascii encoding="Windows-31J"
+                  src="src"
+                  dest="${dir.build}"
+                        includes="**/*_ja.properties.sjis"
+                        ext=""/>
+  </target>
+
+  <!-- dist -->
+  <target name="dist" depends="compile,resource" description="Distribution">
+    <copy todir="${dir.build}" preservelastmodified="true">
+      <fileset dir="src">
+        <include name="resource/**/*" />
+        <include name="**/*.properties" />
+        <exclude name="resource/Thumbs.db" />
+        <exclude name="vavi/util/tag/id3/**/*.properties" />
+      </fileset>
+    </copy>
+
+    <!-- .properties.utf8 -->
+    <native2ascii encoding="UTF-8"
+                  src="src"
+                  dest="${dir.build}"
+                  includes="**/*.properties.utf8"
+                  ext=""/>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="dist" description="パッケージング">
+    <jar jarfile="./myPod.jar">
+      <fileset dir="${dir.build}" />
+    </jar>
+  </target>
+
+  <!-- jar.id3tag -->
+  <target name="packaging.id3tag" depends="compile.id3tag" description="パッケージング id3tag only">
+    <jar jarfile="./id3tag.jar">
+      <fileset dir="${dir.build}">
+        <include name="vavi/util/tag/id3/**/*" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- go -->
+  <target name="go" depends="packaging" description="プログラムの実行">
+    <java classname="vavi.apps.ipm.Main" fork="yes">
+      <jvmarg value="-Duser.home=c:/home/nsano" /> 
+      <jvmarg value="-Dswing.plaf.metal.controlFont=Dialog-12" />
+      <classpath>
+        <pathelement location="myPod.jar" />
+        <path refid="project.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="dist" description="プログラムの実行">
+    <java classname="de.axelwernicke.mypod.myPod" fork="yes">
+      <sysproperty key="java.util.logging.config.class" value="vavi.util.logging.VaviConfig"/>
+      <jvmarg value="-Duser.home=c:/home/nsano" /> 
+      <jvmarg value="-Xmx512m" />
+      <jvmarg value="-Dswing.plaf.metal.controlFont=Dialog-12" />
+      <jvmarg value="-Djava.util.logging.config.class=vavi.util.logging.VaviConfig" />
+      <classpath refid="project.class.path" />
+    </java>
+  </target>
+
+  <!-- mp3 -->
+  <target name="mp3" depends="compile.id3tag" description="test mp3">
+    <java classname="Test1" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="f:/" /> 
+      <arg value=".+\.(mp3)|(aac)" /> 
+    </java>
+  </target>
+
+  <!-- mp2 -->
+  <target name="mp3.2" depends="compile.id3tag" description="test mp3">
+    <java classname="Test2" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="fff" /> 
+    </java>
+  </target>
+
+  <!-- t3 -->
+  <target name="t3" depends="compile.id3tag" description="make au cpgd chunk">
+    <java classname="Test3" fork="yes">
+      <classpath refid="project.class.path" />
+      <arg value="${date}" />
+      <arg value="${days}" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
