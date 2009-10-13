@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2008 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- BD-J Karaoke                                                           -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	080824	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="bdj karaoke" default="run" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build"/>
+  <property name="app.name" value="00000"/>
+  <property name="jar.name" value="${app.name}.jar"/>
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="${dir.bdj}/common">
+      <include name="*.jar" />
+      <exclude name="javassist.jar" />
+      <exclude name="metouia.jar" />
+      <exclude name="nanoxml-2.2.3.jar" />
+    </fileset>
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+<!--
+    <fileset dir="${dir.bdj}/lib">
+      <include name="nero/bdj.jar" />
+    </fileset>
+    <fileset dir="${dir.fmj}">
+      <include name="fmj.jar" />
+      <include name="lib/*.jar" />
+    </fileset>
+-->
+  </path>
+
+  <path id="sign.class.path">
+    <fileset dir="${dir.sign}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete file="${jar.name}" failonerror="false" />
+    <delete dir="META-INF" failonerror="false" />
+    <delete dir="${dir.build}" failonerror="false" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on"
+           destdir="${dir.build}"
+           source="1.3"
+           target="1.3"
+	   deprecation="true">
+      <classpath>
+        <pathelement location="${dir.bdj}/common/jmf/jmf.jar" />
+        <path refid="project.class.path" />
+        <fileset dir="${dir.bdj}/lib">
+          <include name="nero/bdj.jar" />
+        </fileset>
+      </classpath>
+      <src path="src/main/java" />
+    </javac>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="packaging">
+
+    <copy file="etc/bluray.MyXlet.perm" toFile="${dir.build}/${paem.file}" /> 
+
+<!--
+    <copy file="${bdmv.in}" toDir="${dir.build}" /> 
+    <copy file="${wave.in}" tofile="${dir.build}/${wave.out}" /> 
+-->
+    <copy file="${mp3.in}" tofile="${dir.build}/${mp3.out}" /> 
+  
+    <jar jarfile="${jar.name}">
+      <fileset dir="${dir.build}">
+        <exclude name="config/**/*" />
+        <exclude name="net/**/*" />
+        <exclude name="com/sony/**/*" />
+      </fileset>
+    </jar>
+
+  </target>
+
+  <!-- mp3 -->
+  <target name="mp3" depends="" description="sign">
+    <ant dir="${dir.mp3}" target="dist" inheritall="flase" />
+    <copy file="${dir.mp3}/jl1.0.jar" tofile="lib/00001.jar" />
+    <java classname="net.java.bd.tools.security.BDSigner" fork="yes">
+      <classpath refid="sign.class.path" />
+      <arg line="-keystore ${dir.sign}/sig.ks" />
+      <arg value="lib/00001.jar" />
+    </java>
+  </target>
+
+  <!-- ogg -->
+  <target name="ogg" depends="" description="sign">
+    <ant dir="${dir.ogg}" target="packaging" inheritall="flase" />
+    <copy file="${dir.ogg}/jorbis-0.0.17.jar" tofile="lib/00002.jar" />
+    <java classname="net.java.bd.tools.security.BDSigner" fork="yes">
+      <classpath refid="sign.class.path" />
+      <arg line="-keystore ${dir.sign}/sig.ks" />
+      <arg value="lib/00002.jar" />
+    </java>
+  </target>
+
+  <!-- sign -->
+  <target name="sign" depends="packaging" description="sign">
+    <java classname="net.java.bd.tools.security.BDSigner" fork="yes">
+      <classpath refid="sign.class.path" />
+      <arg line="-keystore ${dir.sign}/sig.ks" />
+      <arg value="${jar.name}" />
+    </java>
+  </target>
+
+  <path id="audio.class.path">
+    <fileset dir="${dir.fmj}">
+      <include name="fmj.jar" />
+      <include name="lib/*.jar" />
+    </fileset>
+    <fileset dir="${dir.vavi}/lib">
+      <include name="tritonus_remaining-0.3.6.jar" />
+    </fileset>
+  </path>
+
+  <!-- audio -->
+  <target name="audio.2" depends="" description="audio">
+    <java jar="${dir.bdj}/common/hdcookbook/soundgen.jar" fork="yes">
+      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
+<!--
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin" />
+-->
+      <classpath refid="audio.class.path" />
+      <arg value="-debug" />
+      <arg value="${audio.in}" />
+      <arg value="${bdmv.out}" />
+    </java>
+  </target>
+
+  <!-- audio -->
+  <target name="audio" depends="compile" description="create bdmv">
+    <java classname="net.java.bd.tools.BDJSoundGenerator" fork="yes">
+      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
+<!--
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin;c:\windows\system32" />
+-->
+      <classpath>
+        <path refid="audio.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="-debug" />
+      <arg value="${audio.in}" />
+      <arg value="sound.bdmv" />
+    </java>
+  </target>
+
+  <!-- split -->
+  <target name="split" depends="compile" description="split bdmv">
+    <java classname="net.java.bd.tools.BDJSoundSplitter" fork="yes">
+      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin;c:\windows\system32" />
+      <classpath>
+        <path refid="audio.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="-debug" />
+      <arg line="-prefix split" />
+      <arg line="-outputDir tmp" />
+      <arg value="${bdmv.in}" />
+    </java>
+  </target>
+
+  <!-- dist -->
+  <target name="dist" depends="sign" description="distribution">
+    <java jar="${dir.bdj}/common/hdcookbook/bdjo.jar" fork="yes">
+      <arg value="etc/bdjo.xml" />
+      <arg value="00000.bdjo" />
+    </java>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="" description="test">
+    <copy todir="${dir.build}">
+      <fileset dir="etc" >
+        <exclude name="config" />
+        <include name="config/**/*" />
+      </fileset>
+    </copy>
+
+    <copy file="sound.bdmv" toDir="${dir.bdj}/common/vavi/apps/karaoke" />
+
+    <java jar="${dir.bdj}/common/xletview.jar" fork="yes">
+      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common"/>
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="project.class.path" />
+      </classpath>
+      <arg line="-xletPath ${dir.build}" />
+      <arg line="-xletClass vavi.apps.karaoke.KaraokeApp" />
+    </java>
+  </target>
+
+  <!-- jmf registry -->
+  <target name="jmfregistry" depends="" description="JMF Registry">
+    <java classname="JMFRegistry" fork="yes">
+      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common;${dir.bdj}/lib/nero"/>
+<!--
+      <jvmarg value="-verbose"/>
+-->
+      <classpath>
+        <pathelement location="${dir.bdj}/common/jmf/jmf.jar" />
+        <path refid="project.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
