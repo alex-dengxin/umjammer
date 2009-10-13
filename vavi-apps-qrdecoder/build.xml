@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2004 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- QRCode Decoder                                                         -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	041225	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project default="run" basedir=".">
+
+<!-- プロパティの定義 -->
+
+<property name="dir.build" value="build" />
+
+<!-- クラスパスの定義 -->
+<path id="project.class.path">
+  <pathelement location="${dir.build}" />
+<!--
+  <fileset dir="lib">
+    <include name="*.jar" />
+  </fileset>
+-->
+</path>
+
+<!-- ターゲットの定義 -->
+
+<!-- clean -->
+<target name="clean" description="ビルド環境のクリア">
+  <delete dir="${dir.build}" />
+</target>
+
+<!-- prepare -->
+<target name="prepare" description="準備">
+  <mkdir dir="${dir.build}" />
+</target>
+
+<!-- javac -->
+<target name="compile" depends="prepare" description="コンパイル">
+  <javac debug="on" destdir="${dir.build}" encoding="EUCJIS">
+    <classpath refid="project.class.path" />
+    <include name="**/*.java" />
+    <src path="src" />
+  </javac>
+</target>
+
+<!-- dist -->
+<target name="dist" depends="compile" description="Distribution">
+  <copy todir="${dir.build}" preservelastmodified="true">
+    <fileset dir="src">
+      <include name="**/*.csv" />
+    </fileset>
+  </copy>
+</target>
+
+<!-- run -->
+<target name="run" depends="dist" description="プログラムの実行">
+  <java classname="vavi.util.barcode.qrcode.decoder.QREncoder" fork="yes">
+    <classpath refid="project.class.path" />
+  </java>
+</target>
+
+</project>
+
+<!-- -->
