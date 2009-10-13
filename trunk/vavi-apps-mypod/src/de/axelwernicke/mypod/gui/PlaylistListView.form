@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.1">
+  <Properties>
+    <Property name="cellRenderer" type="javax.swing.ListCellRenderer" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+      <Connection code="new de.axelwernicke.mypod.gui.PlaylistListViewCellRenderer()" type="code"/>
+    </Property>
+  </Properties>
+</Form>
