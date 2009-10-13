@@ -1,0 +1,564 @@
+<!-- Root Element -->
+<!-- if allocate-ids='yes' then symbol ids may be strings and the processor
+     will allocate numeric ids appropriately -->
+<!ELEMENT movie ( background-color, 
+                ( frame | sprite | tag | shape | release | remove | place |
+                  jpeg | bitmap | export | import | quicktime-movie |
+                  text-font | font-info | text | edit-font | edit-field | 
+                  morph | button | actions | sound | button-sound | start-sound |
+                  sound-stream-header | sound-stream-block | jpeg-header |
+                  serial-number | generator | generator-text | generator-command |
+                  generator-font | generator-name-character )*,
+                frame ) >                  
+<!ATTLIST movie 
+    width   CDATA '550'
+    height  CDATA '400'
+    rate    CDATA '12' 
+    version CDATA '5'
+    allocate-ids (yes|no) 'no' >
+
+<!-- A non-streaming sound - codec-specific sound data is base64 encoded -->
+<!ELEMENT sound (#PCDATA) >
+<!ATTLIST sound
+    id           CDATA           #REQUIRED    format       (raw|adpcm|mp3) 'mp3'    rate         (5.5|11|22|44)  '11'    bits         (8|16)          '16'
+    stereo       (yes|no)        'no'    sample-count CDATA           #REQUIRED >
+
+<!ELEMENT button-sound (sound-info?,sound-info?,sound-info?,sound-info?) >
+<!ATTLIST button-sound id CDATA #REQUIRED >
+
+<!-- 'event' attribute is only for button-sound -->
+<!ELEMENT sound-info (envelope-point*) >
+<!ATTLIST sound-info
+    event           (roll-over|roll-out|press|release) #IMPLIED    sound-id        CDATA #REQUIRED    single-instance (yes|no) 'no'    stop-playing    (yes|no) 'no'
+    loop-count      CDATA '1'
+    fade-in         CDATA #IMPLIED
+    fade-out        CDATA #IMPLIED >
+
+<!ELEMENT envelope-point EMPTY >
+<!ATTLIST envelope-point
+    position CDATA #REQUIRED
+    level-0  CDATA '0'
+    level-1  CDATA '0' >
+
+<!ELEMENT start-sound (sound-info) >
+
+<!ELEMENT sound-stream-header EMPTY >
+<!ATTLIST sound-stream-header
+    type          (1|2)           '1' 
+    play-rate     (5.5|11|22|44)  '11'    play-bits     (8|16)          '16'
+    play-stereo   (yes|no)        'no'    stream-format (raw|adpcm|mp3) 'mp3'    stream-rate   (5.5|11|22|44)  '11'    stream-bits   (8|16)          '16'
+    stream-stereo (yes|no)        'no'    average-sample-count CDATA #REQUIRED >
+
+<!-- Codec-specific sound data is base64 encoded -->
+<!ELEMENT sound-stream-block (#PCDATA) >
+
+<!ELEMENT morph (shape,shape) >
+<!ATTLIST morph id  CDATA #REQUIRED >
+
+<!ELEMENT sprite (( frame | tag | remove | place | actions | start-sound |
+                    sound-stream-header | sound-stream-block )*, frame) >
+<!ATTLIST sprite id CDATA #REQUIRED >
+
+<!-- Delimit the end of a frame's contents - optional count will insert
+     the given number of frames (optional label is on the first frame) -->
+<!ELEMENT frame EMPTY >
+<!ATTLIST frame 
+    label CDATA #IMPLIED
+    count CDATA '1' >
+
+<!ELEMENT background-color EMPTY >
+<!ATTLIST background-color
+    red   CDATA '255'
+    green CDATA '255'
+    blue  CDATA '255'>
+
+<!-- Unknown tag type - contents are Base64 encoded binary -->
+<!ELEMENT tag (#PCDATA) >
+<!ATTLIST tag type CDATA #REQUIRED >
+
+<!-- A Font for Text -->
+<!ELEMENT text-font (glyph*) >
+<!ATTLIST text-font id CDATA #REQUIRED >
+
+<!-- A Font for Edit-Fields (and Text in Flash 5) -->
+<!ELEMENT edit-font (kerning-info?,glyph*) >
+<!ATTLIST edit-font 
+    id      CDATA #REQUIRED 
+    flags   NMTOKENS #REQUIRED    name    CDATA #REQUIRED     ascent  CDATA #REQUIRED     descent CDATA #REQUIRED     leading CDATA #REQUIRED >
+
+<!-- Optional Kerning information for an edit-font-->
+<!ELEMENT kerning-info (kerning+) >
+<!ELEMENT kerning EMPTY >
+<!ATTLIST kerning
+    code-1 CDATA #REQUIRED
+    code-2 CDATA #REQUIRED
+    offset CDATA #REQUIRED >
+
+<!-- A Font Glyph - for text and edit fonts. For text-font none of the
+     attributes are valid -->
+<!ELEMENT glyph ( move | line | curve | anticlockwise ) >
+<!ATTLIST glyph
+    code    CDATA #IMPLIED
+    advance CDATA #IMPLIED
+    min-x   CDATA #IMPLIED    min-y   CDATA #IMPLIED    max-x   CDATA #IMPLIED    max-y   CDATA #IMPLIED > 
+
+<!-- Flags the exceptional condition where a glyph has vectors defined in an
+     anticlockwise fashion -->
+<!ELEMENT anticlockwise EMPTY >
+
+<!-- An edit field - color defaults to black -->
+<!ELEMENT edit-field (color?) >
+<!ATTLIST edit-field
+    id           CDATA #REQUIRED
+    font         CDATA #REQUIRED
+    size         CDATA #REQUIRED
+    limit        CDATA '0'
+    left-margin  CDATA '0'
+    right-margin CDATA '0'
+    indentation  CDATA '0'
+    linespacing  CDATA '0'
+    name         CDATA #REQUIRED
+    text         CDATA #IMPLIED
+    align        (center|justify|left|right) 'left'
+    min-x        CDATA '0'    min-y        CDATA '0'    max-x        CDATA #REQUIRED    max-y        CDATA #REQUIRED
+    selectable   (yes|no) 'yes'
+    border       (yes|no) 'yes'
+    html         (yes|no) 'no'
+    system-font  (yes|no) 'no'
+    wordwrap     (yes|no) 'no'
+    multiline    (yes|no) 'no'
+    password     (yes|no) 'no'
+    read-only    (yes|no) 'no' >
+
+<!-- A Quicktime movie - only used when exporting to QT format -->
+<!ELEMENT quicktime-movie EMPTY >
+<!ATTLIST quicktime-movie
+    id   CDATA #REQUIRED
+    name CDATA #REQUIRED >
+
+<!-- JPEG Image.
+    If 'file' is given then element is empty and JPEG data comes from the file.
+    If 'common-header' is 'yes' then header data is in a jpeg-header element.
+    Alpha JPEGs only have the 'id' attribute.
+      -->
+<!ELEMENT jpeg (image?|(image,alpha)) >
+<!ATTLIST jpeg
+    id   CDATA #REQUIRED
+    file CDATA #IMPLIED 
+    common-header (yes|no) 'no' >
+
+<!-- Base64 encoded JPEG image data -->
+<!ELEMENT image (#PCDATA) >
+
+<!-- Base64 encoded, zlib compressed, JPEG alpha channel bitmask -->
+<!ELEMENT alpha (#PCDATA) >
+
+<!-- Base64 encoded JPEG encoding info header common to multiple JPEGs -->
+<!ELEMENT jpeg-header (#PCDATA) >
+
+<!-- A lossless image - either 8 or 16 bit (with color table) or 32 bit 
+     (ARGB quadruples) -->
+<!ELEMENT bitmap (colors?, pixels ) >
+<!ATTLIST bitmap
+    id        CDATA     #REQUIRED 
+    width     CDATA     #REQUIRED
+    height    CDATA     #REQUIRED
+    has-alpha (yes|no)  'no'
+    bits      (8|16|32) '32' >
+
+<!-- A bitmap color lookup table -->
+<!ELEMENT colors (color+) >
+
+<!-- Bitmap pixel data (Base64 encoded) -->
+<!ELEMENT pixels (#PCDATA) >
+
+<!-- Import symbols from a library movie -->
+<!ELEMENT import (symbol+) >
+<!ATTLIST import movie CDATA #REQUIRED >
+
+<!-- Export symbols -->
+<!ELEMENT export (symbol+) >
+
+<!-- An import or export symbol -->
+<!ELEMENT symbol EMPTY >
+<!ATTLIST symbol
+    id   CDATA #REQUIRED
+    name CDATA #REQUIRED >
+
+<!-- Place a symbol at a given depth - or alter the symbol already there -->
+<!ELEMENT place ( matrix?, color-transform?, actions* ) >
+<!ATTLIST place
+    id         CDATA    #IMPLIED
+    alter      (yes|no) 'no'
+    clip-depth CDATA    #IMPLIED
+    ratio      CDATA    #IMPLIED
+    depth      CDATA    #REQUIRED
+    name       CDATA    #IMPLIED  >
+
+<!-- Remove the symbol at a given depth in the movie or sprite timeline -->
+<!ELEMENT remove EMPTY >
+<!ATTLIST remove depth CDATA #REQUIRED >
+
+<!-- Release a defined symbol (to save resources) -->
+<!ELEMENT release EMPTY >
+<!ATTLIST release id CDATA #REQUIRED >
+
+<!-- Protect a movie from import - optional password is Base64 encoded -->
+<!ELEMENT protect EMPTY >
+<!ATTLIST protect password CDATA #IMPLIED >
+
+<!-- Allow a movie to be debugged - optional password is Base64 encoded -->
+<!ELEMENT enable-debug EMPTY >
+<!ATTLIST enable-debug password CDATA #IMPLIED >
+
+<!-- Define a shape -->
+<!ELEMENT shape ( move | line | curve | set-primary-fill | set-secondary-fill |
+                  set-line-style | color-fill | gradient-fill | image-fill |
+                  line-style )* >
+<!-- id and has-alpha are not valid for a shape within a morph -->
+<!ATTLIST shape
+    id        CDATA    #REQUIRED
+    has-alpha (yes|no) 'no'
+    min-x     CDATA    #REQUIRED
+    min-y     CDATA    #REQUIRED
+    max-x     CDATA    #REQUIRED
+    max-y     CDATA    #REQUIRED >
+
+<!-- A line vector - relative to the previous point -->
+<!ELEMENT line EMPTY >
+<!ATTLIST line
+    dx  CDATA '0.0'
+    dy  CDATA '0.0' > 
+
+<!-- A curve vector - cx and cy are relative to the previous point 
+                      and dx, dy are relative to cx, cy -->
+<!ELEMENT curve EMPTY >
+<!ATTLIST curve
+    cx  CDATA '0.0'
+    cy  CDATA '0.0'
+    dx  CDATA '0.0'
+    dy  CDATA '0.0' > 
+
+<!-- A move vector - coords are absolute -->
+<!ELEMENT move EMPTY >
+<!ATTLIST move 
+    x  CDATA '0.0'
+    y  CDATA '0.0' > 
+    
+<!-- Set the primary fill -->
+<!ELEMENT set-primary-fill EMPTY >
+<!ATTLIST set-primary-fill index CDATA '1' >
+    
+<!-- Set the secondary fill -->
+<!ELEMENT set-secondary-fill EMPTY >
+<!ATTLIST set-secondary-fill index CDATA '1' >
+
+<!-- Set the line style -->
+<!ELEMENT set-line-style EMPTY >
+<!ATTLIST set-line-style index CDATA '1' >    
+    
+<!-- Define a single color fill style - default color is white -->
+<!ELEMENT color-fill (color) >
+    
+<!-- Define a line style - default color is black -->
+<!ELEMENT line-style (color?) >    
+<!ATTLIST line-style width CDATA '1.0' >
+    
+<!-- Define a gradient fill that has up to 8 gradient control steps -->
+<!ELEMENT gradient-fill ( matrix, gradient ) >
+<!ATTLIST gradient-fill radial (yes|no) 'no' >
+ 
+<!-- A color gradient - may have from 1 to 8 steps -->   
+<!ELEMENT gradient (step+) >
+
+<!-- A control step within a color gradient - ratio is from 0 to 255 -->
+<!ELEMENT step (color) >
+<!ATTLIST step ratio CDATA #REQUIRED >
+    
+<!ELEMENT image-fill ( matrix ) >
+<!ATTLIST image-fill 
+    image-id CDATA    #REQUIRED
+    clipped  (yes|no) 'no' >
+    
+<!-- A color - with optional alpha -->
+<!ELEMENT color EMPTY >
+<!ATTLIST color
+    red   CDATA '0'
+    green CDATA '0'
+    blue  CDATA '0'
+    alpha CDATA '255' >
+    
+<!-- A transformation matrix -->
+<!ELEMENT matrix EMPTY >
+<!ATTLIST matrix
+    skew0   CDATA '0.0'
+    skew1   CDATA '0.0'
+    scale-x CDATA '1.0'
+    scale-y CDATA '1.0'
+    x       CDATA '0.0'
+    y       CDATA '0.0' >
+    
+<!-- A color transform - multiplication applies before addition -->
+<!ELEMENT color-transform EMPTY >
+<!ATTLIST color-transform
+    add-red    CDATA '0'
+    add-green  CDATA '0'
+    add-blue   CDATA '0'
+    add-alpha  CDATA '0'
+    mult-red   CDATA '1.0'
+    mult-green CDATA '1.0'
+    mult-blue  CDATA '1.0'
+    mult-alpha CDATA '1.0' >
+    
+<!-- A text symbol -->
+<!ELEMENT text ( matrix, ( set-font | color | set-x | set-y | char )* ) >
+<!ATTLIST text
+    id        CDATA    #REQUIRED 
+    has-alpha (yes|no) 'no'    min-x     CDATA    '0.0'     min-y     CDATA    '0.0'    max-x     CDATA    #REQUIRED     max-y     CDATA    #REQUIRED >    
+<!-- Set the font for subsequent chars in text -->
+<!ELEMENT set-font EMPTY >
+<!ATTLIST set-font
+    id   CDATA #REQUIRED
+    size CDATA #REQUIRED >
+
+<!-- Set the x offset for subsequent chars in text -->
+<!ELEMENT set-x EMPTY >
+<!ATTLIST set-x x CDATA #REQUIRED >
+
+<!-- Set the y offset for subsequent chars in text -->
+<!ELEMENT set-y EMPTY >
+<!ATTLIST set-y y CDATA #REQUIRED >
+
+<!-- A character in the text -->
+<!ELEMENT char EMPTY >
+<!ATTLIST char 
+    glyph-index CDATA #REQUIRED 
+    advance     CDATA #REQUIRED >
+
+<!-- Additional info for a text-font - not required -->
+<!ELEMENT font-info (code+) >
+<!ATTLIST font-info 
+    id    CDATA    #REQUIRED
+    name  CDATA    #REQUIRED
+    flags NMTOKENS #REQUIRED >
+    
+<!-- The character code for a glyph in a text-font -->
+<!ELEMENT code EMPTY >
+<!ATTLIST code code CDATA #REQUIRED >
+
+<!-- A button (Button and Button2) -->
+<!ELEMENT button (layer+,actions+) >
+<!ATTLIST button
+    id   CDATA #REQUIRED
+    menu (yes|no) 'no' >
+    
+<!-- button layer - 'id' is a symbol id, 
+                    'for' is one or more of "hit", "over", "up", "down" -->    
+<!ELEMENT layer (matrix?,color-transform?) >
+<!ATTLIST layer
+    id    CDATA    #REQUIRED
+    depth CDATA    #REQUIRED
+    for   NMTOKENS 'hit over up down' >
+
+<!-- Color Transform for legacy buttons (Tag defineButton)
+     NOTE: this element is ignored by the XML to SWF processor as it writes
+           all buttons using Tag defineButton2 -->
+<!ELEMENT button-cxform (color-transform) >
+<!ATTLIST button-cxform id CDATA #REQUIRED >
+
+<!--Generator Tags - Serial Number is text - others are base64 encoded -->
+<!ELEMENT serial-number (#PCDATA) ><!ELEMENT generator (#PCDATA) ><!ELEMENT generator-text (#PCDATA) ><!ELEMENT generator-command (#PCDATA) ><!ELEMENT generator-font (#PCDATA) ><!ELEMENT generator-name-character (#PCDATA) >
+
+<!-- Child elements may only be action codes -->
+<!ELEMENT actions ( unknown | jump-label | comment | goto-frame | get-url | next-frame | 
+    prev-frame | play | stop | toggle-quality | stop-sounds | wait-for-frame | 
+    set-target | push | pop | add | subtract | multiply | divide | equals | 
+    less-than | and | or | not | string-equals | string-length | concat | 
+    substring | string-less-than | mutlibyte-string-length | multibyte-substring | 
+    to-integer | char-to-ascii | ascii-to-char | mutlibyte-char-to-ascii | 
+    ascii-to-multibyte-char | call | get-variable | set-variable | 
+    get-property | set-property | clone-sprite | remove-sprite | start-drag | 
+    end-drag | trace | get-time | random-number | call-function | call-method | 
+    define-local-value | define-local | delete-property | delete-thread-vars | 
+    enumerate | typed-equals | get-member | init-array | init-object | new-method | 
+    new-object | set-member | get-target-path | to-number | to-string | type-of | 
+    typed-add | typed-less-than | modulo | bit-and | bit-or | bit-xor | shift-left | 
+    shift-right | shift-right-unsigned | decrement | increment | duplicate | return | 
+    swap | function | with | store | jump | if | lookup-table )* >
+
+<!-- Conditions are for Clip-Actions and Button Actions -->
+<!-- Char-code is the key code for Button Actions -->
+<!ATTLIST actions
+    conditions NMTOKENS #IMPLIED
+    char-code  CDATA    #IMPLIED >
+
+<!-- ================ ACTION CODES FOLLOW =================== -->    
+
+<!-- Unknown action - content is base64 encoded -->
+<!ELEMENT unknown (#PCDATA) >
+<!ATTLIST unknown code CDATA #REQUIRED>
+
+<!ELEMENT jump-label EMPTY >
+<!ATTLIST jump-label label CDATA #REQUIRED >
+
+<!ELEMENT comment (#PCDATA) > 
+
+<!-- Only one of the attributes is allowed - 
+     if number or label is given then play is ignored -->
+<!ELEMENT goto-frame EMPTY >
+<!ATTLIST goto-frame
+    number CDATA    #IMPLIED
+    label  CDATA    #IMPLIED
+    play   (yes|no) 'yes' >
+
+<!-- url and target must both be supplied exclusively - or not at all.
+     target-sprite and load-vars-into are mutually exclusive -->
+<!ELEMENT get-url EMPTY >
+<!ATTLIST get-url
+    url            CDATA  #IMPLIED
+    target         CDATA  #IMPLIED
+    send-vars      (none|post|get) 'none'
+    target-sprite  (yes|no)        'no'
+    load-vars-into (level|sprite)  #IMPLIED >
+
+<!ELEMENT next-frame EMPTY >                                                         
+<!ELEMENT prev-frame EMPTY >                                                         
+<!ELEMENT play EMPTY >                                                         
+<!ELEMENT stop EMPTY >                                                         
+<!ELEMENT toggle-quality EMPTY >                                                         
+<!ELEMENT stop-sounds EMPTY >
+
+<!-- if number is not given then the stack-based action is used -->
+<!ELEMENT wait-for-frame EMPTY >
+<!ATTLIST wait-for-frame
+    jump-label CDATA #REQUIRED
+    number     CDATA #IMPLIED >
+
+<!-- if target is not given then the stack-based action is used -->
+<!ELEMENT set-target EMPTY >
+<!ATTLIST set-target target CDATA #IMPLIED >
+
+<!-- One attribute, only, is required - if none then "push null" is assumed -->
+<!ELEMENT push EMPTY >
+<!ATTLIST push
+    string   CDATA #IMPLIED
+    float    CDATA #IMPLIED
+    double   CDATA #IMPLIED
+    register CDATA #IMPLIED
+    boolean  (true|false|yes|no) #IMPLIED
+    int      CDATA #IMPLIED
+    lookup   CDATA #IMPLIED >
+
+<!ELEMENT pop   EMPTY >                                                         
+<!ELEMENT add   EMPTY >                                                         
+<!ELEMENT subtract   EMPTY >                                                         
+<!ELEMENT multiply   EMPTY >                                                         
+<!ELEMENT divide   EMPTY >                                                         
+<!ELEMENT equals   EMPTY >                                                         
+<!ELEMENT less-than   EMPTY >                                                         
+<!ELEMENT and   EMPTY >                                                         
+<!ELEMENT or   EMPTY >                                                         
+<!ELEMENT not   EMPTY >                                                         
+<!ELEMENT string-equals   EMPTY >                                                         
+<!ELEMENT string-length   EMPTY >                                                         
+<!ELEMENT concat   EMPTY >                                                         
+<!ELEMENT substring   EMPTY >                                                         
+<!ELEMENT string-less-than   EMPTY >                                                         
+<!ELEMENT mutlibyte-string-length   EMPTY >                                                         
+<!ELEMENT multibyte-substring   EMPTY >                                                         
+<!ELEMENT to-integer   EMPTY >                                                         
+<!ELEMENT char-to-ascii   EMPTY >                                                         
+<!ELEMENT ascii-to-char   EMPTY >                                                         
+<!ELEMENT mutlibyte-char-to-ascii   EMPTY >                                                         
+<!ELEMENT ascii-to-multibyte-char   EMPTY >                                                                                                                
+<!ELEMENT call   EMPTY >                                                         
+<!ELEMENT get-variable   EMPTY >                                                         
+<!ELEMENT set-variable   EMPTY >
+<!ELEMENT get-property   EMPTY >                                                         
+<!ELEMENT set-property   EMPTY >
+<!ELEMENT clone-sprite   EMPTY >                                                         
+<!ELEMENT remove-sprite   EMPTY >                                                         
+<!ELEMENT start-drag   EMPTY >                                                         
+<!ELEMENT end-drag   EMPTY >                                                                                                                
+<!ELEMENT trace   EMPTY >                                                         
+<!ELEMENT get-time   EMPTY >                                                         
+<!ELEMENT random-number   EMPTY >                                                         
+<!ELEMENT call-function   EMPTY >                                                         
+<!ELEMENT call-method   EMPTY >                                                                                                                 
+<!ELEMENT define-local-value   EMPTY >                                                         
+<!ELEMENT define-local   EMPTY >                                                         
+<!ELEMENT delete-property   EMPTY >                                                         
+<!ELEMENT delete-thread-vars   EMPTY >                                                         
+<!ELEMENT enumerate   EMPTY >                                                         
+<!ELEMENT typed-equals   EMPTY >                                                         
+<!ELEMENT get-member   EMPTY >                                                         
+<!ELEMENT init-array   EMPTY >                                                         
+<!ELEMENT init-object   EMPTY >                                                         
+<!ELEMENT new-method   EMPTY >                                                         
+<!ELEMENT new-object   EMPTY >                                                         
+<!ELEMENT set-member   EMPTY >                                                         
+<!ELEMENT get-target-path   EMPTY >                                                                                                                 
+<!ELEMENT to-number   EMPTY >                                                         
+<!ELEMENT to-string   EMPTY >                                                         
+<!ELEMENT type-of   EMPTY >                                                         
+<!ELEMENT typed-add   EMPTY >                                                         
+<!ELEMENT typed-less-than   EMPTY >                                                         
+<!ELEMENT modulo   EMPTY >                                                         
+<!ELEMENT bit-and   EMPTY >                                                         
+<!ELEMENT bit-or   EMPTY >                                                         
+<!ELEMENT bit-xor   EMPTY >                                                         
+<!ELEMENT shift-left   EMPTY >                                                         
+<!ELEMENT shift-right   EMPTY >                                                         
+<!ELEMENT shift-right-unsigned   EMPTY >                                                         
+<!ELEMENT decrement   EMPTY >                                                         
+<!ELEMENT increment   EMPTY >                                                         
+<!ELEMENT duplicate   EMPTY >                                                         
+<!ELEMENT return   EMPTY >                                                         
+<!ELEMENT swap   EMPTY > 
+
+<!ELEMENT function ( unknown | jump-label | comment | goto-frame | get-url | next-frame | 
+    prev-frame | play | stop | toggle-quality | stop-sounds | wait-for-frame | 
+    set-target | push | pop | add | subtract | multiply | divide | equals | 
+    less-than | and | or | not | string-equals | string-length | concat | 
+    substring | string-less-than | mutlibyte-string-length | multibyte-substring | 
+    to-integer | char-to-ascii | ascii-to-char | mutlibyte-char-to-ascii | 
+    ascii-to-multibyte-char | call | get-variable | set-variable | 
+    get-property | set-property | clone-sprite | remove-sprite | start-drag | 
+    end-drag | trace | get-time | random-number | call-function | call-method | 
+    define-local-value | define-local | delete-property | delete-thread-vars | 
+    enumerate | typed-equals | get-member | init-array | init-object | new-method | 
+    new-object | set-member | get-target-path | to-number | to-string | type-of | 
+    typed-add | typed-less-than | modulo | bit-and | bit-or | bit-xor | shift-left | 
+    shift-right | shift-right-unsigned | decrement | increment | duplicate | return | 
+    swap | function | with | store | jump | if | lookup-table )* >  
+<!ATTLIST function 
+    name   NMTOKEN  #IMPLIED
+    params NMTOKENS #IMPLIED >
+
+<!ELEMENT with ( unknown | jump-label | comment | goto-frame | get-url | next-frame | 
+    prev-frame | play | stop | toggle-quality | stop-sounds | wait-for-frame | 
+    set-target | push | pop | add | subtract | multiply | divide | equals | 
+    less-than | and | or | not | string-equals | string-length | concat | 
+    substring | string-less-than | mutlibyte-string-length | multibyte-substring | 
+    to-integer | char-to-ascii | ascii-to-char | mutlibyte-char-to-ascii | 
+    ascii-to-multibyte-char | call | get-variable | set-variable | 
+    get-property | set-property | clone-sprite | remove-sprite | start-drag | 
+    end-drag | trace | get-time | random-number | call-function | call-method | 
+    define-local-value | define-local | delete-property | delete-thread-vars | 
+    enumerate | typed-equals | get-member | init-array | init-object | new-method | 
+    new-object | set-member | get-target-path | to-number | to-string | type-of | 
+    typed-add | typed-less-than | modulo | bit-and | bit-or | bit-xor | shift-left | 
+    shift-right | shift-right-unsigned | decrement | increment | duplicate | return | 
+    swap | function | with | store | jump | if )* > 
+
+<!ELEMENT store EMPTY > 
+<!ATTLIST store register CDATA #REQUIRED >
+
+<!ELEMENT jump EMPTY >
+<!ATTLIST jump jump-label CDATA #REQUIRED >
+
+<!ELEMENT if EMPTY >
+<!ATTLIST if jump-label CDATA #REQUIRED >
+
+<!ELEMENT lookup-table (value+) >
+<!ELEMENT value (#PCDATA) >    
