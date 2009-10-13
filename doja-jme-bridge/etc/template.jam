@@ -1,0 +1,10 @@
+PackageURL=@appli.url@
+AppSize=@appli.size@
+AppName=@appli.name@
+AppVer=@appli.version@
+AppParam=@appli.param@
+AppClass=@appli.class@
+SPsize=30960
+UseNetwork=http
+UseBrowser=launch
+LastModified=@appli.lastmodified@
