@@ -2,4 +2,9 @@
 
 = My Web Pages =
 
+== Other Repositories ==
   * https://sourceforge.net/projects/javamobileaudio/
+
+== Other Sites ==
+
+  * http://sites.google.com/site/umjammer/Home/tips2
