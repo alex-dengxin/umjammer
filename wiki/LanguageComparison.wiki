@@ -24,7 +24,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 ||BD-J (Emulator)||[http://www.xletview.org/ xletview]||●|| ||
 ||BD-J ([http://www.jp.playstation.com/ps3/ PS3])||< FW v2.50||●||結構簡単に動いた！||
 ||[https://lwuit.dev.java.net/ lwuit]|| || ||いったい幾つ UI 作ればいいんだ...WORA は？||
-||[http://www.nttdocomo.co.jp/service/imode/make/content/iappli/technical_data/star/index.html STAR]|| || ||
+||[http://www.nttdocomo.co.jp/service/imode/make/content/iappli/technical_data/star/index.html STAR]|| || || ||
 ||Java (iPhone)||[http://svn.saurik.com/repos/menes/trunk/jocstrap/README jocstrap]|| || ||
 || || || || ||
 ||ActionScript ([http://www.adobe.com/products/flex/flexdownloads/ FLEX]/[http://www.adobe.com/jp/products/air/tools/sdk/ AIR])||3.0||×||Thread モデルを Event モデルに変更する必要が...||
