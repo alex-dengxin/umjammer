@@ -69,7 +69,12 @@ GCA と 7ZIP の為しゃーない．
 
 ==ぷれびゅー==
 
-http://lh3.ggpht.com/_JchUHfE3WF4/SmmqJDjZbTI/AAAAAAAAAFY/nneDIJEganE/s144/jwinzip.png
+http://lh3.ggpht.com/_JchUHfE3WF4/SmmqJDjZbTI/AAAAAAAAAFY/nneDIJEganE/s288/jwinzip.png
 わかりづらい...
+
+== コード ==
+
+http://code.google.com/p/vavi-util-archive/
+
 ----
 2003/02/12 
