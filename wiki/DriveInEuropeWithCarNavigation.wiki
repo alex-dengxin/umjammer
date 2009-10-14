@@ -4,7 +4,7 @@
 ----
 みなさんこんにちは，私来月(2003/3/15 執筆)から一ヶ月間ヨーロッパへ旅行に行きます．レンタカーを借りて旅しようと思っています．SONY のハンディ GPS を持っているので旅の軌跡をこいつに記録させようかと思い立ちました．ついでにカーナビとして使えないかと検討し始めたらハマリました．あと一ヶ月もないのに，レンタカーもまだ予約してないのに，ソフトもまだぜんぜん出来上がってないのに，大丈夫か？ 
 
-無事帰ってまいりました(2003/05/05)．結果だけなら[http://code.google.com/p/umjammer/wiki/DriveInEuropeWithCarNavigation#結果報告 こちらへ]．ソフトウェアは[http://umjammer.googlecode.com/svn/trunk/vavi-apps-gps/ こちらへ]． 
+無事帰ってまいりました(2003/05/05)．結果だけなら[http://code.google.com/p/umjammer/wiki/DriveInEuropeWithCarNavigation#結果報告 こちらへ]．ソフトウェアは[http://code.google.com/p/umjammer/wiki/DriveInEuropeWithCarNavigation#ソフトウェア こちらへ]． 
 
 ==Microsoft Autoroute==
 ヨーロッパでの PC カーナビの定番は [http://www.microsoft.com/uk/homepc/autoroute/ Microsoft AutoRoute] みたいです(ホントか？あんまし調べてない．．．)． 
@@ -103,7 +103,7 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
 
 あと USB 用の Java API を組まなければいけません．[http://hccweb1.bai.ne.jp/~hcj64001/cgi-bin/fswiki/wiki.cgi?page=%C5%FD%B9%E7%A5%A2%A1%BC%A5%AB%A5%A4%A5%D0%A5%D7%A5%ED%A5%B8%A5%A7%A5%AF%A5%C8 ここ]で JNI やっといてよかった．とってもスムーズに JNI が組めるようになってる俺．暇があったら [http://javax-usb.sourceforge.net/ JSR80] の Win32 実装にしようと思ったのだが，API が煩雑すぎだし残り半月仕事しながらじゃ無理なので断念． 
 
-とりあえずその場しのぎの Java USB API ... ダウンロード
+とりあえずその場しのぎの [http://code.google.com/p/umjammer/source/browse/trunk/vavi-apps-gps/src/main/java/vavi/uusbd/ Java USB API]
 
 ==HGR -> NMEA フォーマットコンバータ==
 もちろん俺は Java しかできないので Java で組みます． 
@@ -190,7 +190,8 @@ VID を 054c (ソニー) ，PID を 0040 （HGR3) にしてインストールす
   * [http://www.brianpoe.com/comfoolery/ Comfoolery!] ... これもか？ 
 
 ==ソフトウェア==
-準備中 
+
+http://umjammer.googlecode.com/svn/trunk/vavi-apps-gps/ 
 
 ----
 
