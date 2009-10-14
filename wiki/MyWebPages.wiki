@@ -3,8 +3,9 @@
 = My Web Pages =
 
 == Other Repositories ==
-  * https://sourceforge.net/projects/javamobileaudio/
+  * [https://sourceforge.net/projects/javamobileaudio/ Java Mobile Audio Library@Sourceforge]
 
 == Other Sites ==
 
-  * http://sites.google.com/site/umjammer/Home/tips2
+  * [http://sites.google.com/site/umjammer/Home/tips2 Tips@Sites]
+  * [http://vavivavi.blogspot.com/ Blog@Blogger]
