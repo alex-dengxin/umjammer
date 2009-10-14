@@ -47,7 +47,12 @@ System Software Update v2.50 以降 AVCHD がディスク以外から？再生�
    * split → StringTalknizer
 
   * お約束の LodeRunner
-{{ref_image 2008082323530000.png }}
+
+http://lh5.ggpht.com/_JchUHfE3WF4/SnAFa-21XII/AAAAAAAAAGU/eepnqPx_7vk/s288/BD-J.2008082323530000.png
+
+  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-appleii-bdj Apple II Emulator]
+  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-apps-mona-bdj 2ch Browser]
+  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Tetris]
 
 === xletview===
 
