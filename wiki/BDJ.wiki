@@ -50,8 +50,8 @@ System Software Update v2.50 以降 AVCHD がディスク以外から？再生�
 
 http://lh5.ggpht.com/_JchUHfE3WF4/SnAFa-21XII/AAAAAAAAAGU/eepnqPx_7vk/s288/BD-J.2008082323530000.png
 
-  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-appleii-bdj Apple II Emulator]
-  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-apps-mona-bdj 2ch Browser]
+  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-appleii-bdj Apple II Emulator] - [http://vavivavi.blogspot.com/2008/09/bd-j-appleii-emulator-bd-j-nes-apple-ii.html My Blog] [http://www.ps3news.com/forums/playstation-3-news/playstation-3-bd-j-apple-ii-emulator-released-100986.html PS3 NEWS]
+  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-apps-mona-bdj 2ch Browser] - [http://vavivavi.blogspot.com/2008/09/blog-ps3-homebrew-bd-j-2ch-ps3-bd-j-2ch.html My Blog]
   * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Tetris]
 
 === xletview===
