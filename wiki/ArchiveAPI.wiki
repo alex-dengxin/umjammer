@@ -68,6 +68,8 @@ GCA と 7ZIP の為しゃーない．
 めんどーなんで誰か本気で Java のライブラリ作りません？もっと言うと，圧縮形式乱立しすぎ．このブロードバンド時代に高々数パーセントちっちゃくなってうれしいか(画像圧縮はまた別だと思うけど)？アーカイブファイル形式とか統一して圧縮メソッドのみで勝負すりゃいいのにね． 
 
 ==ぷれびゅー==
-[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/text/jwinzip.png わかりづらい．．．]
+
+http://lh3.ggpht.com/_JchUHfE3WF4/SmmqJDjZbTI/AAAAAAAAAFY/nneDIJEganE/s144/jwinzip.png
+わかりづらい...
 ----
 2003/02/12 
