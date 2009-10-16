@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2007 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- Restlet                                                                -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	070224	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="umjammer_00" default="run" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build" />
+  <property name="dir.lib" value="lib" />
+  <property name="dir.src" value="src/main/java" />
+  <property name="dir.install" value="target" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="${dir.lib}">
+      <include name="**/*.jar" />
+      <exclude name="vavi.jar" />
+    </fileset>
+    <fileset dir="${sen.home}/lib">
+      <include name="**/*.jar" />
+    </fileset>
+    <pathelement location="${vavi.dir}" />
+    <pathelement location="${support1.dir}/src" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete dir="${dir.build}" />
+    <delete dir="${dir.install}" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+    <mkdir dir="${dir.install}" />
+  </target>
+
+  <!-- javac support -->
+  <target name="compile.support" description="コンパイル support">
+    <ant dir="${vavi.dir}" target="compile" />
+    <ant dir="${support1.dir}" target="compile" />
+    <ant dir="${support2.dir}" target="compile" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル"> <!-- ,compile.support -->
+    <javac debug="on"
+           destdir="${dir.build}"
+           target="1.5">
+      <classpath refid="project.class.path" />
+      <src path="${dir.src}" />
+    </javac>
+    <copy todir="${dir.build}">
+      <fileset dir="src/main/resources">
+        <include name="*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="packaging">
+    <jar jarfile="lib/vavi.jar">
+      <fileset dir="${dir.build}">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="${vavi.dir}">
+        <include name="vavi/util/CharConverterJa*.class" />
+        <include name="vavi/util/Debug*.class" />
+        <include name="vavi/util/StringUtil*.class" />
+        <include name="vavi/util/StringUtil.properties" />
+        <include name="vavi/util/logging/*" />
+      </fileset>
+      <fileset dir="${support1.dir}/src">
+        <include name="vavi/awt/image/resample/AwtResampleOp*.class" />
+      </fileset>
+      <fileset dir="${support2.dir}/build/WEB-INF/classes">
+        <include name="vavix/enterprise/filter/SetCharacterEncodingFilter.class" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- deploy -->
+  <target name="install" depends="" description="install">
+    <copy todir="${dir.install}" >
+      <fileset dir="src/main/webapp">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <copy todir="${dir.install}/WEB-INF/lib" >
+      <fileset dir="lib">
+        <include name="vavi.jar" />
+      </fileset>
+      <fileset dir="lib/castor">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="lib/restlet">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="${sen.home}/lib">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- runtime class path -->
+  <path id="run.class.path">
+    <pathelement location="src/main/resources" />
+    <pathelement location="${dir.build}" />
+    <path refid="project.class.path" />
+    <fileset dir="${ant.home}/lib">  <!-- for castor/xerces -->
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- xsd2java -->
+  <target name="xsd2java">
+<!--
+    <xsd2castor dir="${dir.src}"
+                package="vavi.apps.umjammer00.castor1"
+                url="http://api.map.yahoo.co.jp/LocalSearchService/V1/LocalSearchResponse.xsd" />
+    <xsd2castor dir="${dir.src}"
+                package="vavi.apps.umjammer00.castor4"
+                url="http://api.search.yahoo.co.jp/WebSearchService/V1/WebSearchResponse.xsd" />
+    <xsd2jaxb   dir="${dir.src}"
+                package="vavi.apps.umjammer00.jaxb1"
+                url="http://api.search.yahoo.co.jp/WebSearchService/V1/WebSearchResponse.xsd" />
+    <xsd2jaxb   dir="${dir.src}"
+                package="vavi.apps.umjammer00.jaxb2"
+                url="http://api.search.yahoo.co.jp/ImageSearchService/V1/ImageSearchResponse.xsd" />
+    <xsd2castor dir="${dir.src}"
+                package="vavi.apps.umjammer00.castor7"
+                url="http://api.jlp.yahoo.co.jp/MAService/V1/parseResponse.xsd" />
+-->
+    <xsd2castor dir="${dir.src}"
+                package="vavi.apps.umjammer00.castor2"
+                url="file:tmp/rakuten-response.xsd" />
+<!--
+-->
+  </target>
+
+  <!-- rakuten xml -->
+  <target name="xml.rakuten" depends="compile">
+    <java classname="vavi.apps.umjammer00.TestRakuten" fork="yes"
+          output="${rakuten.tmp.xml}">
+      <classpath>
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="${rws.appid}"/>
+    </java>
+  </target>
+
+  <!-- rakuten xml2xsd -->
+  <target name="xml2xsd.rakuten" depends="compile">
+    <xml2xsd in="${rakuten.tmp.xml}"
+             out="tmp/rakuten-response.xsd" />
+  </target>
+
+  <!-- xsd2jaxb -->
+  <macrodef name="xsd2jaxb" description="works fine">
+    <attribute name="package" />
+    <attribute name="url" />
+    <attribute name="dir" />
+    <sequential>
+      <exec executable="${java.home}\..\bin\xjc">
+        <arg line="-p @{package}"/>
+        <arg line="-d @{dir}"/>
+        <arg line="@{url}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- xsd2xmlbeans -->
+  <macrodef name="xsd2xmlbeans"
+            description="Generate Java source files from XSD.">
+    <attribute name="dir" /> 
+    <attribute name="package" /> <!-- TODO -->
+    <attribute name="url" /> 
+    <sequential>
+      <taskdef name="xmlbean"
+               classname="org.apache.xmlbeans.impl.tool.XMLBean"
+               classpathref="run.class.path" />
+      <xmlbean schema="@{url}"
+               download="true"
+               srconly="true"
+               classgendir="@{dir}"
+               classpathref="project.class.path" />
+    </sequential>
+  </macrodef>
+
+  <!-- xsd2jibx -->
+  <macrodef name="xsd2jibx"
+            description="Generate Java source files from XSD.">
+    <attribute name="dir" /> 
+    <attribute name="package" />
+    <attribute name="url" /> 
+    <sequential>
+      <get src="@{url}" dest="tmp/@{package}.xsd" />
+      <java classname="org.jibx.xsd2jibx.Generate" fork="true">
+        <classpath refid="run.class.path" />
+        <arg line="-d @{dir}"/>
+        <arg line="-n @{package}"/>
+        <arg value="tmp/@{package}.xsd"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- xsd2castor -->
+  <macrodef name="xsd2castor"
+            description="Generate Java source files from XSD.">
+    <attribute name="dir" /> 
+    <attribute name="package" />
+    <attribute name="url" /> 
+    <sequential>
+      <taskdef name="castor-srcgen"
+               classname="org.castor.anttask.CastorCodeGenTask"
+               classpathref="run.class.path" />
+      <get src="@{url}" dest="tmp/@{package}.xsd" />
+      <property name="packageDir" value="@{package}" />
+      <script manager="javax" language="javascript"> <![CDATA[
+        packageDir = project.getProperty("packageDir");
+        project.setProperty("packageDir", packageDir.replace(".", "/"));
+      ]]></script>
+      <mkdir dir="${packageDir}" />
+      <delete dir="${packageDir}" includes="**/*.java" />
+      <castor-srcgen file="tmp/@{package}.xsd"
+                     todir="@{dir}"
+                     package="@{package}"
+                     types="j2"
+                     warnings="true" />
+    </sequential>
+  </macrodef>
+
+  <!-- xml2xsd -->
+  <macrodef name="xml2xsd"
+            description="Generate XML Schema from XML Instance.">
+    <attribute name="in" /> 
+    <attribute name="out" />
+    <sequential>
+      <java classname="org.exolab.castor.xml.schema.util.XMLInstance2Schema" fork="true">
+        <classpath>
+          <pathelement location="${dir.build}" />
+          <path refid="run.class.path" />
+          <fileset dir="${ant.home}/lib">
+            <include name="*.jar" />
+          </fileset>
+        </classpath>
+        <arg value="@{in}"/>
+        <arg value="@{out}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <!-- run -->
+  <target name="run" depends="compile" description="プログラムの実行 Yahoo! Japan Local Search">
+    <java classname="vavi.apps.umjammer00.Test" fork="yes">
+      <jvmarg value="-Dyjws.appid=${yjws.appid}"/>
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="${yjws.address}"/>
+    </java>
+  </target>
+
+  <!-- t2 -->
+  <target name="t2" depends="compile" description="プログラムの実行 Rakuten VacantHotelSearch">
+    <java classname="vavi.apps.umjammer00.Test2" fork="yes">
+      <jvmarg value="-Drws.appid=${rws.appid}"/>
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <arg value="${rws.hotelNo}"/>
+    </java>
+  </target>
+
+  <!-- t3 -->
+  <target name="t3" depends="compile" description="プログラムの実行 YouTube ListByTag">
+    <java classname="vavi.apps.umjammer00.Test3" fork="yes">
+      <jvmarg value="-Drws.appid=${youtube.appid}"/>
+      <classpath refid="run.class.path" />
+      <arg value="${youtube.tag}"/>
+    </java>
+  </target>
+
+  <!-- t4 -->
+  <target name="t4" depends="compile" description="プログラムの実行 Yahoo! Japan Search (Castor)">
+    <java classname="vavi.apps.umjammer00.Test4" fork="yes">
+      <jvmarg value="-Dsen.home=${sen.home}"/>
+      <jvmarg value="-Dyjws.appid=${yjws.appid}"/>
+      <classpath refid="run.class.path" />
+      <arg value="${yjws.query}"/>
+    </java>
+  </target>
+
+  <!-- t5 -->
+  <target name="t5" depends="compile" description="プログラムの実行 Yahoo! Japan Search (JAXB)">
+    <java classname="vavi.apps.umjammer00.Test5" fork="yes">
+      <jvmarg value="-Dsen.home=${sen.home}"/>
+      <jvmarg value="-Dyjws.appid=${yjws.appid}"/>
+      <classpath refid="run.class.path" />
+      <arg value="${yjws.query}"/>
+    </java>
+  </target>
+
+  <!-- t6 -->
+  <target name="t6" depends="compile" description="プログラムの実行 Yahoo! Japan Image Search (JAXB)">
+    <java classname="vavi.apps.umjammer00.Test6" fork="yes">
+      <jvmarg value="-Dsen.home=${sen.home}"/>
+      <jvmarg value="-Dyjws.appid=${yjws.appid}"/>
+      <classpath refid="run.class.path" />
+      <arg value="${yjws.query}"/>
+    </java>
+  </target>
+
+  <!-- t7 -->
+  <target name="t7" depends="compile" description="プログラムの実行 Yahoo! Japan Parse (Castor)">
+    <java classname="vavi.apps.umjammer00.Test7" fork="yes">
+      <jvmarg value="-Dyjws.appid=${yjws.appid}"/>
+      <classpath refid="run.class.path" />
+      <arg value="${yjws.sentence}"/>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
