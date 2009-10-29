@@ -37,7 +37,7 @@
 
 === はじめてのあんどろいど===
 
-  * LodeRunner (オリジナル右)を移植してみた(左下)
+  * [http://umjammer.googlecode.com/svn/trunk/x-lr/index.html LodeRunner (オリジナル右)]を移植してみた(左下)
   * ついでに iαppli にも移植してみた(左上)
    * DOJA は android に比べると J2SE に近いね
 
