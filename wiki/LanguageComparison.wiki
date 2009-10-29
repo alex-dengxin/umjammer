@@ -9,7 +9,7 @@ Java 使いが時間をかけずにプログラムを他言語に移植する方
 ||Assembler||i286 for PC-9801||●||オリジナルをディスアセンブルしたもの||
 ||C||PC-9801 MS-DOS MSVC||●||Assembler コードからハンドディスコンパイルしたもの||
 || || || || ||
-||[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/lr/index.html Java SE]||6  w/ JApplet||●||C から移植、以下のリファレンス||
+||[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/lr/index.html Java SE]||6  w/ [http://umjammer.googlecode.com/svn/trunk/x-lr/index.html JApplet]||●||C から移植、以下のリファレンス||
 ||[android Android]||1.0 r1||●||~~repaint copyarea の最適化~~||
 ||[android DOJA]||5.1||○||実機で動かん...||
 ||[http://java.sun.com/javame/index.jsp Java ME]||WT2.5.2||○||イメージのスケーリングができない||
