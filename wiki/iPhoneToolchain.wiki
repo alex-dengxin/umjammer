@@ -3,7 +3,7 @@
 
 == Building Development Environment ==
 === w/ cygwin, Windows XP ===
- * vfdecrypt (for cygwin latest [http://hccweb1.bai.ne.jp/~hcj64001/cgi-bin/fswiki/wiki.cgi?action=ATTACH&page=iPod+touch&file=vfdecrypt%2Ec download])
+ * vfdecrypt (for cygwin latest ~~download~~)
 {{{
  $ gcc vfdecrypt.c -lcrypto -o vfdecrypt.exe
  $ vfdecrypt -i xxx-yyyy-z.dmg -o decrypted-a.b.c.dmg -k key
@@ -22,7 +22,7 @@
   * cygwin は[http://code.google.com/p/iphone-dev/issues/attachment?aid=-6114562444342259473&name=odcctools_cygwin.patch パッチ]が必要
 
  * .dmg at Windows XP
-  * [http://www.poweriso.com/ PowerISO] これしか無理？ (ISOBuster ×, dmg2img ×, dmg2iso ×, dmg2iso.pl ×)
+  * [http://www.poweriso.com/ PowerISO] ~~これしか無理？~~ (ISOBuster ×, dmg2img ×, dmg2iso ×, dmg2iso.pl ×)
    * PowerISO でもシンボリックリンクが普通のファイルになってしまうので MacOSX10.4u.sdk/usr/lib 以下を修正する、他にも include, Frameworks とかいっぱい壊れている
    * iPhone SDK アクセスできひんし...
   * [http://hem.bredband.net/catacombae/hfsx.html HFSExplorer] フリーであるやんけ！それも一番性能いいし、Java やし
