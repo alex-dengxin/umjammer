@@ -1,7 +1,8 @@
+#summary Java 使いが時間をかけずにプログラムを他言語に移植する方法
 #labels Java
+
 =Language Comparison=
 
-Java 使いが時間をかけずにプログラムを他言語に移植する方法
 
 == LodeRunner==
 
