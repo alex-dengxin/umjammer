@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2006 by Naohide Sano, All rights reserved.
- *
- * Programmed by Naohide Sano
+ * http://www.nurs.or.jp/~calcium/3gpp/sources/
  */
 
 import java.io.File;
@@ -37,10 +35,12 @@ import vavi.util.win32.WindowsProperties;
 
 
 /**
- * QT3GPPFlatten. 
+ * QT3GPPFlatten.
+ * <p>
+ * CAUTION! this program run on 32bit only 
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp@yahoo.co.jp">Naohide Sano</a> (nsano)
- * @version 0.00 060616 nsano initial version <br>
+ * @author mobilehackerz
+ * @see "http://www.nurs.or.jp/~calcium/3gpp/sources/"
  */
 class QT3GPPFlatten {
 
