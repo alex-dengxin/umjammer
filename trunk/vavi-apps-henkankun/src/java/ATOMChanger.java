@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2006 by Naohide Sano, All rights reserved.
- *
- * Programmed by Naohide Sano
+ * http://www.nurs.or.jp/~calcium/3gpp/sources/
  */
 
 import java.io.File;
@@ -24,8 +22,8 @@ import vavi.util.win32.WindowsProperties;
 /**
  * ATOMChanger. 
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp@yahoo.co.jp">Naohide Sano</a> (nsano)
- * @version 0.00 060616 nsano initial version <br>
+ * @author mobilehackerz
+ * @see "http://www.nurs.or.jp/~calcium/3gpp/sources/"
  */
 class ATOMChanger {
 
