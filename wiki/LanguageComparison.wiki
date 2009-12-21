@@ -27,6 +27,9 @@
 ||[https://lwuit.dev.java.net/ lwuit]|| || ||いったい幾つ UI 作ればいいんだ...WORA は？||
 ||[http://www.nttdocomo.co.jp/service/imode/make/content/iappli/technical_data/star/index.html STAR]|| ||○||実機が無い... ||
 ||Java (iPhone)||[http://svn.saurik.com/repos/menes/trunk/jocstrap/README jocstrap]|| || ||
+||Java (iPhone)||xmlvm|| ||||
+||Java (SWT)||SWT 1.2||● ||||
+||Java (Character)||Charva|| ||||
 || || || || ||
 ||ActionScript ([http://www.adobe.com/products/flex/flexdownloads/ FLEX]/[http://www.adobe.com/jp/products/air/tools/sdk/ AIR])||3.0||×||Thread モデルを Event モデルに変更する必要が...||
 ||[https://openjfx.dev.java.net/ja/ JavaFX]||1.0||×|| ||
@@ -37,6 +40,10 @@
 ||JavaScript||`<canvas/>`|| || ||
 ||[http://groovy.codehaus.org/ Groovy]||1.5.7||●|| ||
 ||Lisp||[http://clojure.org/ Clojure] w/ awt|| || ||
+||C++ (SDL)||g++ SDL ||● || ||
+||C++ (iPhone SDL)||SDL 1.3 || || ||
+||C++ (iPhone UIKit)|| || || ||
+||C++ (Cocoa)|| || || ||
 
 ==Comparison==
 
