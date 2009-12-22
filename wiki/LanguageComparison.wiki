@@ -13,7 +13,7 @@
 ||[http://hccweb1.bai.ne.jp/~hcj64001/umjammer/lr/index.html Java SE]||6  w/ [http://umjammer.googlecode.com/svn/trunk/x-lr/index.html JApplet]||●||C から移植、以下のリファレンス||
 ||[android Android]||1.0 r1||●||~~repaint copyarea の最適化~~||
 ||[android DOJA]||5.1||○||実機で動かん...||
-||[http://java.sun.com/javame/index.jsp Java ME]||WT2.5.2||○||イメージのスケーリングができない||
+||[http://java.sun.com/javame/index.jsp Java ME]||WTK2.5.2||○||イメージのスケーリングができない||
 ||C# (WinForms)||3.5||○||repaint copyarea がダメダメ||
 ||C# (WinForms)||[http://www.mono-project.com/Main_Page mono] 2.0.1 (Mac)||○|| ||
 ||C# (WPF/Silverlight?)||b1?||×|| ||
