@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 200x by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- vavi.apps.lisp                                                         -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	0xxxxx	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="vavi.apps.midiEditor" default="run" basedir=".">
+
+  <property file="local.properties" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <pathelement location="${base.dir}" />
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete>
+      <fileset dir=".">
+        <include name="**/*.class" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="" description="コンパイル">
+    <javac debug="on">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="." />
+    </javac>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="compile" description="Executes the Program">
+    <taskdef name="inoutjava"
+             classname="vavi.tools.ant.InOutJava"
+             classpathref="project.class.path" />
+    <echo file="stdin"><![CDATA[
+      (+ 1 2 3 4 5 6 7 8 9 10)
+    ]]>
+    </echo>
+    <inoutjava classname="vavi.apps.lisp.LispInterpreter"
+               input="stdin">
+      <classpath>
+        <path refid="project.class.path" />
+      </classpath>
+    </inoutjava>
+    <delete file="stdin" />
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="Packaging the Program">
+    <jar jarfile="vavilisp.jar"
+         manifest="manifest.mf">
+      <fileset dir="${base.dir}" >
+        <include name="vavi/apps/lisp/**/*.class" />
+        <include name="META-INF/services/javax.script.ScriptEngineFactory" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- go -->
+  <target name="go" depends="packaging" description="Executes the Program">
+    <echo file="stdin"><![CDATA[
+      (+ 1 2 3 4 5 6 7 8 9 10)
+    ]]>
+    </echo>
+    <java jar="vavilisp.jar" input="stdin" fork="true" />
+    <delete file="stdin" />
+  </target>
+
+  <!-- jsr 223 -->
+  <target name="jsr223" depends="packaging" description="Executes the Program">
+    <exec executable="jrunscript">
+      <arg line="-cp vavilisp.jar" />
+      <arg value="-q" />
+    </exec>
+  </target>
+
+</project>
+
+<!-- -->

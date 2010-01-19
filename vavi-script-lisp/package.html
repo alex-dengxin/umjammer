@@ -1,0 +1,40 @@
+<html>
+<!--
+Copyright (c) 2000 by Oracle Corporation Japan, All rights reserved.
+
+Written by Naohide Sano
+
+@author	<a href=mailto:nsano@jp.oracle.com>Naohide Sano</a> (nsano)
+
+@version	0.00	000306	nsano	initial version
+		0.01	000310	nsano	add more comment
+-->
+<body>
+Lisp インタープリタ関連のクラスを提供します。
+<p>
+このパッケージを使用する方は以下のクラスを使用します。
+</p>
+<ul>
+<li>{@link vavi.apps.lisp.LispInterpreter}
+<li>{@link vavi.apps.lisp.LispException}
+<li>{@link vavi.apps.lisp.MetaException}
+</ul>
+<p>
+その他は *Exception を例外処理に使用すればアプリケーションが構築できます
+アプリケーション固有の例外を {@link vavi.apps.lisp.MetaException} で入れ子にしてスローできます。
+</p>
+<h3>これから行うこと</h3>
+<ul>
+<li>BSF 対応</li>
+<li><del datetime="080602">JSR 223 対応も</del></li>
+</ul>
+<h3>参照</h3>
+<ul>
+<li><a href="isbn:0135657636">SunSoft Java Series CD-ROM "Java by Example"</a></li>
+</ul>
+<h3>一次ライセンス</h3>
+<ul>
+<li><a href="">TODO</a></li>
+</ul>
+</body>
+</html>
