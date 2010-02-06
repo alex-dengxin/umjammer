@@ -1,5 +1,5 @@
+#summary scripting languages on Mac OS X
 #labels Script,i18n
-#summally scripting languages on Mac OS X
 
 = Scripting on Mac OS X =
 
