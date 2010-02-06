@@ -65,4 +65,4 @@
 == Runtime Environment ==
 ===ARM Emulator===
 
- *http://www.skyeye.org/index.shtml
+ * http://www.skyeye.org/index.shtml
