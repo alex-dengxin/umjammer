@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2010 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- vavi-util-mona                                                         -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	100119	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="vavi-util-mona" default="run" basedir="."
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property name="dir.build" value="target/classes" />
+  <property name="dir.lib" value="lib" />
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="${dir.lib}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete>
+      <fileset dir="${dir.build}">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="target/test-classes">
+        <include name="**/*" />
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="準備">
+    <ivy:settings file="ivy-settings.xml" />
+    <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
+    <ivy:retrieve />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}" encoding="MS932">
+      <classpath refid="project.class.path" />
+      <include name="**/*.java" />
+      <src path="src/main/java" />
+    </javac>
+
+  	<copy todir="${dir.build}">
+      <fileset dir="src/main/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+
+    <javac debug="on" target="1.5" encoding="MS932" destdir="target/test-classes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <include name="**/*.java" />
+      <src path="src/test/java" />
+    </javac>
+
+    <copy todir="target/test-classes">
+      <fileset dir="src/test/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="compile" description="Run Program">
+    <java classname="vavi.apps.mona.MonaApp" fork="yes">
+      <jvmarg value="-Dfile.encoding=UTF-8" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
