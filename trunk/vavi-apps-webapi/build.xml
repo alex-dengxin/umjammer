@@ -16,56 +16,56 @@
 
   <property file="local.properties" />
 
-  <property name="dir.build" value="build" />
+  <property name="dir.build" value="target/classes" />
   <property name="dir.lib" value="lib" />
   <property name="dir.src" value="src/main/java" />
-  <property name="dir.install" value="target" />
+  <property name="dir.install" value="target/war" />
 
   <!-- クラスパスの定義 -->
   <path id="project.class.path">
     <fileset dir="${dir.lib}">
-      <include name="**/*.jar" />
-      <exclude name="vavi.jar" />
+      <include name="*.jar" />
     </fileset>
-    <fileset dir="${sen.home}/lib">
-      <include name="**/*.jar" />
-    </fileset>
-    <pathelement location="${vavi.dir}" />
-    <pathelement location="${support1.dir}/src" />
   </path>
 
   <!-- ターゲットの定義 -->
 
   <!-- clean -->
   <target name="clean" description="ビルド環境のクリア">
-    <delete dir="${dir.build}" />
-    <delete dir="${dir.install}" />
+    <delete>
+      <fileset dir="${dir.build}">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="target/test-classes">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="${dir.install}">
+        <include name="**/*" />
+      </fileset>
+    </delete>
   </target>
 
   <!-- prepare -->
   <target name="prepare" description="ビルド環境の準備">
     <mkdir dir="${dir.build}" />
+    <mkdir dir="target/test-classes" />
+    <mkdir dir="target/generated-sources" />
     <mkdir dir="${dir.install}" />
-  </target>
-
-  <!-- javac support -->
-  <target name="compile.support" description="コンパイル support">
-    <ant dir="${vavi.dir}" target="compile" />
-    <ant dir="${support1.dir}" target="compile" />
-    <ant dir="${support2.dir}" target="compile" />
   </target>
 
   <!-- javac -->
   <target name="compile" depends="prepare" description="コンパイル"> <!-- ,compile.support -->
     <javac debug="on"
            destdir="${dir.build}"
-           target="1.5">
+           target="1.5"
+    	   encoding="JISAutoDetect">
       <classpath refid="project.class.path" />
       <src path="${dir.src}" />
     </javac>
-    <copy todir="${dir.build}">
+
+  	<copy todir="${dir.build}">
       <fileset dir="src/main/resources">
-        <include name="*.properties" />
+        <include name="**/*" />
       </fileset>
     </copy>
   </target>
@@ -75,19 +75,6 @@
     <jar jarfile="lib/vavi.jar">
       <fileset dir="${dir.build}">
         <include name="**/*" />
-      </fileset>
-      <fileset dir="${vavi.dir}">
-        <include name="vavi/util/CharConverterJa*.class" />
-        <include name="vavi/util/Debug*.class" />
-        <include name="vavi/util/StringUtil*.class" />
-        <include name="vavi/util/StringUtil.properties" />
-        <include name="vavi/util/logging/*" />
-      </fileset>
-      <fileset dir="${support1.dir}/src">
-        <include name="vavi/awt/image/resample/AwtResampleOp*.class" />
-      </fileset>
-      <fileset dir="${support2.dir}/build/WEB-INF/classes">
-        <include name="vavix/enterprise/filter/SetCharacterEncodingFilter.class" />
       </fileset>
     </jar>
   </target>
@@ -126,7 +113,7 @@
   </path>
 
   <!-- xsd2java -->
-  <target name="xsd2java">
+  <target name="xsd2java" depends="prepare">
 <!--
     <xsd2castor dir="${dir.src}"
                 package="vavi.apps.umjammer00.castor1"
@@ -143,10 +130,13 @@
     <xsd2castor dir="${dir.src}"
                 package="vavi.apps.umjammer00.castor7"
                 url="http://api.jlp.yahoo.co.jp/MAService/V1/parseResponse.xsd" />
--->
     <xsd2castor dir="${dir.src}"
                 package="vavi.apps.umjammer00.castor2"
                 url="file:tmp/rakuten-response.xsd" />
+-->
+    <xsd2jaxb   dir="target/generated-sources"
+                package="vavi.util.openfeint.jaxb.leaderboard"
+                url="file:tmp/openfeint-leaderboard.xsd" />
 <!--
 -->
   </target>
@@ -168,13 +158,19 @@
              out="tmp/rakuten-response.xsd" />
   </target>
 
+  <!-- openfeint xml2xsd -->
+  <target name="xml2xsd.openfeint" depends="">
+    <xml2xsd in="${openfeint.tmp.xml}"
+             out="tmp/openfeint-leaderboard.xsd" />
+  </target>
+
   <!-- xsd2jaxb -->
   <macrodef name="xsd2jaxb" description="works fine">
     <attribute name="package" />
     <attribute name="url" />
     <attribute name="dir" />
     <sequential>
-      <exec executable="${java.home}\..\bin\xjc">
+      <exec executable="${xjc.bin}">
         <arg line="-p @{package}"/>
         <arg line="-d @{dir}"/>
         <arg line="@{url}"/>
