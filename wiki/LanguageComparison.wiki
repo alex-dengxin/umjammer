@@ -21,7 +21,7 @@
 ||C# (XNA)||2.0||△||offscreen||
 ||C# ([http://code.google.com/p/monoxna/ mono.XNA])|| || ||バージョンが古い||
 ||Java (CLI)||[http://www.ikvm.net/ IKVM] 0.36.0.11||×||イメージ読み込みで落ちる、JNI が無理？||
-||C# (JVM)||[http://www.cs.rit.edu/~atg2335/project/ JaCIL] 0.7.0.0|| ||used ikvm||
+||C# (JVM)||[http://www.cs.rit.edu/~atg2335/project/ JaCIL] 0.7.0.0|| ||use ikvm||
 ||BD-J (Emulator)||[http://www.xletview.org/ xletview]||●|| ||
 ||BD-J ([http://www.jp.playstation.com/ps3/ PS3])||< FW v2.50||●||結構簡単に動いた！||
 ||[https://lwuit.dev.java.net/ lwuit]|| || ||いったい幾つ UI 作ればいいんだ...WORA は？||
@@ -32,6 +32,7 @@
 ||Java (SDL)||[http://jsdl.sourceforge.net/ jsdl]|| ||||
 ||Java (SDL)||[http://sdljava.sourceforge.net/ sdljava]||○ ||||
 ||Java (Character)||[http://www.pitman.co.za/projects/charva/index.html Charva]|| ||||
+||Java (KDK)||[http://kdk-javadocs.s3.amazonaws.com/index.html KDK]||△ ||？ [http://lab.klab.org/young/2010/03/kindle-development-kit-kdk-%E3%82%A2%E3%83%97%E3%83%AA%E4%B8%80%E7%95%AA%E4%B9%97%E3%82%8A%E3%82%92%E7%9B%AE%E6%8C%87%E3%81%99%EF%BC%81/ なんで作れるの？]||
 || || || || ||
 ||ActionScript ([http://www.adobe.com/products/flex/flexdownloads/ FLEX]/[http://www.adobe.com/jp/products/air/tools/sdk/ AIR])||3.0||×||Thread モデルを Event モデルに変更する必要が...||
 ||[https://openjfx.dev.java.net/ja/ JavaFX]||1.0||×|| ||
