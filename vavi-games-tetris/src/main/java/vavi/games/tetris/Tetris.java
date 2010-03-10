@@ -2,6 +2,8 @@
  * tetris
  */
 
+package vavi.games.tetris;
+
 
 /**
  *
