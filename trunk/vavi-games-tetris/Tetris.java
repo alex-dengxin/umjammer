@@ -9,7 +9,7 @@
 public class Tetris {
 
     public static interface View {
-        void drawImage(int l, int c, int x, int y);
+        void drawImage(int c, int l, int x, int y);
 
         void repaint();
        
@@ -71,12 +71,12 @@ public class Tetris {
     int[] lines = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
     int nextptn;
     int counter;
-    int[] xa;
-    int[] ya;
-    int[] xb;
-    int[] yb;
-    int[] xx;
-    int[] yy;
+    int[] xa = new int[4];
+    int[] ya = new int[4];
+    int[] xb = new int[4];
+    int[] yb = new int[4];
+    int[] xx = new int[4];
+    int[] yy = new int[4];
     int kx;
     int ky;
     int kaitenx;
@@ -85,7 +85,7 @@ public class Tetris {
         40, 30, 20, 10, 7, 5, 4, 3, 2, 1, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1
     };
     int[] tktn = { 0, 50, 100, 300, 1000 };
-    int[][] tetrismap;
+    int[][] tetrismap = new int[20][10];
     int xxa;
     int yya;
     int xxx;
@@ -94,7 +94,7 @@ public class Tetris {
     int ptn;
     int gover;
     int dflag;
-    int[] kesu;
+    int[] kesu = new int[20];
     int nyi;
     int nyx;
     int nyy;
@@ -107,18 +107,7 @@ public class Tetris {
     int lsu;
     int kesuflag;
 
-    public void init() {
-        xb = new int[4];
-        yb = new int[4];
-        xx = new int[4];
-        yy = new int[4];
-        xa = new int[4];
-        ya = new int[4];
-        tetrismap = new int[20][10];
-        kesu = new int[20];
-    }
-
-    public void keyRset() {
+    private void keyRset() {
         kf8 = kf4 = kf6 = kf2 = kfs = 0;
     }
 
@@ -917,16 +906,12 @@ public class Tetris {
         }
     }
 
-    public void titpaint(int mm) {
-        int a;
-        int b;
-        int c;
-
+    private void titpaint(int mm) {
         for (int j = 0; j < 25; j++) {
             for (int i = 0; i < 40; i++) {
-                c = map[mm][(j * 40) + i];
-                a = c % 20;
-                b = c / 20;
+                int c = map[mm][(j * 40) + i];
+                int a = c % 20;
+                int b = c / 20;
                 view.drawImage(a, b, i, j);
             }
         }
