@@ -8,7 +8,7 @@
 {{{
  $ java -jar j80.jar cfg/PC-8801mkIISR.cfg
 }}}
-||*j80*||*quasi88*||*m88*||
+|| * j80 * || * quasi88 * || * m88 * ||
 ||        R_80    ||N88N.ROM||N80.ROM    ||
 ||        USR0    ||N88N.ROM  ||N80.ROM    ||
 ||        R_88    ||N88.ROM||N88.ROM||
