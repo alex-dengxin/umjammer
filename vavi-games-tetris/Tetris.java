@@ -2,27 +2,14 @@
  * tetris
  */
 
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 
 /**
  *
  */
-public class tetris extends Applet
-    implements Runnable {
+public class Tetris {
 
-    Thread thread = null;
-    Image bufer;
-    Image image;
-    Image mg;
-    MediaTracker med;
     int kf4;
     int kf6;
     int kf2;
@@ -85,12 +72,8 @@ public class tetris extends Applet
     int ptflag;
     int lsu;
     int kesuflag;
-    AudioClip clip;
 
     public void init() {
-        resize(640, 400);
-        bufer = createImage(16, 16);
-        mg = createImage(640, 400);
         xb = new int[4];
         yb = new int[4];
         xx = new int[4];
@@ -99,58 +82,13 @@ public class tetris extends Applet
         ya = new int[4];
         tetrismap = new int[20][10];
         kesu = new int[20];
-        image = getImage(getDocumentBase(), "tetris.gif");
-        clip = getAudioClip(getDocumentBase(), "segatris.mid");
-        med = new MediaTracker(this);
-        med.addImage(image, 0);
-        addKeyListener(keyListener);
-    }
-
-    public void start() {
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.start();
-        }
-    }
-
-    public void destroy() {
-        if (thread != null) {
-            thread.interrupt();
-        }
     }
 
     public void keyRset() {
         kf8 = kf4 = kf6 = kf2 = kfs = 0;
     }
 
-    private KeyListener keyListener = new KeyAdapter() {
-        public void keyPressed(KeyEvent e) {
-            int k = e.getKeyCode();
-            if ((k == KeyEvent.VK_NUMPAD8) || (k == KeyEvent.VK_UP)) {
-                kf8++;
-            }
-            if ((k == KeyEvent.VK_NUMPAD4) || (k == KeyEvent.VK_LEFT)) {
-                kf4++;
-            }
-            if ((k == KeyEvent.VK_NUMPAD6) || (k == KeyEvent.VK_RIGHT)) {
-                kf6++;
-            }
-            if ((k == KeyEvent.VK_NUMPAD2) || (k == KeyEvent.VK_DOWN)) {
-                kf2++;
-            }
-            if ((k == KeyEvent.VK_SPACE) || (k == KeyEvent.VK_NUMPAD5)) {
-                kfs++;
-            }
-        }
-    };
-
-    public void run() {
-        try {
-            med.waitForID(0);
-        } catch (InterruptedException e) {
-            return;
-        }
-
+    public void loop() {
         Graphics g = getGraphics();
         Graphics f = mg.getGraphics();
 
