@@ -6,6 +6,7 @@
 
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.event.KeyAdapter;
@@ -19,7 +20,7 @@ import java.awt.event.KeyListener;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/03/11 nsano initial version <br>
  */
-public class TetrisApp extends Applet implements Runnable {
+public class TetrisApp extends Applet implements Tetris.View, Runnable {
 
     Tetris game;
 
@@ -29,6 +30,8 @@ public class TetrisApp extends Applet implements Runnable {
     Image mg;
     MediaTracker med;
     AudioClip clip;
+    
+    Graphics g;
 
     public void init() {
         game.init();
@@ -46,6 +49,13 @@ public class TetrisApp extends Applet implements Runnable {
         if (thread == null) {
             thread = new Thread(this);
             thread.start();
+        }
+    }
+
+    public void stop() {
+        if (thread != null) {
+            thread.interrupt();
+            thread = null;
         }
     }
 
@@ -85,6 +95,27 @@ public class TetrisApp extends Applet implements Runnable {
             }
         }
     };
+
+    public void paint(Graphics g) {
+        g.drawImage(mg, 0, 0, this);
+    }
+
+    public void drawImage(int l, int c, int x, int y) {
+        x <<= 4;
+        y <<= 4;
+        c <<= 4;
+        l <<= 4;
+        g.drawImage(image, x, y, x + 16, y + 16, c, l, c + 16, l + 16, this);
+        repaint(x, y, 16, 16);
+    }
+
+    public void loopClip() {
+        clip.loop();
+    }
+
+    public void stopClip() {
+        clip.stop();
+    }
 }
 
 /* */
