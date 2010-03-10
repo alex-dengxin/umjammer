@@ -14,7 +14,6 @@ import java.awt.event.KeyListener;
 
 /**
  *
- * @author ‘å’J —z–¾
  */
 public class tetris extends Applet
     implements Runnable {
