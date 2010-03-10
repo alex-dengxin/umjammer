@@ -24,25 +24,29 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
 
     Tetris game;
 
-    Thread thread = null;
-    Image bufer;
+    Thread thread;
+
     Image image;
     Image mg;
-    MediaTracker med;
     AudioClip clip;
     
-    Graphics g;
-
     public void init() {
-        game.init();
+        game = new Tetris();
+        game.setView(this);
+
         resize(640, 400);
-        bufer = createImage(16, 16);
-        mg = createImage(640, 400);
-        image = getImage(getDocumentBase(), "tetris.gif");
-        clip = getAudioClip(getDocumentBase(), "segatris.mid");
-        med = new MediaTracker(this);
-        med.addImage(image, 0);
         addKeyListener(keyListener);
+
+        mg = createImage(640, 400);
+
+        clip = getAudioClip(getDocumentBase(), "segatris.mid");
+        try {
+            MediaTracker med = new MediaTracker(this);
+            image = getImage(getDocumentBase(), "tetris.gif");
+            med.addImage(image, 0);
+            med.waitForID(0);
+        } catch (InterruptedException e) {
+        }
     }
 
     public void start() {
@@ -66,32 +70,32 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
     }
 
     public void run() {
-        try {
-            med.waitForID(0);
-        } catch (InterruptedException e) {
-            return;
-        }
-        
         game.loop();
     }
 
     private KeyListener keyListener = new KeyAdapter() {
         public void keyPressed(KeyEvent e) {
-            int k = e.getKeyCode();
-            if ((k == KeyEvent.VK_NUMPAD8) || (k == KeyEvent.VK_UP)) {
+            switch (e.getKeyCode()) {
+            case KeyEvent.VK_NUMPAD8:
+            case KeyEvent.VK_UP:
                 game.up();
-            }
-            if ((k == KeyEvent.VK_NUMPAD4) || (k == KeyEvent.VK_LEFT)) {
+                break;
+            case KeyEvent.VK_NUMPAD4:
+            case KeyEvent.VK_LEFT:
                 game.left();
-            }
-            if ((k == KeyEvent.VK_NUMPAD6) || (k == KeyEvent.VK_RIGHT)) {
+                break;
+            case KeyEvent.VK_NUMPAD6:
+            case KeyEvent.VK_RIGHT:
                 game.right();
-            }
-            if ((k == KeyEvent.VK_NUMPAD2) || (k == KeyEvent.VK_DOWN)) {
+                break;
+            case KeyEvent.VK_NUMPAD2:
+            case KeyEvent.VK_DOWN:
                 game.down();
-            }
-            if ((k == KeyEvent.VK_SPACE) || (k == KeyEvent.VK_NUMPAD5)) {
+                break;
+            case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_NUMPAD5:
                 game.rotate();
+                break;
             }
         }
     };
@@ -100,12 +104,12 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
         g.drawImage(mg, 0, 0, this);
     }
 
-    public void drawImage(int l, int c, int x, int y) {
+    public void drawImage(int c, int l, int x, int y) {
         x <<= 4;
         y <<= 4;
         c <<= 4;
         l <<= 4;
-        g.drawImage(image, x, y, x + 16, y + 16, c, l, c + 16, l + 16, this);
+        mg.getGraphics().drawImage(image, x, y, x + 16, y + 16, c, l, c + 16, l + 16, this);
         repaint(x, y, 16, 16);
     }
 
