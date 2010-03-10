@@ -1,4 +1,4 @@
-#labels iPhone,iPod,Jailbreak,Toolchain
+#summary iphone jailbreak programming log
 =Develop Applications=
 
   * すべて cygwin の [iPod touch dev toolchain]
