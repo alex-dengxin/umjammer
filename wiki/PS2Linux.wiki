@@ -1,4 +1,4 @@
-#labels PS2,Linux
+#summary How to create DVD-less booting PS2 Linux
 =PS2Linux=
 
 この記事敗北して Linux Kit 買っちゃったのでボツです。あらかじめお断りしておきます。
