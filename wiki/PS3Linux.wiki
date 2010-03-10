@@ -1,4 +1,4 @@
-# PS3 Linux Install Log
+#summary PS3 Linux Install Log
 = Install=
 
 == Version==
