@@ -1,4 +1,4 @@
-#labels Java,BD-J
+#summary bd-j programming tips
 = BD-J=
 
 System Software Update v2.50 以降 AVCHD がディスク以外から？再生されなくなりました。よって終了〜
