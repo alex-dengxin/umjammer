@@ -1,4 +1,4 @@
-#labels Java,DOJA,Android
+#summary android application tips
 =Java Variation=
 
 === Doja to MIDP2.0===
