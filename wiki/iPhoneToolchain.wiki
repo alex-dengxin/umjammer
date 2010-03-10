@@ -1,4 +1,4 @@
-#labels iPhone,Toolchain
+#summary iphone jailbreaking tips
 = Development Environment =
 
 == Building Development Environment ==
