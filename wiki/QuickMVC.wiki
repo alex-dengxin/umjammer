@@ -79,3 +79,11 @@ Applet
 
 Applet を眺めてるとこいつを Kindlet や Midlet, Xlet に置き換えるだけで Tetris じゃんじゃん
 移植できると思いません？
+
+== ほれ ==
+
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-android Android Tetris]
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Xlet Tetris]
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-winforms C#]
+
+C# ですら楽勝！
