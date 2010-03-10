@@ -2,13 +2,27 @@
  * tetris
  */
 
-import java.awt.Graphics;
-
 
 /**
  *
  */
 public class Tetris {
+
+    public static interface View {
+        void drawImage(int l, int c, int x, int y);
+
+        void repaint();
+        
+        void loopClip();
+
+        void stopClip();
+    }
+    
+    private View view;
+    
+    public void setView(View view) {
+        this.view = view;
+    }
 
     int kf4;
     int kf6;
@@ -89,43 +103,41 @@ public class Tetris {
     }
 
     public void loop() {
-        Graphics g = getGraphics();
-        Graphics f = mg.getGraphics();
 
         while (true) {
             keyRset();
-            titpaint(f, 0);
-            g.drawImage(mg, 0, 0, this);
+            titpaint(0);
+            view.repaint();
 
             while (kfs == 0) {
                 Thread.yield();
             }
 
-            titpaint(f, 1);
-            g.drawImage(mg, 0, 0, this);
+            titpaint(1);
+            view.repaint();
             tetrisInit();
             keyRset();
 
-            clip.loop();
+            view.loopClip();
             while (tetrisloop) {
                 if (gover != 0) {
-                    gameover(f);
+                    gameover();
                 } else if (kesuflag != 0) {
-                    kesuyo(f);
+                    kesuyo();
                 } else {
                     if (nextptn == (-1)) {
-                        tetrisnext(f);
+                        tetrisnext();
                     }
 
                     if (ptn == (-1)) {
                         tetrisptn();
                     } else if (gover == 0) {
-                        tetrisgame(f);
+                        tetrisgame();
                     }
                 }
 
                 if (ptflag != 0) {
-                    g.drawImage(mg, 0, 0, this);
+                    view.repaint();
                     ptflag = 0;
                 }
 
@@ -149,10 +161,10 @@ public class Tetris {
                 rkflag = true;
 
                 while (tetrisloop) {
-                    nyuu(f);
+                    nyuu();
 
                     if (ptflag != 0) {
-                        g.drawImage(mg, 0, 0, this);
+                        view.repaint();
                         ptflag = 0;
                     }
 
@@ -193,9 +205,9 @@ public class Tetris {
                 }
             }
 
-            titpaint(f, 2);
-            tokuhyou(f);
-            g.drawImage(mg, 0, 0, this);
+            titpaint(2);
+            tokuhyou();
+            view.repaint();
 
             while (kfs == 0) {
                 Thread.yield();
@@ -203,8 +215,7 @@ public class Tetris {
         }
     }
 
-    private void tokuhyou(Graphics g) {
-        Graphics f = bufer.getGraphics();
+    private void tokuhyou() {
         int a;
         int b;
         int c;
@@ -212,36 +223,30 @@ public class Tetris {
 
         for (int i = 0; i < 10; i++) {
             if ((i == rkg) && (rkflag == true)) {
-                d = 112;
+                d = 7;
             } else {
                 d = 0;
             }
 
             for (int j = 0; j < 3; j++) {
                 c = name[i][j];
-                b = (c / 20) << 4;
-                a = (c % 20) << 4;
+                b = (c / 20);
+                a = (c % 20);
 
                 if (name[i][j] > 1) {
                     b += d;
                 }
 
-                f.translate(-a, -b);
-                f.drawImage(image, 0, 0, this);
-                f.translate(a, b);
-                g.drawImage(bufer, (j + 13) << 4, (5 + (i * 2)) << 4, this);
+                view.drawImage(a, b, j + 13, 5 + (i * 2));
             }
 
             c = score[i];
             a = 25;
 
             while (c > 0) {
-                b = (9 + (c % 10)) << 4;
+                b = 9 + (c % 10);
                 c /= 10;
-                f.translate(-b, -((2 << 4) + d));
-                f.drawImage(image, 0, 0, this);
-                f.translate(b, (2 << 4) + d);
-                g.drawImage(bufer, a << 4, (5 + (i * 2)) << 4, this);
+                view.drawImage(b, 2 + d, a, 5 + (i * 2));
                 a--;
             }
 
@@ -249,12 +254,9 @@ public class Tetris {
             a = 32;
 
             while (c > 0) {
-                b = (9 + (c % 10)) << 4;
+                b = 9 + (c % 10);
                 c /= 10;
-                f.translate(-b, -((2 << 4) + d));
-                f.drawImage(image, 0, 0, this);
-                f.translate(b, (2 << 4) + d);
-                g.drawImage(bufer, a << 4, (5 + (i * 2)) << 4, this);
+                view.drawImage(b, 2 + d, a, 5 + (i * 2));
                 a--;
             }
         }
@@ -264,18 +266,15 @@ public class Tetris {
             a = 8;
 
             while (c > 0) {
-                b = (9 + (c % 10)) << 4;
+                b = 9 + (c % 10);
                 c /= 10;
-                f.translate(-b, -((2 << 4) + 112));
-                f.drawImage(image, 0, 0, this);
-                f.translate(b, (2 << 4) + 112);
-                g.drawImage(bufer, a << 4, (5 + (rkg * 2)) << 4, this);
+                view.drawImage(b, 2 + 112, a, 5 + (rkg * 2));
                 a--;
             }
         }
     }
 
-    private void nyuu(Graphics g) {
+    private void nyuu() {
         int a;
         int b;
         int nad = 49;
@@ -311,18 +310,13 @@ public class Tetris {
                 nyx--;
                 nyi = nyn[nyx] - nad;
 
-                Graphics f = bufer.getGraphics();
-
                 if (tetrismap[10][3 + nyx + 1] != 0) {
-                    b = 15 << 4;
+                    b = 15;
                 } else {
-                    b = 1 << 4;
+                    b = 1;
                 }
 
-                f.translate(-b, 0);
-                f.drawImage(image, 0, 0, this);
-                f.translate(b, 0);
-                g.drawImage(bufer, (18 + nyx + 1) << 4, 13 << 4, this);
+                view.drawImage(b, 0, 18 + nyx + 1, 13);
                 nyy = 1;
             }
         }
@@ -347,25 +341,19 @@ public class Tetris {
                 nyx = 3;
             }
 
-            Graphics f = bufer.getGraphics();
-            b = ((nad + nyi) / 20) << 4;
-            a = ((nad + nyi) % 20) << 4;
-            f.translate(-a, -b);
-            f.drawImage(image, 0, 0, this);
-            f.translate(a, b);
-            g.drawImage(bufer, (18 + nyx) << 4, 13 << 4, this);
+            b = (nad + nyi) / 20;
+            a = (nad + nyi) % 20;
+            view.drawImage(a, b, 18 + nyx, 13);
             ptflag = 1;
         }
     }
 
-    private void gameover(Graphics g) {
-        clip.stop();
+    private void gameover() {
+        view.stopClip();
         int a;
         int b;
         int c;
-        Graphics f;
         counter++;
-        f = bufer.getGraphics();
         a = counter % 10;
         b = counter / 10;
 
@@ -379,32 +367,26 @@ public class Tetris {
             if (a >= 0) {
                 for (int i = 0; i < 10; i++) {
                     if (tetrismap[a][i] != 0) {
-                        b = 15 << 4;
+                        b = 15;
                     } else {
-                        b = 1 << 4;
+                        b = 1;
                     }
 
-                    f.translate(-b, 0);
-                    f.drawImage(image, 0, 0, this);
-                    f.translate(b, 0);
-                    g.drawImage(bufer, (15 + i) << 4, (3 + a) << 4, this);
+                    view.drawImage(b, 0, 15 + i, 3 + a);
                     ptflag = 1;
                 }
             }
         } else {
             if (a == 0) {
                 for (int i = 0; i < 4; i++) {
-                    c = (ptn + 2) << 4;
+                    c = ptn + 2;
 
                     if ((b % 2) == 0) {
                         c = (tetrismap[yb[i] + yyy][xb[i] + xxx] + 1) << 4;
                     }
 
-                    f.translate(-c, 0);
-                    f.drawImage(image, 0, 0, this);
-                    f.translate(c, 0);
-                    g.drawImage(bufer, (15 + xb[i] + xxx) << 4,
-                                (3 + yb[i] + yyy) << 4, this);
+                    view.drawImage(c, 0, 15 + xb[i] + xxx,
+                                3 + yb[i] + yyy);
                 }
 
                 ptflag = 1;
@@ -412,7 +394,7 @@ public class Tetris {
         }
     }
 
-    private void kesuyo(Graphics g) {
+    private void kesuyo() {
         int a = 0;
         int b = 0;
         int c = 0;
@@ -441,7 +423,6 @@ public class Tetris {
         }
 
         if (counter >= 30) {
-            Graphics f = bufer.getGraphics();
             int i = 19;
 
             while (i > 0) {
@@ -460,10 +441,7 @@ public class Tetris {
 
             for (i = 0; i < 20; i++) {
                 for (int j = 0; j < 10; j++) {
-                    f.translate(-(tetrismap[i][j] + 1) << 4, 0);
-                    f.drawImage(image, 0, 0, this);
-                    f.translate((tetrismap[i][j] + 1) << 4, 0);
-                    g.drawImage(bufer, (15 + j) << 4, (3 + i) << 4, this);
+                    view.drawImage(tetrismap[i][j] + 1, 0, 15 + j, 3 + i);
                 }
             }
 
@@ -477,10 +455,7 @@ public class Tetris {
             while (a > 0) {
                 c = a % 10;
                 a /= 10;
-                f.translate(-((c + 9) << 4), -32);
-                f.drawImage(image, 0, 0, this);
-                f.translate((c + 9) << 4, 32);
-                g.drawImage(bufer, b << 4, 3 << 4, this);
+                view.drawImage(c + 9, 2, b, 3);
                 b--;
             }
 
@@ -490,10 +465,7 @@ public class Tetris {
             while (a > 0) {
                 c = a % 10;
                 a /= 10;
-                f.translate(-((c + 9) << 4), -32);
-                f.drawImage(image, 0, 0, this);
-                f.translate((c + 9) << 4, 32);
-                g.drawImage(bufer, b << 4, 6 << 4, this);
+                view.drawImage(c + 9, 2, b, 6);
                 b--;
             }
 
@@ -503,10 +475,7 @@ public class Tetris {
             while (a > 0) {
                 c = a % 10;
                 a /= 10;
-                f.translate(-((c + 9) << 4), -32);
-                f.drawImage(image, 0, 0, this);
-                f.translate((c + 9) << 4, 32);
-                g.drawImage(bufer, b << 4, 9 << 4, this);
+                view.drawImage(c + 9, 2, b, 9);
                 b--;
             }
 
@@ -515,17 +484,13 @@ public class Tetris {
         }
 
         if (a > 0) {
-            Graphics f = bufer.getGraphics();
-            f.translate(-(a << 4), 0);
-            f.drawImage(image, 0, 0, this);
-            f.translate(a << 4, 0);
 
             for (int i = 0; i < 20; i++) {
                 if (kesu[i] == 10) {
                     b++;
 
                     for (int j = 0; j < 10; j++) {
-                        g.drawImage(bufer, (15 + j) << 4, (3 + i) << 4, this);
+                        view.drawImage(a, 0, 15 + j, 3 + i);
                     }
 
                     d = i;
@@ -545,10 +510,7 @@ public class Tetris {
                 while (c > 0) {
                     i = c % 10;
                     c /= 10;
-                    f.translate(-((i + 9) << 4), -32);
-                    f.drawImage(image, 0, 0, this);
-                    f.translate((i + 9) << 4, 32);
-                    g.drawImage(bufer, (15 + b) << 4, (3 + d) << 4, this);
+                    view.drawImage(i + 9, 2, 15 + b, 3 + d);
                     b--;
                 }
             }
@@ -557,8 +519,7 @@ public class Tetris {
         }
     }
 
-    private void tetrisgame(Graphics g) {
-        Graphics f = bufer.getGraphics();
+    private void tetrisgame() {
         int chflag = 0;
         counter++;
 
@@ -692,22 +653,15 @@ public class Tetris {
 
         if (chflag != 0) {
             ptflag = 1;
-            f.translate(-16, 0);
-            f.drawImage(image, 0, 0, this);
-            f.translate(16, 0);
 
             for (int i = 0; i < 4; i++) {
-                g.drawImage(bufer, (15 + xxa + xa[i]) << 4,
-                            (3 + yya + ya[i]) << 4, this);
+                view.drawImage(1, 0, 15 + xxa + xa[i],
+                            3 + yya + ya[i]);
             }
 
-            f.translate(-(ptn + 2) << 4, 0);
-            f.drawImage(image, 0, 0, this);
-            f.translate((ptn + 2) << 4, 0);
-
             for (int i = 0; i < 4; i++) {
-                g.drawImage(bufer, (15 + xxx + xb[i]) << 4,
-                            (3 + yyy + yb[i]) << 4, this);
+                view.drawImage(ptn + 2, 0, 15 + xxx + xb[i],
+                            3 + yyy + yb[i]);
                 xa[i] = xb[i];
                 ya[i] = yb[i];
             }
@@ -765,10 +719,7 @@ public class Tetris {
             while (a > 0) {
                 c = a % 10;
                 a /= 10;
-                f.translate(-((c + 9) << 4), -32);
-                f.drawImage(image, 0, 0, this);
-                f.translate((c + 9) << 4, 32);
-                g.drawImage(bufer, b << 4, 3 << 4, this);
+                view.drawImage(c + 9, 2, b, 3);
                 b--;
             }
 
@@ -789,8 +740,7 @@ public class Tetris {
         }
     }
 
-    private void tetrisnext(Graphics g) {
-        Graphics f = bufer.getGraphics();
+    private void tetrisnext() {
         nextptn = (int) ((Math.random() - 0.00001) * 7.0);
         dflag = counter = 0;
 
@@ -906,33 +856,21 @@ public class Tetris {
 //		if (gover != 0)tetrismap[yyy+yb[i]][xxx+xb[i]] = ptn+1;
             }
 
-            f.translate(-(ptn + 2) << 4, 0);
-            f.drawImage(image, 0, 0, this);
-            f.translate((ptn + 2) << 4, 0);
-
             for (int i = 0; i < 4; i++) {
-                g.drawImage(bufer, (15 + xb[i] + xxx) << 4,
-                            (3 + yb[i] + yyy) << 4, this);
+                view.drawImage(ptn + 2, 0, 15 + xb[i] + xxx,
+                            3 + yb[i] + yyy);
                 xxa = xxx;
                 yya = yyy;
             }
         }
 
-        f.translate(-16, 0);
-        f.drawImage(image, 0, 0, this);
-        f.translate(16, 0);
-
         for (int i = 0; i < 4; i++) {
-            g.drawImage(bufer, (19 + xb[i]) << 4, yb[i] << 4, this);
+            view.drawImage(1, 0, 19 + xb[i], yb[i]);
         }
-
-        f.translate(-(nextptn + 2) << 4, 0);
-        f.drawImage(image, 0, 0, this);
-        f.translate((nextptn + 2) << 4, 0);
 
         if (gover == 0) {
             for (int i = 0; i < 4; i++) {
-                g.drawImage(bufer, (19 + xx[i]) << 4, yy[i] << 4, this);
+                view.drawImage(nextptn + 2, 0, 19 + xx[i], yy[i]);
             }
         }
 
@@ -959,33 +897,17 @@ public class Tetris {
         }
     }
 
-    public void stop() {
-        if (thread != null) {
-            thread.interrupt();
-            thread = null;
-        }
-    }
-
-    public void paint(Graphics g) {
-        g.drawImage(mg, 0, 0, this);
-    }
-
-    public void titpaint(Graphics g, int mm) {
-        Graphics f;
+    public void titpaint(int mm) {
         int a;
         int b;
         int c;
-        f = bufer.getGraphics();
 
         for (int j = 0; j < 25; j++) {
             for (int i = 0; i < 40; i++) {
                 c = map[mm][(j * 40) + i];
                 a = c % 20;
                 b = c / 20;
-                f.translate(-(a << 4), -(b << 4));
-                f.drawImage(image, 0, 0, this);
-                f.translate(a << 4, b << 4);
-                g.drawImage(bufer, i << 4, j << 4, this);
+                view.drawImage(a, b, i, j);
             }
         }
     }
