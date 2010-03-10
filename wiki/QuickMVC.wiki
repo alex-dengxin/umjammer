@@ -30,8 +30,7 @@ Java 固有の Applet というプラットフォームを抜きます。今回�
 
 抜いた Applet は現在こんな感じです。
 
- http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris/TetrisApp.java
-
+ http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris/TetrisApp.java?r=195
 
 === 2. View を外出しする ===
 
@@ -43,6 +42,8 @@ repaint(), drawImage(), loopClip(), stopClip()
 }}}
 ですべて外出しすることができます。
 
+ http://code.google.com/p/umjammer/source/diff?spec=svn196&r=196&format=side&path=/trunk/vavi-games-tetris/Tetris.java&old_path=/trunk/vavi-games-tetris/Tetris.java&old=195
+
 === 3. Controller を外出しする ===
 
 キー操作等に関する部分を Controller というインターフェースで抽象化して外出しします。
@@ -51,3 +52,19 @@ repaint(), drawImage(), loopClip(), stopClip()
 {{{
  up(), down(), left(), right(), rotate()
 }}}
+
+ http://code.google.com/p/umjammer/source/diff?path=/trunk/vavi-games-tetris/Tetris.java&format=side&r=197
+
+この時点で Tetris クラスには import 文がなくなりました。完全なモデルクラスになったわけです。(Thread とか細かいことは言わないw)
+
+=== 4. 微調整 ===
+
+バグを潰して、綺麗にしたら完成です。
+
+モデル
+
+ http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris/Tetris.java?spec=svn198&r=198
+
+Applet
+
+ http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris/TetrisApp.java?spec=svn198&r=198
