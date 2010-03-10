@@ -4,6 +4,8 @@
  * Programmed by Naohide Sano
  */
 
+package vavi.games.tetris;
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Graphics;
@@ -22,13 +24,13 @@ import java.awt.event.KeyListener;
  */
 public class TetrisApp extends Applet implements Tetris.View, Runnable {
 
-    Tetris game;
+    private Tetris game;
 
-    Thread thread;
+    private Thread thread;
 
-    Image image;
-    Image mg;
-    AudioClip clip;
+    private Image patterns;
+    private Image image;
+    private AudioClip clip;
     
     public void init() {
         game = new Tetris();
@@ -37,14 +39,14 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
         resize(640, 400);
         addKeyListener(keyListener);
 
-        mg = createImage(640, 400);
+        image = createImage(640, 400);
 
         clip = getAudioClip(getDocumentBase(), "segatris.mid");
         try {
-            MediaTracker med = new MediaTracker(this);
-            image = getImage(getDocumentBase(), "tetris.gif");
-            med.addImage(image, 0);
-            med.waitForID(0);
+            MediaTracker mt = new MediaTracker(this);
+            patterns = getImage(getDocumentBase(), "tetris.gif");
+            mt.addImage(patterns, 0);
+            mt.waitForID(0);
         } catch (InterruptedException e) {
         }
     }
@@ -101,7 +103,7 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
     };
 
     public void paint(Graphics g) {
-        g.drawImage(mg, 0, 0, this);
+        g.drawImage(image, 0, 0, this);
     }
 
     public void drawImage(int c, int l, int x, int y) {
@@ -109,7 +111,7 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
         y <<= 4;
         c <<= 4;
         l <<= 4;
-        mg.getGraphics().drawImage(image, x, y, x + 16, y + 16, c, l, c + 16, l + 16, this);
+        image.getGraphics().drawImage(patterns, x, y, x + 16, y + 16, c, l, c + 16, l + 16, this);
         repaint(x, y, 16, 16);
     }
 
