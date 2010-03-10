@@ -46,6 +46,10 @@ repaint(), drawImage(), loopClip(), stopClip()
 
  http://code.google.com/p/umjammer/source/diff?spec=svn196&r=196&format=side&path=/trunk/vavi-games-tetris/Tetris.java&old_path=/trunk/vavi-games-tetris/Tetris.java&old=195
 
+外出しした View は Applet 側で実装してやります。
+
+ http://code.google.com/p/umjammer/source/diff?spec=svn196&r=196&format=side&path=/trunk/vavi-games-tetris/TetrisApp.java&old_path=/trunk/vavi-games-tetris/TetrisApp.java&old=195
+
 === 3. Controller を外出しする ===
 
 キー操作等に関する部分を Controller というインターフェースで抽象化して外出しします。
