@@ -1,4 +1,4 @@
-#labels Article,OOP
+# an article of object oriented programming
 =プログラムはやっぱり言語=
 
 ----
