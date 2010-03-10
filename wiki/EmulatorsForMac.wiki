@@ -1,4 +1,4 @@
-#Emualtors for Mac OS X
+#summary Emulators for Mac OS X
 
 = PC =
 
@@ -8,7 +8,7 @@
 
  $ java -jar j80.jar cfg/PC-8801mkIISR.cfg
 
-||j80||quasi88||m88||
+||*j80*||*quasi88*||*m88*||
 ||        R_80    ||N88N.ROM||N80.ROM    ||
 ||        USR0    ||N88N.ROM  ||N80.ROM    ||
 ||        R_88    ||N88.ROM||N88.ROM||
@@ -21,7 +21,7 @@
 ||        JIS2    ||N88KNJ2.ROM||KANJI2.ROM ||
 ||        DISK    ||N88SUB.ROM ||DISK.ROM   ||
 
-cfg/PC-8801mkIISR.cfg
+`cfg/PC-8801mkIISR.cfg`
 {{{
 // separator must be tab!
 OPTION  -power  -powdsk -smooth=1       -bus=0  -prn=0  -tape=4
