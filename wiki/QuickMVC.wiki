@@ -1,5 +1,5 @@
 #summary apply MVC your programs quickly.
-#labels MVC
+#labels Phase-Design
 
 = なんちゃってMVC =
 
