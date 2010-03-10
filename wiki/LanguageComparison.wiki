@@ -1,5 +1,4 @@
-#summary Java 使いが時間をかけずにプログラムを他言語に移植する方法
-#labels Java
+#summary how to port to other programming languages for java programmer
 
 =Language Comparison=
 
