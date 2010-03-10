@@ -79,19 +79,19 @@ public class TetrisApp extends Applet implements Tetris.View, Runnable {
         public void keyPressed(KeyEvent e) {
             int k = e.getKeyCode();
             if ((k == KeyEvent.VK_NUMPAD8) || (k == KeyEvent.VK_UP)) {
-                kf8++;
+                game.up();
             }
             if ((k == KeyEvent.VK_NUMPAD4) || (k == KeyEvent.VK_LEFT)) {
-                kf4++;
+                game.left();
             }
             if ((k == KeyEvent.VK_NUMPAD6) || (k == KeyEvent.VK_RIGHT)) {
-                kf6++;
+                game.right();
             }
             if ((k == KeyEvent.VK_NUMPAD2) || (k == KeyEvent.VK_DOWN)) {
-                kf2++;
+                game.down();
             }
             if ((k == KeyEvent.VK_SPACE) || (k == KeyEvent.VK_NUMPAD5)) {
-                kfs++;
+                game.rotate();
             }
         }
     };

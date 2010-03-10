@@ -12,7 +12,7 @@ public class Tetris {
         void drawImage(int l, int c, int x, int y);
 
         void repaint();
-        
+       
         void loopClip();
 
         void stopClip();
@@ -24,6 +24,26 @@ public class Tetris {
         this.view = view;
     }
 
+    public void up() {
+        kf8++;
+    }
+
+    public void down() {
+        kf2++;
+    }
+
+    public void left() {
+        kf4++;
+    }
+
+    public void right() {
+        kf6++;
+    }
+
+    public void rotate() {
+        kfs++;
+    }
+    
     int kf4;
     int kf6;
     int kf2;
