@@ -1,4 +1,4 @@
-# an article of object oriented programming
+#summary an article of object oriented programming
 =プログラムはやっぱり言語=
 
 ----
