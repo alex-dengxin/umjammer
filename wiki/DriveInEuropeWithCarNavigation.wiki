@@ -1,4 +1,4 @@
-#labels Java,GPS
+#summary GPS program and travel log
 =ヨーロッパでカーナビドライブ=
 
 ----
