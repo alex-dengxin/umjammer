@@ -21,6 +21,8 @@ iPhone, android, Kibdle, iPad と次々に発表される新しいプラット�
 典型的な Applet で一つのファイルになっています。もちろん MVC のカケラもありません。
 悪いと言っているのではないですよ。 Applet を作るといえば皆昔はこうしていたんですから。
 
+https://docs.google.com/uc?id=0B8GunoeJ9-pBZDZiMjRkYjUtNzg1Ni00YTg5LWJmZTYtMzFhYzk5NDJkOTZh&export=download&hl=ja
+
 === 1. 固有のプラットフォームを抜く ===
 
 Java 固有の Applet というプラットフォームを抜きます。今回は 3. で行う Controller
