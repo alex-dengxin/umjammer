@@ -87,3 +87,7 @@ Applet を眺めてるとこいつを Kindlet や Midlet, Xlet に置き換え�
  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-winforms C# Tetris]
 
 C# ですら楽勝！
+
+http://farm3.static.flickr.com/2738/4424213858_c7e912be2e.jpg
+
+http://farm3.static.flickr.com/2717/4424213856_aa5e932dd8.jpg
