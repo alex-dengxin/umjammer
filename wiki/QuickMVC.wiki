@@ -84,6 +84,6 @@ Applet を眺めてるとこいつを Kindlet や Midlet, Xlet に置き換え�
 
  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-android Android Tetris]
  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Xlet Tetris]
- * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-winforms C#]
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-winforms C# Tetris]
 
 C# ですら楽勝！
