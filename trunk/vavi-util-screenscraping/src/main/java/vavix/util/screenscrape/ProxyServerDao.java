@@ -19,7 +19,7 @@ import vavix.util.screenscrape.ProxyChanger.InternetAddress;
  */
 public interface ProxyServerDao {
 
-    /** */
+    /** 計算値ではなく静的リストを返すようにしてください。 */
     List<InternetAddress> getProxyInetSocketAddresses();
 }
 

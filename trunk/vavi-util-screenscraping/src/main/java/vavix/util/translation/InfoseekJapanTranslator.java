@@ -28,7 +28,7 @@ import vavix.util.screenscrape.UserAgentSwitcher;
 
 
 /**
- * Infoseek Japan 
+ * Infoseek Japan ‚Ì‹@ŠB–|–ó‚ğ—˜—p‚·‚é–|–ó‹@‚Å‚·B
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 030225 nsano initial version <br>
@@ -155,7 +155,7 @@ Debug.println("url: " + url);
         params.put("token", new String[] { token });
         params.put("selector", new String[] { selector });
         params.put("original", new String[] { word });
-//        params.put("submit", new String[] { new String("Submit".getBytes("ISO8859_1"), "ISO8859_1") });
+//        params.put("submit", new String[] { new String("@–|–ó@".getBytes("ISO8859_1"), "ISO8859_1") });
         String converted = scraper2.scrape(request);
         return converted;
     }

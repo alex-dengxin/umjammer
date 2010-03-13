@@ -16,7 +16,7 @@ import vavix.util.translation.InfoseekJapanTranslator;
 
 
 /**
- * properties 
+ * properties 形式のファイルの値を翻訳します。
  */
 public class t108_3 {
     public static void main(String[] args) throws IOException {
@@ -34,7 +34,7 @@ public class t108_3 {
                 translated = translator.toLocal(value);
             } catch (IOException e) {
 Debug.println(e);
-                translated = "すばしっこい茶色の狐はのろまな犬を飛び越える[" + value + "]";
+                translated = "★★★ 翻訳失敗 ★★★[" + value + "]";
             }
             props.setProperty(key, translated);
         }

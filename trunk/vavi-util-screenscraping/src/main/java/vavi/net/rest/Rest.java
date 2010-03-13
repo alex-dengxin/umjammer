@@ -134,7 +134,7 @@ System.err.println("ignoreable: " + field.getName());
 
                 String name = Parameter.Util.getParameterName(field, bean, parameter);
                 String value = Parameter.Util.getParameterValue(field, bean, parameter);
-//System.err.println("value: " + name + ", " + value);
+System.err.println("value: " + name + ", " + value);
                 try {
                     value = URLEncoder.encode(value, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
