@@ -48,6 +48,8 @@ public class SRTReader extends ClosedCaptionReader {
 //        long base = new Date(0).getTime();
 //Debug.println("base: " + base + ": " + new Date(base));
 
+int line = 1;
+try {
         while (reader.ready()) {
             String l = null;
             ClosedCaption cc = new ClosedCaption();
@@ -111,6 +113,9 @@ Debug.println("no end");
 //Debug.println(StringUtil.paramString(cc));
             tmp.add(cc);
         }
+} catch(Exception e) {
+ System.err.println("line: " + line + ": " + e);
+}
 
         ClosedCaption[] ccs = new ClosedCaption[tmp.size()];
         tmp.toArray(ccs);
