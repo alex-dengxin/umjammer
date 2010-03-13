@@ -109,7 +109,9 @@ Debug.println("unknown command: " + name);
         player.readClosedCaption(new File(args[0]));
         player.setSpeed(Integer.parseInt(args[1]));
 
-        player.setView(new SkinLFViewer());
+//        player.setView(new SkinLFViewer());
+//        player.setView(new PureJavaViewer());
+          player.setView(new SwingViewer());
 new HandSynchronizer(player.scheduler);	// TODO
 
 //      player.start();
