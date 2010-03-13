@@ -156,6 +156,176 @@
     </java>
   </target>
 
+  <!-- wsdl2java -->
+  <target name="wsdl2java" depends="" description="wsdl2java">
+    <wsdl2java url="http://www.webservicex.net/TranslateService.asmx?wsdl"
+               wsdl="tmp/webservicex-TranslateService.wsdl"
+               package="vavi.net.ws.webservicex.translation" />
+    <wsdl2java url="http://www.webservicex.net/geoipservice.asmx?wsdl"
+               wsdl="tmp/webservicex-GeoIPService.wsdl"
+               package="vavi.net.ws.webservicex.geoipservice" />
+    <wsdl2java url="http://www.webservicex.net/sendsmsworld.asmx?wsdl"
+               wsdl="tmp/webservicex-SendSMSWorld.wsdl"
+               package="vavi.net.ws.webservicex.sendsmsworld" />
+    <wsdl2java url="http://www.webservicex.net/fax.asmx?wsdl"
+               wsdl="tmp/webservicex-SendFax.wsdl"
+               package="vavi.net.ws.webservicex.sendfax" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile.ws" depends="compile" description="ƒRƒ“ƒpƒCƒ‹">
+    <javac debug="on" destdir="${dir.build}">
+      <classpath refid="cxf.class.path" />
+      <include name="vavi/net/**/*.java" />
+      <include name="TestWS.java" />
+      <include name="SendSMS.java" />
+      <include name="SendFax.java" />
+      <include name="GeoIP.java" />
+      <include name="Translation.java" />
+      <include name="WebserviceXTranslator.java" />
+      <src path="src" />
+    </javac>
+    <copy file="src/ApplicationContext.xml" toDir="${dir.build}" />
+    <copy file="src/log4j.properties" toDir="${dir.build}" />
+  </target>
+
+  <!-- WS translate -->
+  <target name="ws.translate" depends="compile.ws" description="Run program">
+    <java classname="TestWS" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="cxf.class.path" />
+      </classpath>
+      <arg value="${ws.translate.language}" />
+      <arg value="${ws.translate.text}" />
+    </java>
+  </target>
+
+  <!-- WS translate 2 -->
+  <target name="ws.translate2" depends="compile.ws" description="Run program">
+    <java classname="WebserviceXTranslator" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="${dir.support2}/src" />
+        <fileset dir="${dir.support1}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${dir.support2}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <path refid="cxf.class.path" />
+      </classpath>
+      <arg value="${java.test.997.run.en}" />
+      <arg value="${java.test.997.run.ja}" />
+    </java>
+  </target>
+
+  <!-- translate srt google -->
+  <target name="translate2" depends="compile.ws" description="Run program">
+    <java classname="Translation" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="${dir.support2}/src" />
+        <fileset dir="${dir.support1}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${dir.support2}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <path refid="cxf.class.path" />
+      </classpath>
+      <arg value="${tranlate.language}" />
+      <arg value="${tranlate.in}" />
+      <arg value="${tranlate.out}" />
+      <arg value="${tranlate.skip}" />
+    </java>
+  </target>
+
+  <!-- translate srt webservicex -->
+  <target name="translate" depends="compile.ws" description="Run program">
+    <java classname="Translation" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <pathelement location="${dir.support2}/src" />
+        <fileset dir="${dir.support1}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="${dir.support2}/lib">
+          <include name="*.jar" />
+        </fileset>
+        <path refid="cxf.class.path" />
+      </classpath>
+      <arg value="${tranlate.language}" />
+      <arg value="${tranlate.in}" />
+      <arg value="${tranlate.out}" />
+      <arg value="${tranlate.skip}" />
+      <arg value="${tranlate.interval}" />
+      <arg value="${tranlate.useProxy}" />
+    </java>
+  </target>
+
+  <!-- WS sms -->
+  <target name="ws.sms" depends="compile.ws" description="Run program">
+    <java classname="SendSMS" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="cxf.class.path" />
+        <arg value="vavivavi@yahoo.co.jp" />
+        <arg value="81" />
+        <arg value="09052136861" />
+        <arg value="Hello SMS World" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- WS fax -->
+  <target name="ws.fax" depends="compile.ws" description="Run program">
+    <java classname="SendFax" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="cxf.class.path" />
+        <arg value="vavivavi@yahoo.co.jp" />
+        <arg value="Test" />
+        <arg value="813066422377" />
+        <arg value="Hello Fax World" />
+        <arg value="Mr. Naohide" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- WS geoip -->
+  <target name="ws.geoip" depends="compile.ws" description="Run program">
+    <java classname="GeoIP" fork="yes">
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="cxf.class.path" />
+      </classpath>
+      <arg value="210.171.1.129" />
+    </java>
+  </target>
+
+  <!-- wsdl2java -->
+  <macrodef name="wsdl2java">
+    <attribute name="url" />
+    <attribute name="wsdl" />
+    <attribute name="package" />
+    <sequential>
+      <get src="@{url}" dest="@{wsdl}" />
+      <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
+        <arg value="-client"/>
+        <arg value="-p"/>
+        <arg value="@{package}"/>
+        <arg value="-d"/>
+        <arg value="src"/>
+        <arg value="@{wsdl}"/>
+        <classpath>
+          <path refid="cxf.class.path"/>
+        </classpath>
+      </java>
+    </sequential>
+  </macrodef>
+
 </project>
 
 <!-- -->

@@ -28,7 +28,7 @@ import vavix.util.screenscrape.ProxyChanger.InternetAddress;
 
 
 /**
- * Google 
+ * Google の機械翻訳を利用する翻訳機です。 
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 071002 nsano initial version <br>
@@ -94,9 +94,9 @@ Debug.println("proxy: " + host + ":" + port);
                         String userAgent = userAgentSwitcher.getUserAgent();
 Debug.println("userAgent: " + userAgent);
 
-                        setProperty("header.User-Agent", userAgent); // 
-                        setProperty("header.Cookie", cookie); // 
-                        setProperty("header.Accept-Charset", "utf-8;q=0.7,*;q=0.7"); // 
+                        setProperty("header.User-Agent", userAgent); // 必須
+                        setProperty("header.Cookie", cookie); // 無くてもよい
+                        setProperty("header.Accept-Charset", "utf-8;q=0.7,*;q=0.7"); // 無くてもよい
                         setProperty("header.Referer", referer);
                     }
                   });
