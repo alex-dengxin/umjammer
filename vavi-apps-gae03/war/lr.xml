@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="simple mixi Appli">
+    <Require feature="opensocial-0.8" />
+  </ModulePrefs>
+  <Content type="html">
+  <![CDATA[
+
+<script src="http://java.com/js/deployJava.js">
+</script>
+
+<div align="center">
+<script>
+  var attributes = {
+    id: 'applet',
+    code: 'vavi.games.lodeRunner.LodeRunnerApp',
+    archive: 'http://umjammer03.appspot.com/lr.jar',
+    width: '640',
+    height: '400',
+    type: 'application/x-java-applet;version=1.5',
+    mayscript: 'true',
+    pluginspage: 'http://java.sun.com/products/plugin/1.5/plugin-install.html'
+  };
+  var parameters = {
+    map: 'original.mpf',
+    wait: '50'
+  };
+  deployJava.runApplet(attributes, parameters, '1.5');
+</script>
+
+<script type="text/javascript" src="http://umjammer03.appspot.com/osj.js">
+</script>
+
+<br/>
+
+<table border="0">
+<tr>
+ <td>
+  <iframe src="http://umjammer03.appspot.com/f1.html" width="320" height="400" frameborder="0">
+  </iframe>
+ </td>
+ <td>
+  <iframe id="highscore" width="320" height="400" frameborder="0">
+  </iframe>
+ </td>
+</tr>
+<tr>
+ <td>
+  <iframe id="iframe2" width="320" height="300" frameborder="0">
+  </iframe>
+ </td>
+ <td>
+  <iframe id="iframe3" width="320" height="300" frameborder="0">
+  </iframe>
+ </td>
+</tr>
+</table>
+
+</div>
+
+
+  ]]>
+  </Content>
+</Module>

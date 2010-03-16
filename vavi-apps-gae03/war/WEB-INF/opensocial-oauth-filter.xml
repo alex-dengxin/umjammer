@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://xmlns.hidetake.org/opensocial-oauth-filter"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.hidetake.org/opensocial-oauth-filter opensocial-oauth-filter.xsd">
+
+    <extensions>
+        <extension id="org.hidetake.util.oauth.extension.ValidationLogger" />
+    </extensions>
+
+    <opensocial-apps>
+        <opensocial-app
+            app-id="1234"
+            app-url="http://umjammer03.appspot.com/lr.xml"
+            container-id="mixi" />
+    </opensocial-apps>
+
+    <opensocial-containers>
+        <opensocial-container id="mixi">
+            <oauth consumer-key="mixi.jp" signature-method="RSA-SHA1">
+                <certificate><![CDATA[
+-----BEGIN CERTIFICATE-----
+MIICdzCCAeCgAwIBAgIJAOi/chE0MhufMA0GCSqGSIb3DQEBBQUAMDIxCzAJBgNV
+BAYTAkpQMREwDwYDVQQKEwhtaXhpIEluYzEQMA4GA1UEAxMHbWl4aS5qcDAeFw0w
+OTA0MjgwNzAyMTVaFw0xMDA0MjgwNzAyMTVaMDIxCzAJBgNVBAYTAkpQMREwDwYD
+VQQKEwhtaXhpIEluYzEQMA4GA1UEAxMHbWl4aS5qcDCBnzANBgkqhkiG9w0BAQEF
+AAOBjQAwgYkCgYEAwEj53VlQcv1WHvfWlTP+T1lXUg91W+bgJSuHAD89PdVf9Ujn
+i92EkbjqaLDzA43+U5ULlK/05jROnGwFBVdISxULgevSpiTfgbfCcKbRW7hXrTSm
+jFREp7YOvflT3rr7qqNvjm+3XE157zcU33SXMIGvX1uQH/Y4fNpEE1pmX+UCAwEA
+AaOBlDCBkTAdBgNVHQ4EFgQUn2ewbtnBTjv6CpeT37jrBNF/h6gwYgYDVR0jBFsw
+WYAUn2ewbtnBTjv6CpeT37jrBNF/h6ihNqQ0MDIxCzAJBgNVBAYTAkpQMREwDwYD
+VQQKEwhtaXhpIEluYzEQMA4GA1UEAxMHbWl4aS5qcIIJAOi/chE0MhufMAwGA1Ud
+EwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAR7v8eaCaiB5xFVf9k9jOYPjCSQIJ
+58nLY869OeNXWWIQ17Tkprcf8ipxsoHj0Z7hJl/nVkSWgGj/bJLTVT9DrcEd6gLa
+h5TbGftATZCAJ8QJa3X2omCdB29qqyjz4F6QyTi930qekawPBLlWXuiP3oRNbiow
+nOLWEi16qH9WuBs=
+-----END CERTIFICATE-----
+                ]]></certificate>
+            </oauth>
+        </opensocial-container>
+    </opensocial-containers>
+
+</config>
