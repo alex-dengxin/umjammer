@@ -1,4 +1,4 @@
-#summary apply MVC your programs quickly.
+#summary apply MVC to your programs quickly.
 
 = なんちゃってMVC =
 
