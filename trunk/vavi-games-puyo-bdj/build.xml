@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="Windows-31J"?>
+
+<!-- ////////////////////////////////////////////////////////////////////// -->
+<!-- Copyright (c) 2008 by Naohide Sano, All rights reserved.               -->
+<!--                                                                        -->
+<!-- Written by Naohide Sano                                                -->
+<!--                                                                        -->
+<!-- BD-J PuyoPuyo                                                          -->
+<!--                                                                        -->
+<!-- @author	Naohide Sano                                                -->
+<!-- @version	0.00	080827	nsano	initial version                     -->
+<!--                                                                        -->
+<!-- ////////////////////////////////////////////////////////////////////// -->
+
+<project name="vavi-games-puyo-bdj" default="run" basedir=".">
+
+  <property file="local.properties" />
+
+  <property name="dir.build" value="build"/>
+  <property name="app.name" value="00000"/>
+  <property name="jar.name" value="${app.name}.jar"/>
+
+  <!-- クラスパスの定義 -->
+  <path id="project.class.path">
+    <fileset dir="${dir.bdj}/common">
+      <include name="*.jar" />
+      <include name="jmf/jmf.jar" />
+      <exclude name="javassist.jar" />
+      <exclude name="metouia.jar" />
+      <exclude name="nanoxml-2.2.3.jar" />
+    </fileset>
+  </path>
+
+  <path id="sign.class.path">
+    <fileset dir="${dir.sign}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- ターゲットの定義 -->
+
+  <!-- clean -->
+  <target name="clean" description="ビルド環境のクリア">
+    <delete file="${jar.name}" failonerror="false" />
+    <delete dir="META-INF" failonerror="false" />
+    <delete dir="${dir.build}" failonerror="false" />
+  </target>
+
+  <!-- prepare -->
+  <target name="prepare" description="ビルド環境の準備">
+    <mkdir dir="${dir.build}" />
+  </target>
+
+  <!-- javac -->
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on"
+           destdir="${dir.build}"
+           source="1.3"
+           target="1.3"
+    	   encoding="MS932"
+	   deprecation="true">
+      <classpath refid="project.class.path" />
+      <src path="src/main/java" />
+    </javac>
+  </target>
+
+  <!-- jar -->
+  <target name="packaging" depends="compile" description="packaging">
+
+    <copy file="etc/bluray.MyXlet.perm" toFile="${dir.build}/${paem.file}" /> 
+
+    <copy toDir="${dir.build}">
+      <fileset dir="src/main/resources" />
+    </copy>
+
+    <jar jarfile="${jar.name}">
+      <fileset dir="${dir.build}">
+        <exclude name="config" />
+        <exclude name="config/**/*" />
+      </fileset>
+    </jar>
+
+  </target>
+
+  <!-- sign -->
+  <target name="sign" depends="packaging" description="sign">
+    <java classname="net.java.bd.tools.security.BDSigner" fork="yes">
+      <jvmarg value="-Dfile.encoding=${encoding}" />
+      <classpath refid="sign.class.path" />
+      <arg line="-keystore ${dir.sign}/sig.ks" />
+      <arg value="${jar.name}" />
+    </java>
+  </target>
+
+  <!-- dist -->
+  <target name="dist" depends="sign" description="distribution">
+    <java jar="${dir.bdj}/common/hdcookbook/bdjo.jar" fork="yes">
+      <arg value="etc/bdjo.xml" />
+      <arg value="00000.bdjo" />
+    </java>
+  </target>
+
+  <!-- run -->
+  <target name="run" depends="" description="test">
+    <copy todir="${dir.build}">
+      <fileset dir="etc" >
+        <include name="config/**/*" />
+      </fileset>
+    </copy>
+
+    <java jar="${xletview.jar}" fork="yes">
+      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common"/>
+      <classpath>
+        <pathelement location="${dir.build}" />
+        <path refid="project.class.path" />
+      </classpath>
+      <arg line="-xletPath ${dir.build}" />
+      <arg line="-xletClass vavi.games.puyopuyo.PuyoPuyoApp" />
+    </java>
+  </target>
+
+</project>
+
+<!-- -->
