@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Tracking &amp; Analytics by Woopra" description="Woopra is the world’s most comprehensive, information rich, easy to use, real-time Web tracking  and analysis application." title_url="http://www.woopra.com/" author="umjammer" height="0" author_link="http://code.google.com/p/umjammer/" author_email="ns777@104.net"/>
+  <Content href="http://umjammer.googlecode.com/svn/trunk/x-woopra/index.html" type="url"/>
+</Module>
