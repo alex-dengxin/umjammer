@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="Tracking &amp; Analytics by Woopra" description="Woopra is the world’s most comprehensive, information rich, easy to use, real-time Web tracking  and analysis application." title_url="http://www.woopra.com/" author="umjammer" height="0" author_link="http://code.google.com/p/umjammer/" author_email="ns777@104.net"/>
-  <Content href="http://umjammer.googlecode.com/svn/trunk/x-woopra/index.html" type="url"/>
+  <ModulePrefs title="Tracking &amp; Analytics by Woopra" description="Woopra is the world’s most comprehensive, information rich, easy to use, real-time Web tracking  and analysis application." title_url="http://www.woopra.com/" author="umjammer" height="0" author_link="http://code.google.com/p/umjammer/" author_email="ns777@104.net" scrolling="false" />
+<Content type="html"><![CDATA[
+<h1>Woopra</h1>
+<!-- Woopra Code Start -->
+<script type="text/javascript" language="javascript"> 
+    var _wh = ((document.location.protocol=='https:') ? "https://sec1.woopra.com
+" : "http://static.woopra.com");
+    document.write(unescape("%3Cscript src='" + _wh + "/js/woopra.js' type='text
+/javascript'%3E%3C/script%3E"));
+</script>
+<!-- Woopra Code End -->
+]]></Content>
 </Module>
