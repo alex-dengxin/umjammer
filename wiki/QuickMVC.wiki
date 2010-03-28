@@ -65,7 +65,7 @@ repaint(), drawImage(), loopClip(), stopClip()
 
 この時点で Tetris クラスには import 文がなくなりました。完全なモデルクラスになったわけです。(Thread とか細かいことは言わないw)
 
-=== 4. 微調整 ===
+=== 4. 仕上げ ===
 
 バグを潰して、綺麗にしたら完成です。
 
@@ -85,8 +85,9 @@ Applet を眺めてるとこいつを Kindlet や Midlet, Xlet に置き換え�
 === ほれ ===
 
  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-android Android Tetris]
- * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Xlet Tetris]
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-bdj Xlet Tetris (BD-J)]
  * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-winforms C# Tetris]
+ * [http://code.google.com/p/umjammer/source/browse/trunk/vavi-games-tetris-kdk Kindlet Tetris (KDK)]
 
 C# ですら楽勝！
 
