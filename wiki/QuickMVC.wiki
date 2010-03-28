@@ -91,6 +91,7 @@ Applet を眺めてるとこいつを Kindlet や Midlet, Xlet に置き換え�
 C# ですら楽勝！
 
 <a href="http://www.flickr.com/photos/52807817@N00/4457210112/" title="Android Tetris by umjammer, on Flickr"><img src="http://farm3.static.flickr.com/2708/4457210112_3945fb30d5.jpg" width="298" height="500" alt="Android Tetris" /></a>
+
 http://farm3.static.flickr.com/2738/4424213858_c7e912be2e.jpg
 
 http://farm3.static.flickr.com/2717/4424213856_aa5e932dd8.jpg
