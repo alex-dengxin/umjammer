@@ -5,8 +5,6 @@
 package vavi.apps.nes.view;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.CheckboxMenuItem;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -14,18 +12,16 @@ import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.Toolkit;
+import java.awt.Transparency;
 import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import vavi.apps.nes.Messenger;
+import com.amazon.kindle.kindlet.ui.KComponent;
+import com.amazon.kindle.kindlet.ui.image.ImageUtil;
+
 import vavi.apps.nes.NES;
 import vavi.apps.nes.controller.GUIKeyListener;
-import vavi.apps.nes.controller.GUIMenuMonitor;
 import vavi.apps.nes.controller.GUIMouseListener;
 import vavi.apps.nes.dao.GUILoadRomFileFilter;
 
@@ -36,10 +32,7 @@ import vavi.apps.nes.dao.GUILoadRomFileFilter;
  * @author David de Niese
  * @version 0.56f
  */
-public final class GUI extends Frame implements NES.View {
-    //
-    // Main System Components
-    //
+public final class GUI extends KComponent implements NES.View {
 
     /**
      * The current NES Machine.
@@ -57,14 +50,9 @@ public final class GUI extends Frame implements NES.View {
     public File downloadedFile = null;
 
     /**
-     * The Canvas Object for Drawing.
-     */
-    private Canvas canvas = new Canvas();
-
-    /**
      * The Graphics Object of the Canvas.
      */
-    private Graphics graphics;
+//    private Graphics graphics;
 
     /**
      * Signals that the user has requested to Load State.
@@ -86,163 +74,39 @@ public final class GUI extends Frame implements NES.View {
      */
     public boolean waitMode = false;
 
-    //
-    // Main Menu System
-    //
-
-    /**
-     * The File Menu.
-     */
-    private Menu menuFile = new Menu("File");
-
-    /**
-     * The CPU Menu.
-     */
-    private Menu menuCPU = new Menu("Nes");
-
-    /**
-     * The View Menu.
-     */
-    private Menu menuView = new Menu("View");
-
-    //
-    // Sub Menu System
-    //
-
-    /**
-     * File Open Menu item.
-     */
-    protected MenuItem fileMenu1 = new MenuItem("Load Rom...");
-
-    /**
-     * File Close Menu item.
-     */
-    protected MenuItem fileMenu2 = new MenuItem("Close Rom");
-
-    /**
-     * Exit NESCafe Menu item.
-     */
-    protected MenuItem fileMenu3 = new MenuItem("Exit NESCafe");
-
-    /**
-     * Reset Rom Menu item.
-     */
-    protected MenuItem cpuMenu1 = new MenuItem("Reset ROM");
-
-    /**
-     * Pause Rom Menu item.
-     */
-    protected CheckboxMenuItem cpuMenu2 = new CheckboxMenuItem("Pause ROM", false);
-
-    /**
-     * For allowing the Undocumented OpCodes.
-     */
-    protected CheckboxMenuItem cpuMenu5 = new CheckboxMenuItem("Allow Undocumented OpCodes", false);
-
-    /**
-     * Controller 1 Joypad Menu
-     */
-    protected CheckboxMenuItem cpuMenu6 = new CheckboxMenuItem("Enable Light Gun", false);
-
-    //
-    // Class Methods
-    //
-
-    /**
-     * Create a new Graphical User Interface.
-     */
-    public GUI() {
-    }
-
-    /**
-     * Create the Menu Bar.
-     */
-    private final MenuBar createMenu() {
-        // Create the Menu Monitor
-        GUIMenuMonitor menuMonitor = new GUIMenuMonitor(this);
-        // Add the Menu Monitor to the File Menu Items
-        fileMenu1.addActionListener(menuMonitor);
-        fileMenu2.addActionListener(menuMonitor);
-        fileMenu3.addActionListener(menuMonitor);
-        // Add the Menu Monitor to the CPU Menu Items
-        cpuMenu1.addActionListener(menuMonitor);
-        // Set Command Names for Menu Items
-        fileMenu1.setActionCommand("OPEN");
-        fileMenu2.setActionCommand("CLOSE");
-        fileMenu3.setActionCommand("EXIT");
-        cpuMenu1.setActionCommand("RESET");
-        // Construct File Menu
-        menuFile.add(fileMenu1);
-        menuFile.add(fileMenu2);
-        menuFile.addSeparator();
-        menuFile.addSeparator();
-        menuFile.addSeparator();
-        menuFile.add(fileMenu3);
-        // Construct CPU Menu
-        menuCPU.add(cpuMenu1);
-        menuCPU.add(cpuMenu2);
-        menuCPU.addSeparator();
-        menuCPU.add(cpuMenu6);
-        menuCPU.addSeparator();
-        menuCPU.add(cpuMenu5);
-        menuCPU.addSeparator();
-        // Construct View Menu
-        menuView.addSeparator();
-        // Create the Menu Bar and Return It
-        MenuBar mb = new MenuBar();
-        mb.add(menuFile);
-        mb.add(menuCPU);
-        mb.add(menuView);
-        return mb;
-    }
-
     /**
      * Initialise and Display the GUI.
      * 
      * @param Nes The current NES Engine.
      */
-    public final void init(NES nes) {
+    public GUI(NES nes) {
         // Set Pointers
         this.nes = nes;
         // Create the Layout
         setLayout(new BorderLayout());
-        // Set up the Frame
-        setResizable(true);
-        setTitle("NESCafe Emulator v" + NESCafe.version);
-        setBackground(Color.black);
-        setForeground(Color.black);
         // Add KeyListeners to Canvas and Frame
         GUIKeyListener keylistener = new GUIKeyListener(nes, this);
         GUIMouseListener mouselistener = new GUIMouseListener(this);
         // Add Key Listener to Canvas
-        canvas.addKeyListener(keylistener);
-        canvas.addMouseListener(mouselistener);
-        canvas.addMouseMotionListener(mouselistener);
-        // Set Canvas Attribs and Add to Frame
-        canvas.setSize(270, 260);
-        canvas.setBackground(Color.black);
-        // Add Canvas to Screen
         addKeyListener(keylistener);
-        add(canvas, BorderLayout.CENTER);
-        // Return Screen Size
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        final int w = 320;
-        final int h = 280;
-        // Position the Frame at the Center of the Screen
-        setLocation(screenSize.width / 2 - w / 2, screenSize.height / 2 - h / 2);
-        // Set the Correct Menu
-        showMenuNoRom();
-        // Show the Frame
-        pack();
-        setVisible(true);
-        // Set Pointer to Graphics Context
-        graphics = canvas.getGraphics();
-        graphics.setFont(new Font("Helvetica", Font.PLAIN, 10));
-        // Create a new TV Controller
-        tvController = new TVController(nes, this);
-        writeToScreen("Welcome to NESCafe " + NESCafe.version);
+        addMouseListener(mouselistener);
+        addMouseMotionListener(mouselistener);
+        // Set Canvas Attribs and Add to Frame
+        setPreferredSize(new Dimension(256, 240));
+        // Add Canvas to Screen
+        requestFocus();
     }
 
+    public void addNotify() {
+        super.addNotify();
+
+        // Set Pointer to Graphics Context
+//        graphics = getGraphics().create();
+//        graphics.setFont(new Font("Helvetica", Font.PLAIN, 10));
+        // Create a new TV Controller
+        tvController = new TVController(nes, this);
+    }
+    
     /**
      * Pauses display and NES Machine.
      */
@@ -257,43 +121,6 @@ public final class GUI extends Frame implements NES.View {
         // Blank the Screen
         if (pause)
             showBlankDisplay();
-    }
-
-    /**
-     * Configure Menu for when no Rom is loaded.
-     */
-    public final void showMenuNoRom() {
-        // Enable and Disable File Menu Items
-        fileMenu1.setEnabled(true);
-        fileMenu2.setEnabled(false);
-        fileMenu3.setEnabled(true);
-        // Enable and Disable CPU Menu Items
-        cpuMenu1.setEnabled(false);
-        cpuMenu2.setEnabled(false);
-    }
-
-    /**
-     * Configure Menu for when a Rom is loaded.
-     */
-    public final void showMenuRom() {
-        // Enable and Disable File Menu Items
-        fileMenu1.setEnabled(true);
-        fileMenu2.setEnabled(true);
-        fileMenu3.setEnabled(true);
-        // Enable and Disable CPU Menu Items
-        cpuMenu1.setEnabled(true);
-        cpuMenu2.setEnabled(true);
-    }
-
-    // 
-    // Basic Display Information Gathering Functions
-    //
-
-    /**
-     * Returns the graphics context of the canvas.
-     */
-    public final Graphics connect() {
-        return graphics;
     }
 
     /**
@@ -324,14 +151,14 @@ public final class GUI extends Frame implements NES.View {
      * Returns the display width of the canvas.
      */
     public final int getDispWidth() {
-        return canvas.getWidth();
+        return 256 * 2;
     }
 
     /**
      * Returns the display height of the canvas.
      */
     public final int getDispHeight() {
-        return canvas.getHeight();
+        return 240 * 2;
     }
 
     /**
@@ -346,9 +173,12 @@ public final class GUI extends Frame implements NES.View {
     /**
      * Writes a temporary message to the status bar.
      */
-    public final void writeToScreen(String message) {
-        Messenger note = new Messenger(this, message);
-        note.start();
+    public final void writeToScreen(final String message) {
+        new Thread(new Runnable() {
+            public void run() {
+                sendMessage(message);
+            }
+        }).start();
     }
 
     /**
@@ -445,18 +275,6 @@ public final class GUI extends Frame implements NES.View {
         tvController.toggleBlackWhite();
     }
 
-    public int getGuiLastX() {
-        return tvController.guiLastX;
-    }
-
-    public int getGuiLastY() {
-        return tvController.guiLastY;
-    }
-
-    public double getTVFactor() {
-        return tvController.tvFactor;
-    }
-
     public void fireViewEvent(ViewEvent event) {
         String name = event.getName();
         if ("doReset".equals(name)) {
@@ -484,9 +302,6 @@ public final class GUI extends Frame implements NES.View {
         nes.reset();
         if (nes.cpu.getCPUPause()) {
             nes.cpu.setCPUPause(false);
-            if (cpuMenu2 != null) {
-                cpuMenu2.setState(false);
-            }
         }
     }
 
@@ -502,11 +317,6 @@ public final class GUI extends Frame implements NES.View {
     private void doToggleDebug() {
         // Toggle State
         nes.cpu.debugEnterToggle();
-        // Toggle Menu
-        if (cpuMenu2 != null) {
-            tvController.imageCounter = tvController.imageLatchCounter;
-            cpuMenu2.setState(nes.cpu.getCPUPause());
-        }
     }
 
     public void onZapper(int x, int y) {
@@ -533,22 +343,7 @@ public final class GUI extends Frame implements NES.View {
     private void calcZapperPos(int x_, int y_) {
         // Calculate the Offsets
         double factor = tvController.tvFactor;
-        double x = (x_ - tvController.guiLastX) / factor;
-        double y = (y_ - tvController.guiLastY) / factor;
-        // Determine the new X Location of the Mouse
-        int newX = (int) x;
-        if (newX < 0)
-            newX = 0;
-        if (newX > 255)
-            newX = 255;
-        nes.memory.zapperX = newX;
-        // Determine the new Y Location of the Mouse
-        int newY = (int) y;
-        if (newY < 0)
-            newY = 0;
-        if (newY > 239)
-            newY = 239;
-        nes.memory.zapperY = newY;
+        nes.setZapperPos((x_ - tvController.guiLastX) / factor, (y_ - tvController.guiLastY) / factor);
     }
 
     private void doDisableDebug() {
@@ -567,10 +362,6 @@ public final class GUI extends Frame implements NES.View {
     private void doReset() {
         setCursor(new Cursor(Cursor.WAIT_CURSOR));
         nes.reset();
-        if (nes.cpu.getCPUPause()) {
-            cpuMenu2.setState(false);
-            nes.cpu.setCPUPause(cpuMenu2.getState());
-        }
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -609,7 +400,7 @@ public final class GUI extends Frame implements NES.View {
         // Perform a Garbage Collection
         System.gc();
         // Display the Open Dialog
-        FileDialog mainSelection = new FileDialog(this, "Open...", FileDialog.LOAD);
+        FileDialog mainSelection = new FileDialog((Frame) null, "Open...", FileDialog.LOAD);
         mainSelection.setFilenameFilter(new GUILoadRomFileFilter());
         mainSelection.setFile("*.nes; *.nes.gz; *.zip");
         mainSelection.setDirectory(lastDirectory);
@@ -666,5 +457,161 @@ public final class GUI extends Frame implements NES.View {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
+    }
+
+    /**
+     * 
+     * Applet Main Paint Method
+     * 
+     */
+    public void paint(Graphics screen) {
+        try {
+            // Declare Local Variables
+            int h = 256;
+            int w = 256;
+            int x = 0;
+            int y = 0;
+            tvController.tvFactor = 1;
+            // Get Display Dimensions
+            h = getDispHeight();
+            w = getDispWidth();
+            // Adjust Factor
+            if (w > 320 && h > 320) {
+                double factorw = (w - 20) / 256.0;
+                double factorh = (h - 20) / 240.0;
+                if (factorw > factorh)
+                    tvController.tvFactor = factorh;
+                else
+                    tvController.tvFactor = factorw;
+            }
+            // Check Factor Limit
+            if (tvController.tvFactor < 1)
+                tvController.tvFactor = 1;
+            if (tvController.tvFactor > 2)
+                tvController.tvFactor = 2;
+            // Determine if Screen Size Changed
+            boolean sizeChanged = ((h != tvController.guiLastH) || (w != tvController.guiLastW));
+            if (sizeChanged) {
+                // Determine how to Center the Screen on the GUI Panel
+                x = w / 2 - (int) (tvController.tvFactor * TVController.screenWidth) / 2;
+                y = h / 2 - (int) (tvController.tvFactor * TVController.screenHeight) / 2;
+                tvController.guiLastX = x;
+                tvController.guiLastY = y;
+            } else {
+                // Copy Old Settings
+                x = tvController.guiLastX;
+                y = tvController.guiLastY;
+            }
+            // Check for Image Buffer (for mixing and matching)
+            if (tvController.imageBuffer == null || sizeChanged) {
+//              imageBuffer = gui.createImage(w, h);
+                tvController.imageBuffer = ImageUtil.createCompatibleImage(w, h, Transparency.OPAQUE);
+                if (tvController.imageBuffer == null)
+                    return;
+            }
+            // Create if we Need to Super-impose Something
+            boolean superimpose = sizeChanged || tvController.statusBarOff || tvController.topstatusBarOff || (tvController.statusMessage != null && tvController.statusMessage != "") || (tvController.topstatusMessage != null && tvController.topstatusMessage != "");
+            if (superimpose) {
+                // Get Graphics Pointer
+                Graphics g = tvController.imageBuffer.getGraphics();
+                // Clean the Screen Borders
+                if (tvController.cleanScreen == 0) {
+                    g.setColor(Color.black);
+                    g.fillRect(0, 0, x, h);
+                    g.fillRect(x, 0, w - (2 * x), y);
+                    g.fillRect(w - x, 0, x, h);
+                    g.fillRect(x, h - y, w - (2 * x), y);
+                }
+                // Blank Screen if Size Changed
+                if (sizeChanged || tvController.statusBarOff || tvController.topstatusBarOff || tvController.img == null) {
+                    // Set Black to Blank
+                    g.setColor(Color.black);
+                    // Blank Top
+                    if (tvController.statusBarOff) {
+                        g.fillRect(0, h - 16, w, 16);
+                        tvController.statusBarOff = false;
+                    }
+                    // Blank Bottom
+                    if (tvController.topstatusBarOff) {
+                        g.fillRect(0, 0, w, 16);
+                        tvController.topstatusBarOff = false;
+                    }
+                }
+                // Draw Image
+                if (tvController.img != null) {
+                    if (tvController.tvFactor == 1) {
+//                        if (!g.drawImage(tvController.img, x, y, Color.black, null))
+                            g.drawImage(tvController.img, x, y, Color.black, null);
+                    } else {
+//                        if (!g.drawImage(tvController.img, x, y, (int) (256 * tvController.tvFactor), (int) (240 * tvController.tvFactor), Color.black, null))
+                            g.drawImage(tvController.img, x, y, (int) (256 * tvController.tvFactor), (int) (240 * tvController.tvFactor), Color.black, null);
+                    }
+                }
+                // Write Status Message onto Screen
+                if (tvController.statusMessage != null && tvController.statusMessage != "") {
+                    g.setColor(new Color(128, 128, 255));
+                    g.fillRect(0, h - 16, w - 1, 15);
+                    g.setColor(new Color(0, 0, 255));
+                    g.drawRect(0, h - 16, w - 1, 15);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 10));
+                    g.setColor(new Color(0, 0, 128));
+                    g.drawString(tvController.statusMessage, 0 + 5, h - 4);
+                }
+                // Write Status Message onto Screen
+                if (tvController.topstatusMessage != null && tvController.topstatusMessage != "") {
+                    g.setColor(new Color(128, 128, 255));
+                    g.fillRect(0, 0, w - 1, 15);
+                    g.setColor(new Color(0, 0, 255));
+                    g.drawRect(0, 0, w - 1, 15);
+                    g.setFont(new Font("Helvetica", Font.PLAIN, 10));
+                    g.setColor(new Color(0, 0, 128));
+                    g.drawString(tvController.topstatusMessage, 0 + 5, 12);
+                }
+                // Dispose of Graphics Context
+                g.dispose();
+                // Blitz the Screen
+//                if (!screen.drawImage(tvController.imageBuffer, 0, 0, Color.black, null))
+                    screen.drawImage(tvController.imageBuffer, 0, 0, Color.black, null);
+            } else {
+                // No Super-Imposing
+                Graphics g = screen;
+                if (tvController.img != null && g != null) {
+                    if (tvController.tvFactor == 1) {
+//                        if (!g.drawImage(tvController.img, x, y, Color.black, null))
+                            g.drawImage(tvController.img, x, y, Color.black, null);
+                    } else {
+//                        if (!g.drawImage(tvController.img, x, y, (int) (256 * tvController.tvFactor), (int) (240 * tvController.tvFactor), Color.black, null))
+                            g.drawImage(tvController.img, x, y, (int) (256 * tvController.tvFactor), (int) (240 * tvController.tvFactor), Color.black, null);
+                    }
+                    // Clean the Screen Borders
+                    if (tvController.cleanScreen == 0) {
+                        g.setColor(Color.black);
+                        g.fillRect(0, 0, x, h);
+                        g.fillRect(x, 0, w - (2 * x), y);
+                        g.fillRect(w - x, 0, x, h);
+                        g.fillRect(x, h - y, w - (2 * x), y);
+                    }
+                }
+            }
+            // Decrease cleanScreen
+            tvController.cleanScreen--;
+            if (tvController.cleanScreen < 0)
+                tvController.cleanScreen = 120;
+            // Record Last Width and Height When we Drawed
+            tvController.guiLastH = h;
+            tvController.guiLastW = w;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
+        super.paint(screen);
+    }
+
+    /**
+     * 
+     * Applet Update Method with No Blanking
+     * 
+     */
+    public void update(Graphics g) {
+        paint(g);
     }
 }

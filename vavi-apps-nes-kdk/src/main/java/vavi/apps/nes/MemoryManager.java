@@ -30,11 +30,6 @@ public final class MemoryManager {
     public PPU ppu;
 
     /**
-     * The current Graphical User Interface.
-     */
-    private NES.View gui;
-
-    /**
      * The main memory.
      */
     public int[] memory = new int[0x0800];
@@ -97,9 +92,8 @@ public final class MemoryManager {
     /**
      * Create a new Memory Manager.
      */
-    public MemoryManager(NES nes, NES.View gui) {
+    public MemoryManager(NES nes) {
         // Grab References to the GUI and NES
-        this.gui = gui;
         this.nes = nes;
         this.ppu = nes.ppu;
     }
@@ -108,7 +102,7 @@ public final class MemoryManager {
      * Return the current scanline number for Mappers.
      */
     public final int getScanline() {
-        return gui.getScanLine();
+        return nes.gui.getScanLine();
     }
 
     /**

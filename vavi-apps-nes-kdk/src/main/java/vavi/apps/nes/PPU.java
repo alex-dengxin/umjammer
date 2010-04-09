@@ -22,11 +22,6 @@ public final class PPU {
     public boolean vram_write_protect = false;
 
     /**
-     * The current Graphical User Interface.
-     */
-    private NES.View gui;
-
-    /**
      * The current NES Engine.
      */
     private NES nes;
@@ -179,9 +174,8 @@ public final class PPU {
     /**
      * Create a new Picture Processing Unit.
      */
-    public PPU(NES nes, NES.View gui) {
+    public PPU(NES nes) {
         // Set Pointers to NES and GUI
-        this.gui = gui;
         this.nes = nes;
     }
 
@@ -486,7 +480,7 @@ public final class PPU {
                     linePalettes[x] = paletteMemory[linePalettes[x]] & 63;
             }
             // Draw to Screen (using TV Controller)
-            gui.setPixels(linePalettes);
+            nes.gui.setPixels(linePalettes);
         }
     }
 
@@ -580,7 +574,7 @@ public final class PPU {
      */
     private final boolean renderLine() {
         // Set the current Scanline
-        skipIt = gui.setScanLineNum(currentScanline);
+        skipIt = nes.gui.setScanLineNum(currentScanline);
         // Clear Solid BG Buffer
         for (int i = 0; i < solidBGPixel.length; i++)
             solidBGPixel[i] = 0;
@@ -720,7 +714,7 @@ public final class PPU {
         case 0x1: // PPU Control Register #2
             if ((REG_2001 & 0xE0) != (value & 0xE0)) {
                 // Colour Emphiase Changed so Recalc
-                nes.palette.calcPalette(gui.getTint(), gui.getHue(), gui.getBW(), value);
+                nes.palette.calcPalette(nes.gui.getTint(), nes.gui.getHue(), nes.gui.getBW(), value);
             }
             REG_2001 = value;
             return;
@@ -804,7 +798,7 @@ public final class PPU {
         ppuLatch = 0x00;
         ppuAddressIncrement = 1;
         // Reset Palette
-        nes.palette.calcPalette(gui.getTint(), gui.getHue(), gui.getBW(), 0);
+        nes.palette.calcPalette(nes.gui.getTint(), nes.gui.getHue(), nes.gui.getBW(), 0);
         vram_write_protect = (vrom.length != 0);
         if (vram_write_protect) {
             System.out.println("PPU: Set VRAM Write Protect");

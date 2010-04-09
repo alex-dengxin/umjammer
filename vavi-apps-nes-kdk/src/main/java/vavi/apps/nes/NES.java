@@ -40,8 +40,6 @@ public final class NES {
 
         void writeToScreen(String string);
 
-        void setTitle(String string);
-        
         boolean isLoadStateRequest();
 
         boolean isSaveStateRequest();
@@ -49,10 +47,6 @@ public final class NES {
         void setSaveStateRequest(boolean b);
 
         void setLoadStateRequest(boolean b);
-
-        void showMenuNoRom();
-
-        void showMenuRom();
 
         void deleteDisplay();
 
@@ -188,11 +182,11 @@ public final class NES {
         // Create Controller 2
         joyPad2 = new JoyPad(JoyPad.JOYPAD_2);
         // Create a CPU
-        cpu = new CPU(this, gui);
+        cpu = new CPU(this);
         // Create a PPU
-        ppu = new PPU(this, gui);
+        ppu = new PPU(this);
         // Create a Memory Manager
-        memory = new MemoryManager(this, gui);
+        memory = new MemoryManager(this);
     }
 
     /**
@@ -236,7 +230,6 @@ public final class NES {
         // Stop the Currently Loaded ROM
         cpu.cpuStop();
         noCartLoaded = true;
-        gui.showMenuNoRom();
         // Run the new ROM
         cpu.cpuRun();
         Thread bob = new Thread(new Runnable() {
@@ -247,7 +240,6 @@ public final class NES {
         bob.start();
 
         noCartLoaded = false;
-        gui.showMenuRom();
         // Return Signal
         currentCartFileName = fileName;
         return true;
@@ -264,8 +256,6 @@ public final class NES {
         cpu.cpuStop();
         // Save SaveRAM
         memory.saveSaveRAM();
-        // Show No ROM Menu
-        gui.showMenuNoRom();
         // Turn Off Debug
         cpu.debugExit();
         // Clean Up the Resources
@@ -418,5 +408,25 @@ public final class NES {
         }
         // Inform User of Progress
         gui.writeToScreen("State Successfully Saved...");
+    }
+
+    /**
+     * set Zapper Position
+     */
+    public void setZapperPos(double x, double y) {
+        // Determine the new X Location of the Mouse
+        int newX = (int) x;
+        if (newX < 0)
+            newX = 0;
+        if (newX > 255)
+            newX = 255;
+        memory.zapperX = newX;
+        // Determine the new Y Location of the Mouse
+        int newY = (int) y;
+        if (newY < 0)
+            newY = 0;
+        if (newY > 239)
+            newY = 239;
+        memory.zapperY = newY;
     }
 }

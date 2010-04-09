@@ -4,8 +4,11 @@
 
 package vavi.apps.nes;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.CRC32;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -208,14 +211,14 @@ public final class NESCart {
         try {
             // Open the Input Stream
             if (fileName == "") {
-                filterinputstream = getClass().getResourceAsStream("nescafe.nes");
+                filterinputstream = getClass().getResourceAsStream("/smb.nes");
                 fileName = "nescafe.nes";
             } else {
-                filterinputstream = new java.io.FileInputStream(fileName);
+                filterinputstream = new FileInputStream(fileName);
             }
             // Check for GZIP Compressed File Stream
             if (fileName.toUpperCase().endsWith(".NES.GZ"))
-                filterinputstream = (new java.util.zip.GZIPInputStream(filterinputstream));
+                filterinputstream = new GZIPInputStream(filterinputstream);
             // Check for ZIP Compressed File Stream
             if (fileName.toUpperCase().endsWith(".ZIP")) {
                 // Read Content as Compressed ZIP File
@@ -260,6 +263,7 @@ public final class NESCart {
                 if (filterinputstream.read() != 0)
                     MapperNumber &= 0xF;
         } catch (Exception e) {
+e.printStackTrace(System.err);
             // Check if Failed During ZIP Reading
             if (fileName.toUpperCase().endsWith(".ZIP")) {
                 errorCode = NESCart.ERROR_ZIP_INVALID;
@@ -297,7 +301,7 @@ public final class NESCart {
             return true;
         }
         // Record CRC32 for Cartridge
-        java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+        CRC32 crc = new CRC32();
         byte[] tempArray = new byte[progROM.length + charROM.length];
         for (int i = 0; i < progROM.length; i++)
             tempArray[i] = (byte) (progROM[i] & 0xFF);

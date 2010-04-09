@@ -4,15 +4,16 @@
 
 package vavi.apps.nes.view;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.awt.image.MemoryImageSource;
 import java.io.ByteArrayOutputStream;
+
+import com.amazon.kindle.kindlet.ui.image.ImageUtil;
 
 import vavi.apps.nes.NES;
 import vavi.apps.nes.dao.DDNBInputStream;
@@ -73,12 +74,12 @@ final class TVController implements Runnable, ImageObserver {
     /**
      * The Off-Screen Image.
      */
-    private Image offScreenImage;
+    BufferedImage offScreenImage;
 
     /**
      * The Graphics Object to paint the Image onto.
      */
-    private Graphics screen;
+    Graphics screen;
 
     /**
      * The current Graphical User Interface.
@@ -143,12 +144,12 @@ final class TVController implements Runnable, ImageObserver {
     /**
      * The GUI Width Last Time we Drawed
      */
-    private int guiLastW = 0;
+    int guiLastW = 0;
 
     /**
      * The GUI Height Last Time we Drawed
      */
-    private int guiLastH = 0;
+    int guiLastH = 0;
 
     /**
      * The GUI X Last Time we Drawed (for LightGun)
@@ -166,11 +167,6 @@ final class TVController implements Runnable, ImageObserver {
     public double tvFactor = 1;
 
     /**
-     * Applet Graphics Context
-     */
-    private Graphics appletGraphics = null;
-
-    /**
      * Image Counter Latch Value
      */
     public int imageLatchCounter = 20;
@@ -183,32 +179,32 @@ final class TVController implements Runnable, ImageObserver {
     /**
      * Counter to Allow Images to Flash
      */
-    private Image imageBuffer = null;
+    Image imageBuffer = null;
 
     /**
      * The Message to Appear in the Status Bar
      */
-    private String statusMessage = "";
+    String statusMessage = "";
 
     /**
      * Whether to remove State Bar message
      */
-    private boolean statusBarOff = false;
+    boolean statusBarOff = false;
 
     /**
      * The Message to Appear in the Top Status Bar
      */
-    private String topstatusMessage = "";
+    String topstatusMessage = "";
 
     /**
      * Whether to remove Top State Bar message
      */
-    private boolean topstatusBarOff = false;
+    boolean topstatusBarOff = false;
 
     /**
      * Clean Screen Up when Zero
      */
-    private int cleanScreen = 0;
+    int cleanScreen = 0;
 
     /**
      * Create a new TVController Object.
@@ -221,11 +217,11 @@ final class TVController implements Runnable, ImageObserver {
         this.nes = nes;
         this.gui = gui;
         // Connect to the Screen (controlled by the GUI)
-        screen = gui.connect();
+//        screen = gui.connect();
         // Create the Secondary Buffer (the Offscreen Image)
         int w = TVController.screenWidth;
         int h = TVController.screenHeight;
-        offScreenImage = gui.createImage(new MemoryImageSource(w, h, videoBuffer, 0, 256));
+        offScreenImage = ImageUtil.createCompatibleImage(w, h, Transparency.OPAQUE);
         // Set the Palette
         nes.palette.calcPalette(tint, hue, BW, 0);
         palette = nes.palette.palette;
@@ -333,147 +329,14 @@ final class TVController implements Runnable, ImageObserver {
         drawImage(null);
     }
 
+    Image img;
+
     /**
      * Draw an Image File and Cater for Applet Mode>
      */
     private final void drawImage(Image img) {
-        try {
-            // Declare Local Variables
-            int h = 256;
-            int w = 256;
-            int x = 0;
-            int y = 0;
-            tvFactor = 1;
-            // Get Display Dimensions
-            h = gui.getDispHeight();
-            w = gui.getDispWidth();
-            // Adjust Factor
-            if (w > 320 && h > 320) {
-                double factorw = (w - 20) / 256.0;
-                double factorh = (h - 20) / 240.0;
-                if (factorw > factorh)
-                    tvFactor = factorh;
-                else
-                    tvFactor = factorw;
-            }
-            // Check Factor Limit
-            if (tvFactor < 1)
-                tvFactor = 1;
-            if (tvFactor > 2)
-                tvFactor = 2;
-            // Determine if Screen Size Changed
-            boolean sizeChanged = ((h != guiLastH) || (w != guiLastW));
-            if (sizeChanged) {
-                // Determine how to Center the Screen on the GUI Panel
-                x = w / 2 - (int) (tvFactor * TVController.screenWidth) / 2;
-                y = h / 2 - (int) (tvFactor * TVController.screenHeight) / 2;
-                guiLastX = x;
-                guiLastY = y;
-            } else {
-                // Copy Old Settings
-                x = guiLastX;
-                y = guiLastY;
-            }
-            // Check for Image Buffer (for mixing and matching)
-            if (imageBuffer == null || sizeChanged) {
-                imageBuffer = ((GUI) (nes.gui)).createImage(w, h);
-                if (imageBuffer == null)
-                    return;
-            }
-            // Create if we Need to Super-impose Something
-            boolean superimpose = sizeChanged || statusBarOff || topstatusBarOff || (statusMessage != null && statusMessage != "") || (topstatusMessage != null && topstatusMessage != "");
-            if (superimpose) {
-                // Get Graphics Pointer
-                Graphics g = imageBuffer.getGraphics();
-                // Clean the Screen Borders
-                if (cleanScreen == 0) {
-                    g.setColor(Color.black);
-                    g.fillRect(0, 0, x, h);
-                    g.fillRect(x, 0, w - (2 * x), y);
-                    g.fillRect(w - x, 0, x, h);
-                    g.fillRect(x, h - y, w - (2 * x), y);
-                }
-                // Blank Screen if Size Changed
-                if (sizeChanged || statusBarOff || topstatusBarOff || img == null) {
-                    // Set Black to Blank
-                    g.setColor(Color.black);
-                    // Blank Top
-                    if (statusBarOff) {
-                        g.fillRect(0, h - 16, w, 16);
-                        statusBarOff = false;
-                    }
-                    // Blank Bottom
-                    if (topstatusBarOff) {
-                        g.fillRect(0, 0, w, 16);
-                        topstatusBarOff = false;
-                    }
-                }
-                // Draw Image
-                if (img != null) {
-                    if (tvFactor == 1) {
-                        if (!g.drawImage(img, x, y, Color.black, null))
-                            g.drawImage(img, x, y, Color.black, this);
-                    } else {
-                        if (!g.drawImage(img, x, y, (int) (256 * tvFactor), (int) (240 * tvFactor), Color.black, null))
-                            g.drawImage(img, x, y, (int) (256 * tvFactor), (int) (240 * tvFactor), Color.black, this);
-                    }
-                }
-                // Write Status Message onto Screen
-                if (statusMessage != null && statusMessage != "") {
-                    g.setColor(new Color(128, 128, 255));
-                    g.fillRect(0, h - 16, w - 1, 15);
-                    g.setColor(new Color(0, 0, 255));
-                    g.drawRect(0, h - 16, w - 1, 15);
-                    g.setFont(new Font("Helvetica", Font.PLAIN, 10));
-                    g.setColor(new Color(0, 0, 128));
-                    g.drawString(statusMessage, 0 + 5, h - 4);
-                }
-                // Write Status Message onto Screen
-                if (topstatusMessage != null && topstatusMessage != "") {
-                    g.setColor(new Color(128, 128, 255));
-                    g.fillRect(0, 0, w - 1, 15);
-                    g.setColor(new Color(0, 0, 255));
-                    g.drawRect(0, 0, w - 1, 15);
-                    g.setFont(new Font("Helvetica", Font.PLAIN, 10));
-                    g.setColor(new Color(0, 0, 128));
-                    g.drawString(topstatusMessage, 0 + 5, 12);
-                }
-                // Dispose of Graphics Context
-                g.dispose();
-                // Blitz the Screen
-                if (!screen.drawImage(imageBuffer, 0, 0, Color.black, null))
-                    screen.drawImage(imageBuffer, 0, 0, Color.black, this);
-            } else {
-                // No Super-Imposing
-                Graphics g = screen;
-                if (img != null && g != null) {
-                    if (tvFactor == 1) {
-                        if (!g.drawImage(img, x, y, Color.black, null))
-                            g.drawImage(img, x, y, Color.black, this);
-                    } else {
-                        if (!g.drawImage(img, x, y, (int) (256 * tvFactor), (int) (240 * tvFactor), Color.black, null))
-                            g.drawImage(img, x, y, (int) (256 * tvFactor), (int) (240 * tvFactor), Color.black, this);
-                    }
-                    // Clean the Screen Borders
-                    if (cleanScreen == 0) {
-                        g.setColor(Color.black);
-                        g.fillRect(0, 0, x, h);
-                        g.fillRect(x, 0, w - (2 * x), y);
-                        g.fillRect(w - x, 0, x, h);
-                        g.fillRect(x, h - y, w - (2 * x), y);
-                    }
-                }
-            }
-            // Decrease cleanScreen
-            cleanScreen--;
-            if (cleanScreen < 0)
-                cleanScreen = 120;
-            // Record Last Width and Height When we Drawed
-            guiLastH = h;
-            guiLastW = w;
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }
+        this.img = img;
+        gui.repaint();
     }
 
     /**
@@ -516,7 +379,8 @@ final class TVController implements Runnable, ImageObserver {
         for (int i = 0; i < videoBuffer.length; i++)
             videoBuffer[i] = 0xFF000000;
         // Flush the Object to Prepare it for Display
-        offScreenImage.flush();
+        offScreenImage.getRaster().setPixels(0, 0, screenWidth, screenHeight, videoBuffer);
+//        offScreenImage.flush();
         drawImage(offScreenImage);
     }
 
@@ -562,7 +426,7 @@ final class TVController implements Runnable, ImageObserver {
             return;
         }
         // Draw the Screen from the Offscreen Buffer
-        offScreenImage.flush();
+//        offScreenImage.flush();
         drawImage(offScreenImage);
     }
 
@@ -575,17 +439,6 @@ final class TVController implements Runnable, ImageObserver {
         if (!isSkipFrame() | force)
             blitzScreen();
         actualFrameNum++;
-    }
-
-    /**
-     * Grab Applet Graphics Context
-     * 
-     * @param force Forces a draw despite frame-skipping.
-     */
-    public final void passAppletGraphics(Graphics g) {
-        if (appletGraphics == null) {
-            appletGraphics = g.create();
-        }
     }
 
     /**
@@ -694,6 +547,7 @@ final class TVController implements Runnable, ImageObserver {
         for (int x = 0; x < 256; x++) {
             videoBuffer[(scanLine << 8) | x] = palette[palEntries[x]];
         }
+        offScreenImage.getRaster().setPixels(0, 0, screenWidth, screenHeight, videoBuffer);
     }
 
     /**

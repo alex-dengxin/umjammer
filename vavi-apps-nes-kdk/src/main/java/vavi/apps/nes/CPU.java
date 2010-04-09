@@ -26,11 +26,6 @@ public final class CPU {
     private NES nes;
 
     /**
-     * The current Graphical User Interface.
-     */
-    private NES.View gui;
-
-    /**
      * Whether this CPU Controller can request Screen Drawing.
      */
     private boolean allowDrawScreen = true;
@@ -140,9 +135,8 @@ public final class CPU {
      * @param Nes The current NES Machine.
      * @param Gui The current Graphical User Interface.
      */
-    public CPU(NES nes, NES.View gui) {
+    public CPU(NES nes) {
         this.nes = nes;
-        this.gui = gui;
     }
 
     /**
@@ -187,7 +181,7 @@ public final class CPU {
             // After 32 Frames the PPU is stable so turn off Loading Screen
             if (counter != 0) {
                 if (++counter > 32) {
-                    gui.showLoadingScreen(false);
+                    nes.gui.showLoadingScreen(false);
                     counter = 0;
                 }
             }
@@ -270,9 +264,9 @@ public final class CPU {
         // Inform user that the Memory and its Mapper have been Loaded and
         // Initialised
         if (currentCart.getMapperNumber() > 0) {
-            gui.writeToScreen("Loading " + currentCart.getMapperName() + " Board...");
+            nes.gui.writeToScreen("Loading " + currentCart.getMapperName() + " Board...");
         } else {
-            gui.writeToScreen("Loading NES System...");
+            nes.gui.writeToScreen("Loading NES System...");
         }
     }
 
@@ -324,7 +318,7 @@ public final class CPU {
         if (!allowDrawScreen)
             return;
         // Ask TV Controller to Draw whatever is in its Buffer
-        gui.drawScreen(force);
+        nes.gui.drawScreen(force);
     }
 
     /**
@@ -373,15 +367,6 @@ public final class CPU {
     public final void setCPUPause(boolean pause) {
         // Pause the CPU Controller
         cpuPaused = pause;
-        // Check for a Graphical User Interface
-        if (gui == null)
-            return;
-        // Display Pause/Unpause Message on GUI
-        if (pause) {
-            gui.setTitle("NESCafe Emulator - Paused");
-        } else {
-            gui.setTitle("NESCafe Emulator");
-        }
     }
 
     /**
@@ -402,13 +387,13 @@ public final class CPU {
             // Debug Exit
             setDebug(false);
             setDebugInstructions(0);
-            gui.fireViewEvent(new NES.View.ViewEvent(this, "doDisableDebug"));
+            nes.gui.fireViewEvent(new NES.View.ViewEvent(this, "doDisableDebug"));
         } else {
             // Debug Enter
             setDebugToInterrupt(false);
             setDebugInstructions(1);
             setDebug(true);
-            gui.fireViewEvent(new NES.View.ViewEvent(this, "doEnableDebug"));
+            nes.gui.fireViewEvent(new NES.View.ViewEvent(this, "doEnableDebug"));
         }
     }
 
@@ -422,7 +407,7 @@ public final class CPU {
         // Set FetchDecode Enable on Processor
         setDebugToInterrupt(val);
         if (val)
-            gui.writeToScreen("Seeking for next Interrupt...");
+            nes.gui.writeToScreen("Seeking for next Interrupt...");
     }
 
     /**
@@ -436,9 +421,9 @@ public final class CPU {
         if (getDebugInstructions() == 0) {
             setDebugInstructions(instructions);
             if (instructions == 1) {
-                gui.writeToScreen("Debug Step...");
+                nes.gui.writeToScreen("Debug Step...");
             } else if (instructions > 1) {
-                gui.writeToScreen("Debug Step " + instructions + " instructions...");
+                nes.gui.writeToScreen("Debug Step " + instructions + " instructions...");
             }
         }
     }
@@ -505,7 +490,7 @@ public final class CPU {
      * Clears the Display.
      */
     private final void deleteScreen() {
-        gui.deleteDisplay();
+        nes.gui.deleteDisplay();
     }
 
     /**
@@ -557,9 +542,9 @@ public final class CPU {
         // Drawn the Screen
         drawScreen(false);
         // Check if Save or Load State Requests have been issued
-        if (gui.isSaveStateRequest())
+        if (nes.gui.isSaveStateRequest())
             nes.stateSave();
-        if (gui.isLoadStateRequest())
+        if (nes.gui.isLoadStateRequest())
             nes.stateLoad();
         // Wait while NESCafe is not Active or Paused
         waitWhileNotActive();
@@ -574,7 +559,7 @@ public final class CPU {
             debugToInterrupt = false;
             debugInstructions = 1;
             debugPrint("\n[NMI]");
-            gui.writeToScreen("");
+            nes.gui.writeToScreen("");
         }
         pushWord(PC);
         push(P & 0xEF); // CLEAR BRK
@@ -590,7 +575,7 @@ public final class CPU {
             debugToInterrupt = false;
             debugInstructions = 1;
             debugPrint("\n[" + event + "]");
-            gui.writeToScreen("");
+            nes.gui.writeToScreen("");
         }
     }
 
@@ -603,7 +588,7 @@ public final class CPU {
                 debugToInterrupt = false;
                 debugInstructions = 1;
                 debugPrint("\n[IRQ]");
-                gui.writeToScreen("");
+                nes.gui.writeToScreen("");
             }
             pushWord(PC);
             push(P & 0xEF); // CLEAR BRK
@@ -2604,7 +2589,7 @@ public final class CPU {
         // Reset the Internal CPU
         intReset();
         // Inform User that Reset was Successful
-        gui.writeToScreen("Game Reset");
+        nes.gui.writeToScreen("Game Reset");
     }
 
     /**
@@ -2694,9 +2679,9 @@ public final class CPU {
             if (stopRequest)
                 return;
             // Check for Load and Save State Requests
-            if (gui.isLoadStateRequest())
+            if (nes.gui.isLoadStateRequest())
                 nes.stateLoad();
-            if (gui.isSaveStateRequest())
+            if (nes.gui.isSaveStateRequest())
                 nes.stateSave();
             // Sleep for 1/10th of a Second
             try {
@@ -2718,9 +2703,9 @@ public final class CPU {
             if (stopRequest)
                 return;
             // Check for Load and Save State Requests
-            if (gui.isSaveStateRequest())
+            if (nes.gui.isSaveStateRequest())
                 nes.stateSave();
-            if (gui.isLoadStateRequest())
+            if (nes.gui.isLoadStateRequest())
                 nes.stateLoad();
             // Sleep for 1/10th of a Second
             try {
@@ -3145,7 +3130,7 @@ public final class CPU {
     private final void usedUndocumentedCode(String message) {
         // Delete Display and Send Message
         deleteScreen();
-        gui.writeToScreen("Undocumented OpCode: " + message);
+        nes.gui.writeToScreen("Undocumented OpCode: " + message);
     }
 
     /**
