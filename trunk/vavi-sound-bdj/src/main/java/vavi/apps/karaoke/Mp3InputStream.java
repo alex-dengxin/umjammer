@@ -64,14 +64,23 @@ class Mp3InputStream extends DecodingInputStream {
                 SampleBuffer sampleBuffer = (SampleBuffer) decoder.decodeFrame(header, bitstream);
                 short[] sample = sampleBuffer.getBuffer();
                 int length = sampleBuffer.getBufferLength();
+                int[] outBuffer = null;
 
-                Polyphase resampler = new Polyphase(sampleBuffer.getSampleFrequency(), AdaSound.BD_J_SAMPLING_FREQUENCY);
-                int[] inBuffer = new int[length];
-                for (int i = 0; i < length; i++) {
-                    inBuffer[i] = sample[i];
+//System.err.println(sampleBuffer.getSampleFrequency() + ", " + AdaSound.BD_J_SAMPLING_FREQUENCY);
+                if (sampleBuffer.getSampleFrequency() != AdaSound.BD_J_SAMPLING_FREQUENCY) {
+                    Polyphase resampler = new Polyphase(sampleBuffer.getSampleFrequency(), AdaSound.BD_J_SAMPLING_FREQUENCY);
+                    int[] inBuffer = new int[length];
+                    for (int i = 0; i < length; i++) {
+                        inBuffer[i] = sample[i];
+                    }
+                    outBuffer = resampler.resample(inBuffer);
+                    length = outBuffer.length;
+                } else {
+                    outBuffer = new int[length];
+                    for (int i = 0; i < length; i++) {
+                        outBuffer[i] = sample[i];
+                    }
                 }
-                int[] outBuffer = resampler.resample(inBuffer);
-                length = outBuffer.length;
 
                 bitstream.closeFrame();
 

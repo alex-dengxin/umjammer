@@ -28,9 +28,6 @@
       <exclude name="metouia.jar" />
       <exclude name="nanoxml-2.2.3.jar" />
     </fileset>
-    <fileset dir="lib">
-      <include name="*.jar" />
-    </fileset>
 <!--
     <fileset dir="${dir.bdj}/lib">
       <include name="nero/bdj.jar" />
@@ -68,10 +65,14 @@
            destdir="${dir.build}"
            source="1.3"
            target="1.3"
+           encoding="JISAutoDetect"
 	   deprecation="true">
       <classpath>
         <pathelement location="${dir.bdj}/common/jmf/jmf.jar" />
         <path refid="project.class.path" />
+        <fileset dir="lib">
+          <include name="*.jar" />
+        </fileset>
         <fileset dir="${dir.bdj}/lib">
           <include name="nero/bdj.jar" />
         </fileset>
@@ -126,6 +127,7 @@
   <!-- sign -->
   <target name="sign" depends="packaging" description="sign">
     <java classname="net.java.bd.tools.security.BDSigner" fork="yes">
+      <jvmarg value="-Dfile.encoding=${encoding}" />
       <classpath refid="sign.class.path" />
       <arg line="-keystore ${dir.sign}/sig.ks" />
       <arg value="${jar.name}" />
@@ -145,9 +147,9 @@
   <!-- audio -->
   <target name="audio.2" depends="" description="audio">
     <java jar="${dir.bdj}/common/hdcookbook/soundgen.jar" fork="yes">
-      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
+      <env key="Path" value="c:\usr\local\java\jre\bin${path.separator}c:\usr\local\bin" />
 <!--
-      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin" />
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86${path.separator}c:\usr\local\bin" />
 -->
       <classpath refid="audio.class.path" />
       <arg value="-debug" />
@@ -159,9 +161,9 @@
   <!-- audio -->
   <target name="audio" depends="compile" description="create bdmv">
     <java classname="net.java.bd.tools.BDJSoundGenerator" fork="yes">
-      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
+      <env key="Path" value="c:\usr\local\java\jre\bin${path.separator}c:\usr\local\bin" />
 <!--
-      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin;c:\windows\system32" />
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86${path.separator}c:\usr\local\bin${path.separator}c:\windows\system32" />
 -->
       <classpath>
         <path refid="audio.class.path" />
@@ -176,8 +178,8 @@
   <!-- split -->
   <target name="split" depends="compile" description="split bdmv">
     <java classname="net.java.bd.tools.BDJSoundSplitter" fork="yes">
-      <env key="Path" value="c:\usr\local\java\jre\bin;c:\usr\local\bin" />
-      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86;c:\usr\local\bin;c:\windows\system32" />
+      <env key="Path" value="c:\usr\local\java\jre\bin${path.separator}c:\usr\local\bin" />
+      <jvmarg value="-Djava.library.path=${dir.fmj}/nativelib/win32-x86${path.separator}c:\usr\local\bin${path.separator}c:\windows\system32" />
       <classpath>
         <path refid="audio.class.path" />
         <pathelement location="${dir.build}" />
@@ -208,8 +210,11 @@
 
     <copy file="sound.bdmv" toDir="${dir.bdj}/common/vavi/apps/karaoke" />
 
+  	<mkdir dir="${dir.build}/null/null/null" />
+
     <java jar="${dir.bdj}/common/xletview.jar" fork="yes">
-      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common"/>
+      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common${path.separator}lib"/>
+      <jvmarg value="-Ddvb.persistent.root=${user.dir}/${dir.build}" />
       <classpath>
         <pathelement location="${dir.build}" />
         <path refid="project.class.path" />
@@ -222,7 +227,7 @@
   <!-- jmf registry -->
   <target name="jmfregistry" depends="" description="JMF Registry">
     <java classname="JMFRegistry" fork="yes">
-      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common;${dir.bdj}/lib/nero"/>
+      <jvmarg value="-Djava.ext.dirs=${dir.bdj}/common${file.separator}${dir.bdj}/lib/nero"/>
 <!--
       <jvmarg value="-verbose"/>
 -->
