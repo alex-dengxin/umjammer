@@ -111,6 +111,7 @@ e.printStackTrace(System.err);
         StringTokenizer st = new StringTokenizer(string, "\n");
         while (st.hasMoreTokens()) {
             lines.add(st.nextToken());
+System.err.println(lines.get(lines.size() - 1));
             currentLine++;
         }
         update();

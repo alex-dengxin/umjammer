@@ -67,6 +67,7 @@ class AdaSound {
 
     /** current ada file's url */
     public URL getURL() throws IOException {
+System.err.println("sound: " + sounds[no]);
         return new File(sounds[no]).toURL();
     }
 
@@ -95,6 +96,7 @@ class AdaSound {
         int[] channels = { 2 };
         int[] frameLengths = { length / (2 * 2) };
         
+System.err.println("sound: " + sounds[no]);
         OutputStream os = new FileOutputStream(sounds[no]);
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(os));
 

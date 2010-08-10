@@ -359,14 +359,29 @@ System.err.println("}");
             appPath = orgPath + File.separator + appId;
 
             File file = new File(appPath);
-            File[] files = file.listFiles();
+            File[] files = null;
+try {
+            files = file.listFiles();
+} catch (Throwable t) { // for xletview bug
+ t.printStackTrace(System.err);
+ files = new File[] {
+     
+ };
+}
 console.println("1: " + file);
             for (int i = 0; i < files.length; i++) {
 console.println("1: " + files[i] + ", " + files[i].length());
             }
 
             file = new File(orgPath);
+try {
             files = file.listFiles();
+} catch (Throwable t) { // for xletview bug
+ t.printStackTrace(System.err);
+ files = new File[] {
+     
+ };
+}
 console.println("2: " + file);
             for (int i = 0; i < files.length; i++) {
 console.println("2: " + files[i] + ", " + files[i].length());
@@ -497,7 +512,9 @@ c++;
 
                 int length = adaSound.decode();
                 URL url = adaSound.getURL();
+System.err.println("url: " + url);
                 MediaLocator mediaLocator = new MediaLocator(url);
+System.err.println("mediaLocator: " + mediaLocator);
                 DataSource dataSource = Manager.createDataSource(mediaLocator);
                 Player player = Manager.createPlayer(dataSource);
                 player.start();
