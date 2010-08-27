@@ -162,7 +162,7 @@ public class Umjammer09 implements EntryPoint {
         String[] lines = text.split("\n");
         int y = 0;
         for (String line : lines) {
-            surface.fillText(line, 5, y * 16 + 5, 400);
+            surface.fillText(line, 0, y * 16, 400);
             y++;
         }
     }
@@ -172,7 +172,6 @@ public class Umjammer09 implements EntryPoint {
         var canvas = $doc.getElementsByTagName('canvas');
         var scheme = canvas[0].toDataURL("image/png");
         return scheme.replace('data:image/png;base64,', '');
-!!$('check-canvas').toDataURL().match('image/png');
     }-*/;
 
     protected native boolean isEnabledToDataURL()
