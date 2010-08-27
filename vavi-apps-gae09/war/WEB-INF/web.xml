@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  version="2.5">
+
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>toowitterServlet</servlet-name>
+    <servlet-class>vavi.apps.umjammer09.server.ToowitterServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>SignInServlet</servlet-name>
+    <servlet-class>vavi.apps.umjammer09.server.SignInServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>CallBackServlet</servlet-name>
+    <servlet-class>vavi.apps.umjammer09.server.CallBackServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>toowitterServlet</servlet-name>
+    <url-pattern>/umjammer09/toowitter</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SignInServlet</servlet-name>
+    <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>CallBackServlet</servlet-name>
+    <url-pattern>/callback</url-pattern>
+  </servlet-mapping>
+
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Umjammer09.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>
