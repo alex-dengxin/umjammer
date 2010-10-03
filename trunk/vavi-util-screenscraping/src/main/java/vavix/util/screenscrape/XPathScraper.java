@@ -16,9 +16,11 @@ package vavix.util.screenscrape;
  * @version 0.00 051014 nsano initial version <br>
  */
 public abstract class XPathScraper<I, O> implements Scraper<I, O> {
-    /** */
+
+    /** 切り出しに用いる XPath */
     protected String xpath;
-    /** */
+
+    /** @param xpath 切り出しに用いる XPath 文字列 */
     protected XPathScraper(String xpath) {
         this.xpath = xpath;
     }
