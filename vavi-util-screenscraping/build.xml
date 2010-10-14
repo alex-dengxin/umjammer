@@ -30,7 +30,14 @@
 
   <!-- clean -->
   <target name="clean" description="ビルド環境のクリア">
-    <delete dir="${dir.build}" />
+    <delete>
+      <fileset dir="${dir.build}">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="target/test-classes">
+        <include name="**/*" />
+      </fileset>
+    </delete>
   </target>
 
   <!-- prepare -->
@@ -48,16 +55,42 @@
       <include name="*.java" />
       <src path="src/main/java" />
     </javac>
+
+    <copy todir="${dir.build}">
+      <fileset dir="src/main/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+
+    <javac debug="on" encoding="MS932" destdir="target/test-classes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <include name="**/*.java" />
+      <src path="src/test/java" />
+    </javac>
+
+    <copy todir="target/test-classes">
+      <fileset dir="src/test/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- run -->
   <target name="run" depends="compile" description="transration">
-    <java classname="vavi.util.translation.InfoseekJapanTranslator" fork="yes">
+    <java classname="vavix.util.translation.GoogleTranslator" fork="yes">
 <!--
       <jvmarg value="-verbose" />
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.apache.xerces.jaxp.SAXParserFactoryImpl" />    
 -->
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
-      <classpath refid="project.class.path" />
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
       <arg value="${java.test.108.run.en}" />
       <arg value="${java.test.108.run.ja}" />
     </java>
@@ -325,6 +358,16 @@
       </java>
     </sequential>
   </macrodef>
+
+  <!-- itunes -->
+  <target name="itunes" depends="compile" description="proxy">
+    <java classname="iTunes" fork="yes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
 
 </project>
 
