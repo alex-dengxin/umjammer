@@ -32,8 +32,11 @@ public class ProxyChanger {
 
     /** TODO ProxyInternetAddress ‚Å bad or quality */
     public static class InternetAddress {
-        private String hostName;
-        private int port;
+        protected String hostName;
+        protected int port;
+        /** */
+        InternetAddress() {
+        }
         /** */
         InternetAddress(String hostName, int port) {
             this.hostName = hostName;

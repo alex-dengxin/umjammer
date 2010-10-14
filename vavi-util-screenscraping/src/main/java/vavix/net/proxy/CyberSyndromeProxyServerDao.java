@@ -7,35 +7,23 @@
 package vavix.net.proxy;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.NodeList;
-
-import org.xml.sax.InputSource;
-
-import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
 
 import vavi.util.Debug;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
-import vavix.util.screenscrape.SimpleURLScraper;
-import vavix.util.screenscrape.SimpleXPathScraper;
+import vavix.util.screenscrape.annotation.Target;
+import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
  * CyberSyndromeProxyServerDao. 
- *
- * you should add jvm option "-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl"
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>
@@ -52,102 +40,83 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
     }
 
     /** */
-    private List<InternetAddress> proxyAddresses;
+    private List<InternetAddress> proxyAddresses = new ArrayList<InternetAddress>();
 
     /* */
     public List<InternetAddress> getProxyInetSocketAddresses() {
         return proxyAddresses;
     }
 
-    /** */
-    private static String xpath;
-
-    /** */
-    private static String url;
+    @WebScraper(url = "http://www.cybersyndrome.net/pla5.html",
+                encoding = "ISO_8859-1")
+    public static class ProxyInternetAddress extends InternetAddress {
+        /** */
+        @Target("//A[@class='B']/text()")
+        private String address;
+        public String getHostName() {
+            if (hostName == null) {
+                String[] data = address.split(":");
+                hostName = data[0];
+            }
+            return hostName; 
+        }
+        public int getPort() {
+            if (port == 0) {
+                String[] data = address.split(":");
+                port = Integer.parseInt(data[1]);
+            }
+            return port;
+        }
+        /** */
+        public String toString() {
+            return getHostName() + ":" + getPort() + " " + (alive ? "OK" : "NG");
+        }
+        private boolean alive;
+        public void setAlive(boolean alive) {
+            this.alive = alive;
+        }
+    }
 
     /** TODO use timer */
     private void updateProxyAddresses() throws IOException {
-        SimpleURLScraper<List<InternetAddress>> scraper = new SimpleURLScraper<List<InternetAddress>>(new MyScraper(xpath));
-        proxyAddresses = scraper.scrape(new URL(url));
-    }
 
-    /** */
-    private static class MyScraper extends SimpleXPathScraper<List<InternetAddress>> {
-        /** */
-        protected MyScraper(String xpath) {
-            super(xpath);
-        }
-        /** */
-        public List<InternetAddress> scrape(InputStream source) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        List<ProxyInternetAddress> addresses = WebScraper.Util.scrape(ProxyInternetAddress.class);
+        for (ProxyInternetAddress address : addresses) {
             try {
-                InputSource in = new InputSource(source);
-                in.setEncoding("ISO_8859-1");
-                NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
-                final List<InternetAddress> proxyAddress = new ArrayList<InternetAddress>();
-                class ProxyChecker implements Runnable {
-                    String host;
-                    int port;
-                    ProxyChecker(String host, int port) {
-                        this.host = host;
-                        this.port = port;
-                    }
-                    /** */
-                    public void run() {
-                        if (isOk(host, port)) {
-                            InternetAddress inetSocketAddress = new InternetAddress(host, port);
-                            proxyAddress.add(inetSocketAddress);
-System.err.println("OK: " + host + ":" + port);
-                        } else {
-System.err.println("NG: " + host + ":" + port);
-                        }
-                    }
-                    boolean isOk(String host, int port) {
-                        try {
-                            HttpClient client = new HttpClient();
-    
-                            HostConfiguration hc = new HostConfiguration();
-                            hc.setHost("yahoo.co.jp");
-                            hc.setProxy(host, port);
-                            HeadMethod head = new HeadMethod();
-                            head.setHostConfiguration(hc);
-                            int status = client.executeMethod(head);
-                            return status == 200;
-                        } catch (IOException e) {
-//Debug.println(e);
-                            return false;
-                        }
-                    }
-                }
-                ExecutorService executorService = Executors.newCachedThreadPool();
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    try {
-                        String[] data = nodeList.item(i).getTextContent().split(":");
-                        String host = data[0];
-                        int port = Integer.parseInt(data[1]);
-
-                        executorService.execute(new ProxyChecker(host, port));
-                    } catch (Exception e) {
-                        Debug.println(e);
-                    }
-                }
-                return proxyAddress;
-            } catch (XPathExpressionException e) {
-                throw (RuntimeException) new IllegalArgumentException("wrong input").initCause(e);
+                executorService.submit(new ProxyChecker(address));
+                Thread.sleep(300);
+            } catch (Exception e) {
+                Debug.println(e);
             }
         }
     }
 
-    /* */
-    static {
-        try {
-            Properties props = new Properties();
-            props.load(PropertiesUserAgentDao.class.getResourceAsStream("CyberSyndromeProxyServerDao.properties"));
+    class ProxyChecker implements Runnable {
+        ProxyInternetAddress address;
+        ProxyChecker(ProxyInternetAddress address) {
+            this.address = address;
+        }
+        /** */
+        public void run() {
+            try {
+                HttpClient client = new HttpClient();
+//System.err.println("TRY: " + address);
+                client.getHostConfiguration().setProxy(address.getHostName(), address.getPort());
 
-            url = props.getProperty("url");
-            xpath = props.getProperty("xpath");
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
-            System.exit(-1);
+                HeadMethod head = new HeadMethod("http://www.yahoo.co.jp/");
+                int status = client.executeMethod(head);
+//System.err.println("STA: " + status);
+
+                boolean alive = status == HttpStatus.SC_OK;
+                address.setAlive(alive);
+            } catch (Exception e) {
+//System.err.println("ERR: " + e);
+                address.setAlive(false);
+            } finally {
+System.err.println("ADD: " + address);
+            }
         }
     }
 
