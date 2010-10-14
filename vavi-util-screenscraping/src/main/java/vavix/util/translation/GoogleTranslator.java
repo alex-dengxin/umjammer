@@ -14,17 +14,17 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
-import vavix.util.screenscrape.PropertiesUserAgentDao;
+import vavix.net.proxy.CyberSyndromeProxyServerDao;
+import vavix.net.proxy.PropertiesUserAgentDao;
+import vavix.net.proxy.ProxyChanger;
+import vavix.net.proxy.ProxyServerDao;
+import vavix.net.proxy.UserAgentSwitcher;
+import vavix.net.proxy.ProxyChanger.InternetAddress;
 
 import vavi.util.Debug;
-import vavix.util.screenscrape.CyberSyndromeProxyServerDao;
-import vavix.util.screenscrape.ProxyChanger;
-import vavix.util.screenscrape.ProxyServerDao;
 import vavix.util.screenscrape.Scraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
-import vavix.util.screenscrape.UserAgentSwitcher;
-import vavix.util.screenscrape.ProxyChanger.InternetAddress;
 
 
 /**

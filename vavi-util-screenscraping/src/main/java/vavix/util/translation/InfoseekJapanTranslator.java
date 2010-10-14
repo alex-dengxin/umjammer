@@ -16,7 +16,8 @@ import java.util.Properties;
 
 import org.apache.commons.httpclient.Cookie;
 
-import vavix.util.screenscrape.PropertiesUserAgentDao;
+import vavix.net.proxy.PropertiesUserAgentDao;
+import vavix.net.proxy.UserAgentSwitcher;
 
 import vavi.net.http.HttpContext;
 import vavi.util.Debug;
@@ -24,7 +25,6 @@ import vavix.util.screenscrape.ApacheHttpScraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
 import vavix.util.screenscrape.StringSimpleXPathScraper;
-import vavix.util.screenscrape.UserAgentSwitcher;
 
 
 /**
