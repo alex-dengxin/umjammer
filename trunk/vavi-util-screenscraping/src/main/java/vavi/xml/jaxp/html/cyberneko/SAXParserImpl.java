@@ -6,10 +6,22 @@
 
 package vavi.xml.jaxp.html.cyberneko;
 
-import javax.xml.parsers.SAXParser;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.XMLReader;
+import javax.xml.parsers.SAXParser;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 
 
 /**
@@ -36,7 +48,82 @@ public class SAXParserImpl extends SAXParser {
 
     /** */
     public XMLReader getXMLReader() throws SAXException {
-        throw new UnsupportedOperationException("not implemented");
+        return new XMLReader() {
+            Map<String, Object> properties = new HashMap<String, Object>();
+            @Override
+            public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
+                properties.put(name, value);
+            }
+            Map<String, Boolean> features = new HashMap<String, Boolean>();
+            @Override
+            public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
+                features.put(name, value);
+            }
+            ErrorHandler errorHandler;
+            @Override
+            public void setErrorHandler(ErrorHandler handler) {
+                errorHandler = handler;
+            }
+            EntityResolver entityResolver;
+            @Override
+            public void setEntityResolver(EntityResolver resolver) {
+                entityResolver = resolver;
+            }
+            DTDHandler dtdHandler;
+            @Override
+            public void setDTDHandler(DTDHandler handler) {
+                dtdHandler = handler;
+            }
+            ContentHandler contentHandler;
+            @Override
+            public void setContentHandler(ContentHandler handler) {
+                contentHandler = handler;
+            }
+            @Override
+            public void parse(String systemId) throws IOException, SAXException {
+                if (dtdHandler != null)
+                    parser.setDTDHandler(dtdHandler);
+                if (entityResolver != null)
+                    parser.setEntityResolver(entityResolver);
+                if (errorHandler != null)
+                    parser.setErrorHandler(errorHandler);
+                parser.parse(systemId);
+            }
+            @Override
+            public void parse(InputSource input) throws IOException, SAXException {
+                if (dtdHandler != null)
+                    parser.setDTDHandler(dtdHandler);
+                if (entityResolver != null)
+                    parser.setEntityResolver(entityResolver);
+                if (errorHandler != null)
+                    parser.setErrorHandler(errorHandler);
+                parser.parse(input);
+            }
+            @Override
+            public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+                return properties.get(name);
+            }
+            @Override
+            public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+                return features.get(name);
+            }
+            @Override
+            public ErrorHandler getErrorHandler() {
+                return errorHandler;
+            }
+            @Override
+            public EntityResolver getEntityResolver() {
+                return entityResolver;
+            }
+            @Override
+            public DTDHandler getDTDHandler() {
+                return dtdHandler;
+            }
+            @Override
+            public ContentHandler getContentHandler() {
+                return contentHandler;
+            }
+        };
     }
 
     /** */
