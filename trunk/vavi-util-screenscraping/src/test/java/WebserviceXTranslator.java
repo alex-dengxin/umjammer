@@ -17,10 +17,11 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import vavi.net.ws.webservicex.translation.TranslateService;
 import vavi.net.ws.webservicex.translation.TranslateServiceSoap;
 import vavi.util.Debug;
-import vavix.util.screenscrape.CyberSyndromeProxyServerDao;
-import vavix.util.screenscrape.ProxyChanger;
-import vavix.util.screenscrape.ProxyServerDao;
-import vavix.util.screenscrape.ProxyChanger.InternetAddress;
+
+import vavix.net.proxy.CyberSyndromeProxyServerDao;
+import vavix.net.proxy.ProxyChanger;
+import vavix.net.proxy.ProxyServerDao;
+import vavix.net.proxy.ProxyChanger.InternetAddress;
 import vavix.util.translation.Translator;
 
 
