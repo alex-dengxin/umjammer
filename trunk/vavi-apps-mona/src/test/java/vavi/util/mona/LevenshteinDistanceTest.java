@@ -27,7 +27,8 @@ import vavi.util.mona.Mona;
  */
 public class LevenshteinDistanceTest {
 
-    @Test
+    /** input threads no from console */
+//    @Test
     public void test00() throws Exception {
         Mona mona = new Mona();
         List<BbsBoard> boards = mona.getBoardsByCategory("実況ch");
@@ -35,8 +36,8 @@ public class LevenshteinDistanceTest {
             System.out.println(i + ": " + boards.get(i));
         }
         int index = new Scanner(System.in).nextInt();
-        mona.setTargetBoardByName(boards.get(index).getName());
-        List<BbsThread> threads = mona.getThreads();
+        BbsBoard board = mona.getBoardByName(boards.get(index).getName());
+        List<BbsThread> threads = board.getThreads();
         final String title = threads.get(0).getTitleAsPlainText();
         final LevenshteinDistance ld = new LevenshteinDistance();
         Collections.sort(threads, new Comparator<BbsThread>() {
@@ -47,7 +48,28 @@ public class LevenshteinDistanceTest {
         });
         System.out.println(title);
         for (BbsThread thread : threads) {
-            System.out.println(ld.calculate(title, thread.getTitleAsPlainText()) + ": " + thread.getTitleAsPlainText());
+            System.out.println(ld.calculate(title, thread.getTitleAsPlainText()) + ": " + thread.getTitleAsPlainText()  + "\t\t" + thread.getInfluence());
+        }
+    }
+
+    /** input threads no from console */
+    @Test
+    public void test01() throws Exception {
+        String[] names = {
+            "番組ch(NHK)",
+            "番組ch(教育)",
+            "番組ch(NTV)",
+            "番組ch(TBS)",
+            "番組ch(フジ)",
+            "番組ch(朝日)",
+            "番組ch(TX)"
+        };
+        Mona mona = new Mona();
+        for (String name : names) {
+            BbsBoard board = mona.getBoardByName(name);
+            List<BbsThread> threads = board.getThreads();
+            BbsThread thread = threads.get(0);
+            System.out.println(thread.getInfluence() + ": " + thread.getTitleAsPlainText());
         }
     }
 }

@@ -6,6 +6,11 @@
 
 package vavi.util.mona;
 
+import java.util.Collections;
+import java.util.List;
+
+import vavi.util.mona.impl.MyBbsThreadsFactory;
+
 
 /**
  * BbsBoard.
@@ -48,6 +53,21 @@ public class BbsBoard {
     /* */
     public String toString() {
         return category + ", " + name + ", " + url;
+    }
+
+    /** */
+    private BbsThreadsFactory bbsThreadsFactory = new MyBbsThreadsFactory();
+
+    /** */
+    public List<BbsThread> getThreads() throws Exception {
+        List<BbsThread> threads = bbsThreadsFactory.readFrom(this);
+        Collections.sort(threads);
+//for (int i = 0; i < threads.size(); i++) {
+// BbsThread thread = (BbsThread) threads.get(i);
+// System.err.println(thread);
+//}
+
+        return threads;
     }
 }
 

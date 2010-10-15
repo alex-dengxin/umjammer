@@ -8,7 +8,6 @@ package vavi.util.mona;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Timer;
@@ -16,7 +15,6 @@ import java.util.TimerTask;
 
 import vavi.util.mona.impl.MyBbsBoardsFactory;
 import vavi.util.mona.impl.MyBbsDatumFactory;
-import vavi.util.mona.impl.MyBbsThreadsFactory;
 
 
 /**
@@ -58,37 +56,34 @@ public class Mona {
     }
 
     /** */
-    private BbsBoard targetBoard;
-
-    /** */
-    private BbsThreadsFactory bbsThreadsFactory = new MyBbsThreadsFactory();
-
-    /** */
-    public void setTargetBoardByName(String name) {
+    public BbsBoard getBoardByName(String name) {
         for (BbsBoard board : boards) {
             if (board.getName().equals(name)) {
-                targetBoard = board;
-System.err.println("BOARD: current is " + targetBoard);
-                return;
+                return board;
             }
         }
         throw new IllegalArgumentException("no such board name: " + name);
     }
 
     /** */
+    private BbsBoard targetBoard;
+
+    /** */
+    public void setTargetBoard(BbsBoard board) {
+        this.targetBoard = board;
+System.err.println("BOARD: current is " + targetBoard);
+    }
+
+    /**
+     * utility
+     * 
+     * @before #setTargetBoard(BbsBoard)
+     */
     public List<BbsThread> getThreads() throws Exception {
         if (targetBoard == null) {
             throw new IllegalStateException("targetBoard has not set");
         }
-
-        List<BbsThread> threads = bbsThreadsFactory.readFrom(targetBoard);
-        Collections.sort(threads);
-//for (int i = 0; i < threads.size(); i++) {
-// BbsThread thread = (BbsThread) threads.get(i);
-// System.err.println(thread);
-//}
-
-        return threads;
+        return targetBoard.getThreads();
     }
 
     /** */

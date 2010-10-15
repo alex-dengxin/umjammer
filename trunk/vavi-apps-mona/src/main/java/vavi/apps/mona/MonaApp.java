@@ -186,8 +186,8 @@ public class MonaApp {
                 case KeyEvent.VK_ENTER: // Åõ
                     try {
                         String boardName = boards.get(getCurrentIndex()).getName();
-                        mona.setTargetBoardByName(boardName);
-                        threadVC.setModel(mona.getThreads());
+                        BbsBoard board = mona.getBoardByName(boardName);
+                        threadVC.setModel(board.getThreads());
                         mode = MODE_THREAD;
 System.err.println("MODE: THREAD");
                     } catch (Exception e) {
