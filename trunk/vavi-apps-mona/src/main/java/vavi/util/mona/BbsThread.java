@@ -30,6 +30,10 @@ public class BbsThread implements Comparable<BbsThread> {
     /** */
     private long sinse;
 
+    public long getSinse() {
+        return sinse;
+    }
+
     /** */
     private long lastModified;
     /** gunziped size */

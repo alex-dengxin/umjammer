@@ -354,7 +354,7 @@ System.err.println("MODE: BOARD");
                 int keyCode = event.getKeyCode();
                 switch (keyCode) {
                 case KeyEvent.VK_UP:
-                    // back scroll ‚Æ‚©
+                    // TODO back scroll ‚Æ‚©
                     break;
                 case KeyEvent.VK_LEFT:
                     if (wait <= 950) {
@@ -379,6 +379,7 @@ status = "wait: " + wait;
                     try {
                         if (!mona.isLiveStopped()) {
                             mona.stopLive();
+                            // TODO find next thread
                         }
                         threadVC.setModel(mona.getThreads());
                         viewLoop = false;
