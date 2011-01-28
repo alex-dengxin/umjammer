@@ -6,7 +6,10 @@
 
 package vavix.util.screenscrape.annotation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,11 +21,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import net.sf.saxon.dom.NodeOverNodeInfo;
 import net.sf.saxon.om.NodeInfo;
 
 import org.xml.sax.InputSource;
 
 import vavi.beans.BeanUtil;
+import vavi.xml.util.PrettyPrinter;
 
 
 /**
@@ -42,11 +47,11 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 //System.err.println(XPathFactory.newInstance().getClass());
     }
 
-    /** */
+    /** TODO WebScraper#value() */
     public List<T> parse(Class<T> type, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-System.err.println("encoding: " + encoding);
+//System.err.println("encoding: " + encoding);
 
             List<T> results = new ArrayList<T>();
 
@@ -57,12 +62,12 @@ System.err.println("encoding: " + encoding);
                 in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
-System.err.println("xpath: " + xpath);
+//System.err.println("xpath: " + xpath);
                 if (WebScraper.Util.isCollection(type)) {
                     
                     @SuppressWarnings("unchecked")
                     List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
-System.err.println("nodeList: " + nodeList.size());
+//System.err.println("nodeList: " + nodeList.size());
                     for (int i = 0; i < nodeList.size(); i++) {
                         T bean = null;
                         try {
@@ -103,9 +108,46 @@ System.err.println("nodeList: " + nodeList.size());
         }
     }
 
-    /** TODO implement */
+    /** TODO now 2 step XPath only */
     public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
-        throw new UnsupportedOperationException("not implemented yet");
+        try {
+            String encoding = WebScraper.Util.getEncoding(type);
+    
+            InputSource in = new InputSource(inputHandler.getInput(args));
+            in.setEncoding(encoding);
+    
+            String xpath = WebScraper.Util.getValue(type);
+    
+            @SuppressWarnings("unchecked")
+            List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
+System.err.println("nodeList: " + nodeList.size());
+            for (int i = 0; i < nodeList.size(); i++) {
+                T bean = type.newInstance();
+    
+                NodeInfo node = nodeList.get(i);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                new PrettyPrinter(new PrintWriter(baos)).print(NodeOverNodeInfo.wrap(node));
+    
+                Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
+                for (Field field : targetFields) {
+                    String subXpath = Target.Util.getValue(field); 
+                    InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                    String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+                    BeanUtil.setFieldValue(field, bean, text);
+                }
+                
+                eachHandler.exec(bean);
+            }
+
+        } catch (XPathExpressionException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
 

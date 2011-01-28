@@ -36,6 +36,9 @@ public @interface WebScraper {
     @SuppressWarnings("rawtypes")
     Class<? extends Parser> parser() default XPathParser.class;
 
+    /** for 2 step XPath */
+    String value() default "";
+
     /** repeatable data or not */
     boolean isCollection() default true;
 
@@ -73,6 +76,15 @@ public @interface WebScraper {
                 throw new IllegalArgumentException("type is not annotated with @WebScraper");
             }
             return webScraper.isCollection();
+        }
+
+        /** for 2 step XPath */
+        public static String getValue(Class<?> type) {
+            WebScraper webScraper = type.getAnnotation(WebScraper.class);
+            if (webScraper == null) {
+                throw new IllegalArgumentException("type is not annotated with @WebScraper");
+            }
+            return webScraper.value();
         }
 
         /** */

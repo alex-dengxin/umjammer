@@ -4,10 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
@@ -16,14 +13,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import net.sf.saxon.dom.NodeOverNodeInfo;
-import net.sf.saxon.om.NodeInfo;
-
-import org.xml.sax.InputSource;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -36,7 +25,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
 import vavi.util.CharConverterJa;
 import vavi.util.LevenshteinDistance;
-import vavi.xml.util.PrettyPrinter;
 import vavix.util.screenscrape.annotation.EachHandler;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.SaxonXPathParser;
@@ -53,67 +41,20 @@ import vavix.util.screenscrape.annotation.XPathParser;
  */
 public class iTunes {
 
-    /** iTunes ライブラリ検索 */
-    public static class MyXPathParser extends SaxonXPathParser<Title> {
-        /** */
-        public void foreach(Class<Title> type, EachHandler<Title> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
-            try {
-                String encoding = WebScraper.Util.getEncoding(type);
-
-                InputSource in = new InputSource(inputHandler.getInput(args));
-                in.setEncoding(encoding);
-
-                String xpath = "/plist/dict/dict/dict";
-
-                @SuppressWarnings("unchecked")
-                List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
-System.err.println("nodeList: " + nodeList.size());
-                for (int i = 0; i < nodeList.size(); i++) {
-                    Title bean = new Title();
-
-                    NodeInfo node = nodeList.get(i);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    new PrettyPrinter(new PrintWriter(baos)).print(NodeOverNodeInfo.wrap(node));
-                    InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    bean.artist = (String) xPath.evaluate("/dict/key[text()='Artist']/following-sibling::string[1]/text()", is, XPathConstants.STRING);
-
-                    is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    bean.name = (String) xPath.evaluate("/dict/key[text()='Name']/following-sibling::string[1]/text()", is, XPathConstants.STRING);
-
-                    is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    bean.composer = (String) xPath.evaluate("/dict/key[text()='Composer']/following-sibling::string[1]/text()", is, XPathConstants.STRING);
-                    
-                    is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    bean.albumArtist = (String) xPath.evaluate("/dict/key[text()='Album Artist']/following-sibling::string[1]/text()", is, XPathConstants.STRING);
-
-                    is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    bean.album = (String) xPath.evaluate("/dict/key[text()='Album']/following-sibling::string[1]/text()", is, XPathConstants.STRING);
-                    
-                    eachHandler.exec(bean);
-//break;
-                }
-
-            } catch (XPathExpressionException e) {
-                throw new IllegalArgumentException(e);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
     /** iTunes ライブラリ一曲 */
     @WebScraper(url = "file:///Users/nsano/Music/iTunes/iTunes%20Music%20Library.xml",
-                parser = MyXPathParser.class)
+                parser = SaxonXPathParser.class,
+                value = "/plist/dict/dict/dict")
     public static class Title {
+        @Target("/dict/key[text()='Artist']/following-sibling::string[1]/text()")
         String artist;
+        @Target("/dict/key[text()='Name']/following-sibling::string[1]/text()")
         String name;
+        @Target("/dict/key[text()='Composer']/following-sibling::string[1]/text()")
         String composer;
+        @Target("/dict/key[text()='Album']/following-sibling::string[1]/text()")
         String album;
+        @Target("/dict/key[text()='Album Artist']/following-sibling::string[1]/text()")
         String albumArtist;
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -398,7 +339,7 @@ System.err.println("nodeList: " + nodeList.size());
 
     static final Pattern normalizeComposerPattern = Pattern.compile("[\\p{Upper}\\d' _ー\\.\\(\\)-]+");
 
-    /** TODO Mc, O, Dr, St, Van, De ... and (US1), (GB) ... */
+    /** TODO Mc-, O-, Dr, St, Van, De-, La-, III, II, Jr, Sr, DJ ... and (US1), (GB) ... */
     static String normalizeComposer(String name) {
         Matcher matcher = normalizeComposerPattern.matcher(name);
         if (!matcher.matches()) {

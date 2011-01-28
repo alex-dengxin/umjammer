@@ -8,9 +8,13 @@ package vavix.util.screenscrape;
 
 import java.io.InputStream;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.InputSource;
+
+import vavi.util.Debug;
+import vavi.xml.util.PrettyPrinter;
 
 
 /**
@@ -29,6 +33,12 @@ public class StringSimpleXPathScraper extends SimpleXPathScraper<String> {
     /** */
     public String scrape(InputStream source) {
         try {
+            try {
+PrettyPrinter pp = new PrettyPrinter(System.out);
+ pp.print(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source));
+} catch (Exception e) {
+ Debug.println(e);
+}
             return xPath.evaluate(xpath, new InputSource(source));
         } catch (XPathExpressionException e) {
             throw (RuntimeException) new IllegalStateException().initCause(e);

@@ -134,7 +134,9 @@ System.err.println("N: " + title + " -> " + normalizedName);
     public void test04() throws Exception {
 
       String[] us = {
-          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=03072207&subSessionID=001&subSession=start",
+          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=0F587101&subSessionID=001&subSession=start",
+          "",
+          "",
           "",
       };
 
@@ -154,7 +156,8 @@ System.err.println("N: " + title + " -> " + normalizedName);
     public void test05() throws Exception {
 
       String[] csx = {
-          "Griffin, James/Kaplin, Fred/Wilson, Robert",
+          "Abdul-Basit / Jenkins / James Poyser / Ahmir \"?uestlove\" Thompson / Tariq Trotter",
+          "",
           "",
       };
 
