@@ -62,7 +62,7 @@
       </fileset>
     </copy>
 
-    <javac debug="on" encoding="MS932" destdir="target/test-classes">
+    <javac debug="on" encoding="UTF-8" destdir="target/test-classes">
       <classpath>
         <path refid="project.class.path" />
         <pathelement location="${dir.build}" />
@@ -362,6 +362,10 @@
   <!-- itunes -->
   <target name="itunes" depends="compile" description="proxy">
     <java classname="iTunes" fork="yes">
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
+<!--
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+-->
       <classpath>
         <path refid="project.class.path" />
         <pathelement location="target/test-classes" />

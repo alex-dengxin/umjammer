@@ -14,8 +14,6 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.InputSource;
 
-import vavix.util.screenscrape.SimpleXPathScraper;
-
 
 /**
  * Java SE XPath Ç≈êÿÇËèoÇ∑ Scraper Ç≈Ç∑ÅB
@@ -38,17 +36,17 @@ public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
     public String scrape(InputStream is) {
 
         try {
-            InputSource in = new InputSource(new InputStreamReader(is, encoding));
 //try {
 // PrettyPrinter pp = new PrettyPrinter(System.out);
 // pp.print(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is));
 //} catch (Exception e) {
 // Debug.println(e);
 //}
+            InputSource in = new InputSource(new InputStreamReader(is, encoding));
             String value = xPath.evaluate(xpath, in);
             return value;
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         } catch (XPathExpressionException e) {
             throw (RuntimeException) new IllegalArgumentException("wrong input").initCause(e);
         }
