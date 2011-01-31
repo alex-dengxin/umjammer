@@ -419,6 +419,7 @@ public class iTunes {
             public void exec(Title each) {
                 try {
                     doEach(each);
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                     System.err.println(e);
                 }
