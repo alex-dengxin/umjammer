@@ -1,8 +1,15 @@
 #summary [Pick Up Example Series] #1 Screen Scraping Library for Java
 
-
-
 = Introduction =
+
+アノテーションを使って Screen Scraping を行い POJO に設定できます。
+
+{{{
+  @WebScraper(url = "http://foo.com/bar.html")
+  public static class Bar {
+  }
+
+}}}
 
 = Repository ==
 
