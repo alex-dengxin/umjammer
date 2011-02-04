@@ -32,10 +32,20 @@ http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping
   * SaxonParser
  * EachHandler
 
-== POJO <- inject <- Annotation ==
+== Annotation -> inject -> POJO ==
 
  一般化できそう
 
+ * javax.persistence
+ * CLI
+ * CSV
+ * Properties
+
+ * Rest
+ * WebQuery
+
+ * UPnP
+ 
 = 紆余曲折 =
 
 何かを簡単にしたいと思った場合ボトムアップな設計は良くないかもしれないと思った。
