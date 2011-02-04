@@ -27,7 +27,27 @@ http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= 紆余曲折 =
+
+何かを簡単にしたいと思った場合ボトムアップな設計は良くないかもしれないと思った。
+
+まず何も考えずにスクレイピングするプログラムを書いて、リファクタリングをし続けた結果
+
+http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping/src/main/java/vavix/util/screenscrape/Scraper.java
+
+{{{
+public interface Scraper<I, O> {
+    O scrape(I source);
+}
+}}}
+
+一番最後にできたインターフェースがこれ。できた時は「おぉ、やはり考えを突き詰めれば本当にシンプルなものに突き当たるんだ」と一瞬思ったものだが、よく見りゃ"入力を加工して出力する"という"プログラム"の定義を Java言語で書き直してるだけやんか！アホか...orz
+
+恥ずかしいけど自戒のためにリポジトリに残しておく。
+
+トップダウン的に
+ * URLを指定して
+ * その中身は XPath で指定して
+ * POJO のリストでほしい
+で、それ以外は何もしたくないと決め打ちすればおのずと上記の仕様が出てきた。
+
