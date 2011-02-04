@@ -1,9 +1,12 @@
-#summary Screen Scraping Library for Java
+#summary [Pick Up Example Series] #1 Screen Scraping Library for Java
+
+
 
 = Introduction =
 
+= Repository ==
 
-
+http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping
 
 = Details =
 
