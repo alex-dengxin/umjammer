@@ -1,4 +1,4 @@
-#summary [Pick Up Example Series] #1 Screen Scraping Library for Java
+#summary Pick Up an Example Series #1 ~ Screen Scraping Library for Java
 
 = Introduction =
 
