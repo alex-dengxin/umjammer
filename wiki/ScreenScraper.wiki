@@ -36,15 +36,15 @@ http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping
 
  一般化できそう
 
- * javax.persistence
- * CLI
- * CSV
- * Properties
+ * [http://ja.wikipedia.org/wiki/Java_Persistence_API javax.persistence]
+ * [http://code.google.com/p/klab-commons-cli/ CLI]
+ * [http://code.google.com/p/klab-commons-csv/ CSV]
+ * [http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons%2Fsrc%2Fmain%2Fjava%2Fvavi%2Futil%2Fproperties%2Fannotation Properties]
 
- * Rest
- * WebQuery
+ * [Rest]
+ * [WebQuery]
 
- * UPnP
+ * [http://code.google.com/p/cyberlink4java2/ UPnP]
  
 = 紆余曲折 =
 
