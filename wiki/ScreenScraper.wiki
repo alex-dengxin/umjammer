@@ -27,6 +27,15 @@ http://code.google.com/p/umjammer/source/browse/trunk/vavi-util-screenscraping
 
 = Details =
 
+ * InputHandler
+ * Parser
+  * SaxonParser
+ * EachHandler
+
+== POJO <- inject <- Annotation ==
+
+ 一般化できそう
+
 = 紆余曲折 =
 
 何かを簡単にしたいと思った場合ボトムアップな設計は良くないかもしれないと思った。
