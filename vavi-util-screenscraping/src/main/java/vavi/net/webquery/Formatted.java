@@ -24,17 +24,17 @@ import java.lang.reflect.Field;
 public @interface Formatted {
 
     /**
-     * ƒpƒ‰ƒ[ƒ^‚ÌƒtƒH[ƒ}ƒbƒgƒ^ƒCƒv 
+     * ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚¿ã‚¤ãƒ— 
      */
     Class<? extends Formatter> formatter();
 
     /**
-     * ƒtƒH[ƒ}ƒbƒg‚·‚éê‡‚Ì’l 
+     * ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã™ã‚‹å ´åˆã®å€¤ 
      */
     String value() default "";
 
     /**
-     * TODO ƒAƒmƒe[ƒVƒ‡ƒ“‚ªƒƒ\ƒbƒhw’è‚Ìê‡ 
+     * TODO ã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ¡ã‚½ãƒƒãƒ‰æŒ‡å®šã®å ´åˆ 
      */
     static class Util {
 

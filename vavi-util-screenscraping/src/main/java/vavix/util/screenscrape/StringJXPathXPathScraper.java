@@ -16,7 +16,7 @@ import vavix.util.screenscrape.XPathScraper;
 
 
 /**
- * AJXPath ‚ÅØ‚èo‚·‹@‚Å‚·B
+ * ã€JXPath ã§åˆ‡ã‚Šå‡ºã™æ©Ÿã§ã™ã€‚
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
@@ -32,7 +32,7 @@ public class StringJXPathXPathScraper extends XPathScraper<InputStream, String> 
         this.encoding = encoding;
     }
 
-    /** –|–ó‚µ‚Ü‚·B */
+    /** ç¿»è¨³ã—ã¾ã™ã€‚ */
     public String scrape(InputStream source) {
 
         Container dc = new HtmlDocumentContainer(source, encoding);
@@ -41,7 +41,7 @@ public class StringJXPathXPathScraper extends XPathScraper<InputStream, String> 
         return (String) context.getValue(xpath);
 
 //        DocumentContainer.registerXMLParser(DocumentContainer.MODEL_DOM, new HTMLParser(encoding));
-        // TODO ‹C‚É“ü‚ç‚ñAorg.w3c.dom.Document ‚ªˆø”‚â‚ëH
+        // TODO æ°—ã«å…¥ã‚‰ã‚“ã€org.w3c.dom.Document ãŒå¼•æ•°ã‚„ã‚ï¼Ÿ
 //        DocumentContainer dc = new DocumentContainer(url, DocumentContainer.MODEL_DOM);
 //Debug.println("dc: " + dc.getValue());
 //Debug.println(dc);

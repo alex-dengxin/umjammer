@@ -17,7 +17,9 @@ import java.io.IOException;
  */
 public interface InputHandler<T> {
 
-    /** */
+    /**
+     * TODO こういう所だよなぁ、Java のメソッドが First Class Object だったらなぁと思う場面
+     */
     T getInput(String ... args) throws IOException;
 }
 

@@ -15,6 +15,7 @@ package vavix.util.screenscrape.annotation;
  */
 public interface EachHandler<T> {
 
+    /** @see {@link Parser#foreach(Class, EachHandler, InputHandler, String...)} */
     void exec(T each);
 }
 

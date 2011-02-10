@@ -16,7 +16,7 @@ import vavi.util.win32.WindowsProperties;
 
 
 /**
- * ini Œ`®‚Ìƒtƒ@ƒCƒ‹‚Ì’l‚ğ–|–ó‚µ‚Ü‚·B
+ * ini å½¢å¼ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®å€¤ã‚’ç¿»è¨³ã—ã¾ã™ã€‚
  */
 public class t108_1 {
     public static void main(String[] args) throws IOException {
@@ -34,7 +34,7 @@ public class t108_1 {
                 translated = translator.toLocal(value);
             } catch (IOException e) {
 Debug.println(e);
-                translated = "ššš –|–ó¸”s ššš[" + value + "]";
+                translated = "â˜…â˜…â˜… ç¿»è¨³å¤±æ•— â˜…â˜…â˜…[" + value + "]";
             }
             props.setProperty(key, translated);
         }

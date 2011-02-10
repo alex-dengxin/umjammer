@@ -27,21 +27,21 @@ public class t108_2 {
         URL url = Thread.currentThread().getContextClassLoader().getResource(args[0]);
         org.apache.commons.jxpath.XMLDocumentContainer docCtr = new org.apache.commons.jxpath.XMLDocumentContainer(url);
         JXPathContext context = JXPathContext.newContext(docCtr);
-System.out.println("-->" + context.getValue("/a/b/c[@id='0001']")); //uaaav‚Æ•\¦
-        context.setValue("/a/b/c[@id='0006']", "test"); //³í‚ÉXV
+System.out.println("-->" + context.getValue("/a/b/c[@id='0001']")); //ã€Œaaaã€ã¨è¡¨ç¤º
+        context.setValue("/a/b/c[@id='0006']", "test"); //æ­£å¸¸ã«æ›´æ–°
         
         Document doc1 = (Document) docCtr.getValue();
 System.out.println("### Word doc -- \n" + doc1.getDocumentElement());
         
-        // ¸”s
+        // å¤±æ•—
 //  	context.createPathAndSetValue("/a/b/c[1]/e", "bbb");
         
-        // ¬Œ÷(1)
+        // æˆåŠŸ(1)
         context.createPathAndSetValue("/a/b/c[1]/d", "abcd");
-        // ¬Œ÷(2)
+        // æˆåŠŸ(2)
 //  	context.createPathAndSetValue("/a/b/c[@id='0001']/d", "abcd");
         
-        // ¬Œ÷(3)
+        // æˆåŠŸ(3)
         context.setFactory(new DOMFactory());
         context.createPathAndSetValue("/a/b/c[1]/e", "bbb");
         

@@ -26,20 +26,20 @@ import vavi.beans.BeanUtil;
 public @interface Parameter {
 
     /**
-     * •K{‚©‚Ç‚¤‚©
+     * å¿…é ˆã‹ã©ã†ã‹
      * @wadl compliant
      */
     boolean required() default false;
 
     /**
-     * ÀÛ‚Ì rest parameter –¼
-     * "" ‚Ì‚Í bean ‚ÌƒtƒB[ƒ‹ƒh–¼‚ğ‚»‚Ì‚Ü‚Ü
+     * å®Ÿéš›ã® rest parameter å
+     * "" ã®æ™‚ã¯ bean ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã‚’ãã®ã¾ã¾
      * @wadl compliant
      */
     String name() default "";
 
     /**
-     * TODO ƒAƒmƒe[ƒVƒ‡ƒ“‚ªƒƒ\ƒbƒhw’è‚Ìê‡ 
+     * TODO ã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ¡ã‚½ãƒƒãƒ‰æŒ‡å®šã®å ´åˆ 
      */
     class Util {
         /**

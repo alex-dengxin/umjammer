@@ -16,7 +16,7 @@ import org.xml.sax.InputSource;
 
 
 /**
- * Java SE XPath ‚ÅØ‚èo‚· Scraper ‚Å‚·B
+ * Java SE XPath ã§åˆ‡ã‚Šå‡ºã™ Scraper ã§ã™ã€‚
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 050909 nsano initial version <br>
@@ -32,7 +32,7 @@ public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
         this.encoding = encoding;
     }
 
-    /** B */
+    /** ã€‚ */
     public String scrape(InputStream is) {
 
         try {

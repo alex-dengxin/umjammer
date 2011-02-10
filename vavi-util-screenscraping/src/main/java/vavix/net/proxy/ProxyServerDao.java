@@ -19,7 +19,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  */
 public interface ProxyServerDao {
 
-    /** ŒvZ’l‚Å‚Í‚È‚­Ã“IƒŠƒXƒg‚ğ•Ô‚·‚æ‚¤‚É‚µ‚Ä‚­‚¾‚³‚¢B */
+    /** è¨ˆç®—å€¤ã§ã¯ãªãé™çš„ãƒªã‚¹ãƒˆã‚’è¿”ã™ã‚ˆã†ã«ã—ã¦ãã ã•ã„ã€‚ */
     List<InternetAddress> getProxyInetSocketAddresses();
 }
 

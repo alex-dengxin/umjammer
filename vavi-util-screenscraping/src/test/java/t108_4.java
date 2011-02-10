@@ -16,7 +16,7 @@ import vavi.xml.util.PrettyPrinter;
 
 
 /**
- * javadoc Œ`Ž®‚Ìƒtƒ@ƒCƒ‹‚ðƒŠ[ƒo[ƒXƒGƒ“ƒWƒjƒAƒŠƒ“ƒO‚µ‚Ü‚·B
+ * javadoc å½¢å¼ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒªãƒ¼ãƒãƒ¼ã‚¹ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢ãƒªãƒ³ã‚°ã—ã¾ã™ã€‚
  */
 public class t108_4 {
     public static void main(String[] args) throws Exception {

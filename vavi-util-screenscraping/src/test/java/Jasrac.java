@@ -97,7 +97,7 @@ System.err.println("last page: " + sb.length());
         /** */
         HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
             for (HtmlAnchor anchor : anchors) {
-                if (anchor.getAttribute("title").equals("Ÿƒy[ƒW‚ÌŒ‹‰Ê‚ğ•\¦‚µ‚Ü‚·")) {
+                if (anchor.getAttribute("title").equals("æ¬¡ãƒšãƒ¼ã‚¸ã®çµæœã‚’è¡¨ç¤ºã—ã¾ã™")) {
                     return anchor;
                 }
             }
@@ -170,12 +170,12 @@ System.err.println("last page: " + sb.length());
         StringBuilder music_ = new StringBuilder();
         for (Composer composer : cs) {
 //System.err.println(composer);
-//System.err.println(composer.type + ", " + composer.type.indexOf("ìŒ") + ", " + composer.type.indexOf("ì‹È"));
-            if ((composer.type.indexOf("ìŒ") != -1 || composer.type.indexOf("–óŒ") != -1) && composer.name.indexOf("Œ —˜Ò") == -1) {
+//System.err.println(composer.type + ", " + composer.type.indexOf("ä½œè©") + ", " + composer.type.indexOf("ä½œæ›²"));
+            if ((composer.type.indexOf("ä½œè©") != -1 || composer.type.indexOf("è¨³è©") != -1) && composer.name.indexOf("æ¨©åˆ©è€…") == -1) {
                 lyrics_.append(iTunes.normalizeComposer(CharConverterJa.toHalf2(composer.name)));
                 lyrics_.append(", ");
             }
-            if ((composer.type.indexOf("ì‹È") != -1 || composer.type.indexOf("•s–¾") != -1) && composer.name.indexOf("Œ —˜Ò") == -1) {
+            if ((composer.type.indexOf("ä½œæ›²") != -1 || composer.type.indexOf("ä¸æ˜") != -1) && composer.name.indexOf("æ¨©åˆ©è€…") == -1) {
                 music_.append(iTunes.normalizeComposer(CharConverterJa.toHalf2(composer.name)));
                 music_.append(", ");
             }

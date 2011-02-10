@@ -11,7 +11,7 @@ import java.util.Locale;
 
 
 /**
- * �o�����|��@�̃C���^�[�t�F�[�X�ł��B
+ * 双方向翻訳機のインターフェースです。
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 030225 nsano initial version <br>
@@ -20,16 +20,16 @@ import java.util.Locale;
  */
 public interface Translator {
 
-    /** ���[�J���Ȍ���ɖ|�󂵂܂��B */
+    /** ローカルな言語に翻訳します。 */
     String toLocal(String word) throws IOException;
 
-    /** �O���[�o���Ȍ���(�p��)�ɖ|�󂵂܂��B */
+    /** グローバルな言語(英語)に翻訳します。 */
     String toGlobal(String word) throws IOException;
 
-    /** ���[�J�����̃��P�[�����擾���܂��B */
+    /** ローカル側のロケールを取得します。 */
     Locale getLocalLocale();
 
-    /** �O���[�o�����̃��P�[�����擾���܂��B */
+    /** グローバル側のロケールを取得します。 */
     Locale getGlobalLocal();
 }
 

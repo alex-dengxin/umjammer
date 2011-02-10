@@ -149,7 +149,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     }
 
     /**
-     * TODO ‘S‘R‹@”\‚µ‚Ä‚È‚¢
+     * TODO å…¨ç„¶æ©Ÿèƒ½ã—ã¦ãªã„
      * find encoding specified in html
      * @param is need mark supported
      * @return null if not found

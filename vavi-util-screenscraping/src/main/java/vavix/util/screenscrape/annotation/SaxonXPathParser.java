@@ -44,7 +44,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
     {
         System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "net.sf.saxon.xpath.XPathFactoryImpl");    
         xPath = XPathFactory.newInstance().newXPath();
-//System.err.println(XPathFactory.newInstance().getClass());
+//System.err.println("SaxonXPathParser: xpath: " + XPathFactory.newInstance().getClass());
     }
 
     /** TODO WebScraper#value() */
@@ -112,7 +112,8 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
     public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-    
+//System.err.println("encoding: " + encoding);
+            
             InputSource in = new InputSource(inputHandler.getInput(args));
             in.setEncoding(encoding);
     
