@@ -10,8 +10,8 @@ package vavix.util.screenscrape;
 /**
  * Scraper.
  *
- * @param <I> “ü—Í‚·‚éƒf[ƒ^‚ÌŒ^
- * @param <O> Ø‚èo‚³‚ê‚éƒf[ƒ^‚ÌŒ^
+ * @param <I> å…¥åŠ›ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®å‹
+ * @param <O> åˆ‡ã‚Šå‡ºã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®å‹
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */

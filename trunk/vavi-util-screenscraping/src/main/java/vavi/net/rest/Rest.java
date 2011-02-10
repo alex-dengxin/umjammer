@@ -33,16 +33,16 @@ import javax.script.ScriptEngineManager;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rest {
 
-    /** ƒvƒƒgƒRƒ‹ */
+    /** ãƒ—ãƒ­ãƒˆã‚³ãƒ« */
     String protocol() default "HTTP";
 
     /**
-     * protocol ‚ª HTTP ‚Ìê‡‚Ì URL
-     * TODO WADL ‚Å‚Í base ‚Æ path ‚É•ª‚©‚ê‚Ä‚é
+     * protocol ãŒ HTTP ã®å ´åˆã® URL
+     * TODO WADL ã§ã¯ base ã¨ path ã«åˆ†ã‹ã‚Œã¦ã‚‹
      */
     String url() default "";
 
-    /** protocol ‚ª HTTP ‚Ìê‡‚Ì HTTP ƒƒ\ƒbƒh */
+    /** protocol ãŒ HTTP ã®å ´åˆã® HTTP ãƒ¡ã‚½ãƒƒãƒ‰ */
     String method() default "";
 
     /** script engine */

@@ -16,7 +16,7 @@ import vavix.util.screenscrape.Scraper;
 
 
 /**
- * �A������Ő؂�o���@�ł��B
+ * 、文字列で切り出す機です。
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 031103 nsano initial version <br>

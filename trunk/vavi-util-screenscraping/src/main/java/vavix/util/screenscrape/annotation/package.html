@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<html lang="ja">
+
+<head>
+<link rev="MADE" href="mailto:vavivavi@yahoo.co.jp" />
+<link rel="INDEX" href="orverview.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../vavi.css" />
+<title>vavi.util.screenscrap</title>
+<!--
+ * Copyright (c) 2010 by Naohide Sano, All rights reserved.
+ *
+ * Written by Naohide Sano
+ *
+ * @author	<a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ *
+ * @version	0.00	101001	nsano	initial version
+-->
+<style>
+.strong {
+  color: orange;
+}
+</style>
+</head>
+
+<body>
+
+<p>
+Screen Scraping 関連のクラスを提供します．
+</p>
+
+<h2>Screen Scraping 決定版か！？</h2>
+
+<h3>POJO クラス作ってクラスに URL、フィールドに XPath を指定するだけでスクレイピングできるよ！</h3>
+
+<pre>
+    <span class="strong">@WebScraper(url = "http://foo.com/bar.html")</span>
+    public class Buz {
+        <span class="strong">@Target(value = "//TABLE//TR/TD[2]/DIV/text()")</span>
+        String artist;
+        <span class="strong">@Target(value = "//TABLE//TR/TD[4]/A/text()")</span>
+        String title;
+        <span class="strong">@Target(value = "//TABLE//TR/TD[4]/A/@href")</span>
+        String url;
+    }
+    
+    :
+    
+    List&lt;Buz&gt; buzs = <span class="strong">WebScraper.Util.scrape(Buz.class);</span>
+</pre>
+
+<h3>大きなファイルでも平気だよ！</h3>
+
+ SaxonXPathParser
+
+<h3>特殊な入力でも大丈夫だよ！</h3>
+
+ InputHandler
+
+<h3>メモリを節約できるよ！</h3>
+
+ EachHandler
+
+<h2>これから実装すること</h2>
+
+<ul>
+<li>入力が htmlunit とか面倒なので、やっぱりスクリプト？</li>
+<li></li>
+</ul>
+
+</body>
+
+</html>

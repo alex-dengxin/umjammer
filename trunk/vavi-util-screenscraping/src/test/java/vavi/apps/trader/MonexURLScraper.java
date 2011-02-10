@@ -35,9 +35,9 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
     /**
      * @param props use followings
      * <pre>
-     *  "account" BASIC ”FØƒAƒJƒEƒ“ƒg–¼
-     *  "password" BASIC ”FØƒpƒXƒ[ƒh
-     *  "realm" BASIC ”FØƒŒƒ‹ƒ€
+     *  "account" BASIC èªè¨¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆå
+     *  "password" BASIC èªè¨¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+     *  "realm" BASIC èªè¨¼ãƒ¬ãƒ«ãƒ 
      *  "host"
      * </pre>
      */
@@ -57,8 +57,8 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
             postMethod.setRequestHeader("koza2", "");
             postMethod.setRequestHeader("passwd", password);
             postMethod.setRequestHeader("syokiGamen", "0");
-            postMethod.setRequestHeader("frameMode.x", "ƒtƒŒ[ƒ€");
-            postMethod.setRequestHeader("submit", " ƒƒOƒCƒ“ ");
+            postMethod.setRequestHeader("frameMode.x", "ãƒ•ãƒ¬ãƒ¼ãƒ ");
+            postMethod.setRequestHeader("submit", " ãƒ­ã‚°ã‚¤ãƒ³ ");
             int status = httpClient.executeMethod(postMethod);
             if (status != 200) {
                 throw new IllegalStateException("unexpected result: " + status);

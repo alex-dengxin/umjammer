@@ -30,7 +30,7 @@ public class ProxyChanger {
     /** */
     private Random random = new Random(System.currentTimeMillis()); 
 
-    /** TODO ProxyInternetAddress Ç≈ bad or quality */
+    /** TODO ProxyInternetAddress „Åß bad or quality */
     public static class InternetAddress {
         protected String hostName;
         protected int port;

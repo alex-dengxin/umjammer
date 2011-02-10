@@ -35,7 +35,7 @@ import vavi.beans.BeanUtil;
 public @interface Ignored {
 
     /**
-     * –³‹‚·‚éğŒ‚ğ Script ‚Å•\‹L
+     * ç„¡è¦–ã™ã‚‹æ¡ä»¶ã‚’ Script ã§è¡¨è¨˜
      * result must be boolean
      * access field value by field name.
      * default: ignored when field value is null.
@@ -43,7 +43,7 @@ public @interface Ignored {
     String when() default "";
 
     /**
-     * TODO ƒAƒmƒe[ƒVƒ‡ƒ“‚ªƒƒ\ƒbƒhw’è‚Ìê‡ 
+     * TODO ã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ¡ã‚½ãƒƒãƒ‰æŒ‡å®šã®å ´åˆ 
      */
     static class Util {
 

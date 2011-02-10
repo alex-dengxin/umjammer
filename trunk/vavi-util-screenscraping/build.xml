@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ////////////////////////////////////////////////////////////////////// -->
 <!-- Copyright (c) 2002 by Naohide Sano, All rights reserved.               -->
@@ -18,18 +18,18 @@
   <property file="local.properties" />
   <property name="dir.build" value="target/classes" />
 
-  <!-- ƒNƒ‰ƒXƒpƒX‚Ì’è‹` -->
+  <!-- ã‚¯ãƒ©ã‚¹ãƒ‘ã‚¹ã®å®šç¾© -->
   <path id="project.class.path">
+    <pathelement location="${dir.build}" />
     <fileset dir="lib">
       <include name="*.jar" />
     </fileset>
-    <pathelement location="${dir.build}" />
   </path>
 
-  <!-- ƒ^[ƒQƒbƒg‚Ì’è‹` -->
+  <!-- ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å®šç¾© -->
 
   <!-- clean -->
-  <target name="clean" description="ƒrƒ‹ƒhŠÂ‹«‚ÌƒNƒŠƒA">
+  <target name="clean" description="ãƒ“ãƒ«ãƒ‰ç’°å¢ƒã®ã‚¯ãƒªã‚¢">
     <delete>
       <fileset dir="${dir.build}">
         <include name="**/*" />
@@ -41,7 +41,7 @@
   </target>
 
   <!-- prepare -->
-  <target name="prepare" description="ƒrƒ‹ƒhŠÂ‹«‚Ì€”õ">
+  <target name="prepare" description="ãƒ“ãƒ«ãƒ‰ç’°å¢ƒã®æº–å‚™">
     <mkdir dir="${dir.build}" />
     <ivy:settings file="ivy-settings.xml" />
     <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
@@ -49,10 +49,10 @@
   </target>
 
   <!-- javac -->
-  <target name="compile" depends="prepare" description="ƒRƒ“ƒpƒCƒ‹">
-    <javac debug="on" deprecation="on">
+  <target name="compile" depends="prepare" description="ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«">
+    <javac debug="on" deprecation="on" encoding="${encoding}" destdir="${dir.build}">
       <classpath refid="project.class.path" />
-      <include name="*.java" />
+      <include name="**/*.java" />
       <src path="src/main/java" />
     </javac>
 
@@ -68,6 +68,7 @@
         <pathelement location="${dir.build}" />
       </classpath>
       <include name="**/*.java" />
+      <src path="target/generated-sources/cxf" />
       <src path="src/test/java" />
     </javac>
 
@@ -206,7 +207,7 @@
   </target>
 
   <!-- javac -->
-  <target name="compile.ws" depends="compile" description="ƒRƒ“ƒpƒCƒ‹">
+  <target name="compile.ws" depends="compile" description="ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«">
     <javac debug="on" destdir="${dir.build}">
       <classpath refid="cxf.class.path" />
       <include name="vavi/net/**/*.java" />
@@ -360,12 +361,27 @@
   </macrodef>
 
   <!-- itunes -->
-  <target name="itunes" depends="compile" description="proxy">
+  <target name="itunes" depends="compile" description="iTunes">
     <java classname="iTunes" fork="yes">
-      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
 <!--
+      <jvmarg value="-verbose" />    
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
 -->
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- it -->
+  <target name="it" depends="compile" description="iTunes test">
+    <java classname="Test1" fork="yes">
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
       <classpath>
         <path refid="project.class.path" />
         <pathelement location="target/test-classes" />

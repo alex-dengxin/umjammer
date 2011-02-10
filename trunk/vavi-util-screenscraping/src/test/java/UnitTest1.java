@@ -129,12 +129,33 @@ System.err.println("N: " + title + " -> " + normalizedName);
         iTunes.doEach(each);
     }
 
-    /** jasrac composer format to vavi style */
     @Test
+    public void test07() throws Exception {
+        String[][] titles = new String[][] {
+            { "R.E.M.", "Disturbance At The Heron House" },
+            { "R.E.M.", "Feeling Gravity's Pull" },
+            { "R.E.M.", "Exhuming McCarthy" },
+            { "", "" },
+        };
+        for (String[] title : titles) {
+            if (!title[0].isEmpty()) {
+                iTunes.Title each = new iTunes.Title();
+                each.artist = title[0];
+                each.name = title[1];
+                each.composer = "";
+                each.album = "";
+                each.albumArtist = "";
+                iTunes.doEach(each);
+            }
+        }
+    }
+
+    /** jasrac composer format to vavi style */
+//    @Test
     public void test04() throws Exception {
 
       String[] us = {
-          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=0F587101&subSessionID=001&subSession=start",
+          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=12765759&subSessionID=001&subSession=start",
           "",
           "",
           "",

@@ -8,19 +8,19 @@ package vavix.util.screenscrape;
 
 
 /**
- * DOM ‰»‰Â”\‚È Stream ‚©‚ç {@link #xpath} ‚ğ—p‚¢‚Äƒf[ƒ^‚ğØ‚èo‚·ƒCƒ“ƒ^[ƒtƒF[ƒX‚Å‚·B
+ * DOM åŒ–å¯èƒ½ãª Stream ã‹ã‚‰ {@link #xpath} ã‚’ç”¨ã„ã¦ãƒ‡ãƒ¼ã‚¿ã‚’åˆ‡ã‚Šå‡ºã™ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã§ã™ã€‚
  *
- * {@link StringApacheXPathScraper} ‚Æ {@link StringSimpleXPathScraper} ‚ÌƒTƒ“ƒvƒ‹‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+ * {@link StringApacheXPathScraper} ã¨ {@link StringSimpleXPathScraper} ã®ã‚µãƒ³ãƒ—ãƒ«ã‚’å‚ç…§ã—ã¦ãã ã•ã„ã€‚
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
 public abstract class XPathScraper<I, O> implements Scraper<I, O> {
 
-    /** Ø‚èo‚µ‚É—p‚¢‚é XPath */
+    /** åˆ‡ã‚Šå‡ºã—ã«ç”¨ã„ã‚‹ XPath */
     protected String xpath;
 
-    /** @param xpath Ø‚èo‚µ‚É—p‚¢‚é XPath •¶š—ñ */
+    /** @param xpath åˆ‡ã‚Šå‡ºã—ã«ç”¨ã„ã‚‹ XPath æ–‡å­—åˆ— */
     protected XPathScraper(String xpath) {
         this.xpath = xpath;
     }

@@ -46,9 +46,9 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     /**
      * @param props use followings
      * <pre>
-     *  "auth.account" BASIC ”FØƒAƒJƒEƒ“ƒg–¼
-     *  "auth.password" BASIC ”FØƒpƒXƒ[ƒh
-     *  "auth.realm" BASIC ”FØƒŒƒ‹ƒ€
+     *  "auth.account" BASIC èªè¨¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆå
+     *  "auth.password" BASIC èªè¨¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+     *  "auth.realm" BASIC èªè¨¼ãƒ¬ãƒ«ãƒ 
      *  "auth.host"
      *  "header.${header.name}"
      * </pre>

@@ -16,7 +16,7 @@ import vavix.util.translation.InfoseekJapanTranslator;
 
 
 /**
- * properties Œ`®‚Ìƒtƒ@ƒCƒ‹‚Ì’l‚ğ–|–ó‚µ‚Ü‚·B
+ * properties å½¢å¼ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®å€¤ã‚’ç¿»è¨³ã—ã¾ã™ã€‚
  */
 public class t108_3 {
     public static void main(String[] args) throws IOException {
@@ -34,7 +34,7 @@ public class t108_3 {
                 translated = translator.toLocal(value);
             } catch (IOException e) {
 Debug.println(e);
-                translated = "ššš –|–ó¸”s ššš[" + value + "]";
+                translated = "â˜…â˜…â˜… ç¿»è¨³å¤±æ•— â˜…â˜…â˜…[" + value + "]";
             }
             props.setProperty(key, translated);
         }

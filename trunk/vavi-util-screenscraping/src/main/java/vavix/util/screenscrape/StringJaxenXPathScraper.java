@@ -31,7 +31,7 @@ import vavix.util.screenscrape.XPathScraper;
 
 
 /**
- * �Ajaxen �Ő؂�o���@�ł��B
+ * 、jaxen で切り出す機です。
  * 
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
@@ -47,7 +47,7 @@ public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
         this.encoding = encoding;
     }
 
-    /** �|�󂵂܂��B */
+    /** 翻訳します。 */
     public String scrape(InputStream source) {
 
         try {

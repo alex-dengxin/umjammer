@@ -29,7 +29,15 @@ public @interface WebScraper {
     /** for {@link DefaultInputHandler} */
     String url() default "";
 
-    /** handler for web input */
+    /**
+     * handler for web input.
+     *
+     * CAUTION!!!
+     * <p>
+     * default hander's return value (Reader)
+     * depends on "file.encoding" system. property
+     * </p>
+     */
     Class<? extends InputHandler<?>> input() default DefaultInputHandler.class;
 
     /** parser for input */
@@ -147,8 +155,8 @@ public @interface WebScraper {
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
             
-            // inputHandler ‚ªƒfƒtƒHƒ‹ƒg‚Ìê‡ url ‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î
-            // ©“®“I‚É url ‚ª InputHandler#getInput() ‚Ìˆø”‚ÉÌ—p‚³‚ê‚é
+            // inputHandler ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å ´åˆ url ãŒè¨­å®šã•ã‚Œã¦ã„ã‚Œã°
+            // è‡ªå‹•çš„ã« url ãŒ InputHandler#getInput() ã®å¼•æ•°ã«æ¡ç”¨ã•ã‚Œã‚‹
             if (inputHandler instanceof DefaultInputHandler) {
                 String url = WebScraper.Util.getUrl(type);
                 if (url != null && !url.isEmpty()) {
@@ -181,8 +189,8 @@ public @interface WebScraper {
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
             
-            // inputHandler ‚ªƒfƒtƒHƒ‹ƒg‚Ìê‡ url ‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î
-            // ©“®“I‚É url ‚ª InputHandler#getInput() ‚Ìˆø”‚ÉÌ—p‚³‚ê‚é
+            // inputHandler ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å ´åˆ url ãŒè¨­å®šã•ã‚Œã¦ã„ã‚Œã°
+            // è‡ªå‹•çš„ã« url ãŒ InputHandler#getInput() ã®å¼•æ•°ã«æ¡ç”¨ã•ã‚Œã‚‹
             if (inputHandler instanceof DefaultInputHandler) {
                 String url = WebScraper.Util.getUrl(type);
                 if (url != null && !url.isEmpty()) {
