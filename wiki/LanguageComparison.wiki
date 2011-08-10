@@ -207,6 +207,7 @@
 || ||`switch ... case ...`||無い||
 ||Method||`int foo(int bar) { ... }`||`def foo(self，bar):`||
 || ||`if (C1) ... else if (C2) ... else ...`|| `if C1: ... elif C2: ... else: ...`||
+|| ||`C ? A : B`|| `A if C else B`||
 ||interface|| ||空メソッドのclassで代用||
 ||継承||`class A extends B implements C`||`class A(B，C)` 多重継承あり||
 ||定数|| ||めんどくさいので放置||
