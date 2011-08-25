@@ -27,3 +27,7 @@
 
  * ProGuard
 
+ * jad
+{{{
+ $ find . -name \*.class -exec jad -s .java -safe -space -r -nonlb -ff {} \;
+}}}
