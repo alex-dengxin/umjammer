@@ -59,3 +59,46 @@
 }}}
 
 == Hand Completion ==
+
+=== for ===
+
+ * パターンでわかる
+
+=== exception ===
+
+ * 何となく分かる、try がどこに入るのがいまいちよくわからない
+
+=== finally ===
+
+ * exception 処理っぽいところで同じコードが何回も出てきたらそれは finally 節
+
+=== switch ===
+
+ * 人力ではキツイので JD に頼る
+
+=== synchronized ===
+
+ * パターンでわかる
+
+=== inner class ===
+
+ * コンストラクタで super の場所が間違ってるので直す。
+ * 親クラス参照を消す
+ * コンパイラが作成したと思われる static メソッドをインライン化する
+
+=== class ===
+
+ * 表記が変なので直す
+
+=== String ===
+
+ * StringBuilder、StringBuffer を消す
+
+=== local variables created by compiler ===
+
+ * 見やすくしたり、消したり
+ * while の条件式中のやつは注意
+
+=== double literal ===
+
+ * 人が書いた数値に戻す
