@@ -1,0 +1,29 @@
+#summary Java Reverse Engineering
+
+= Tools =
+
+  * jad
+   * 長所
+    * 今のところ最強
+   * 短所
+    * Exception 周りが下手、finally は絶望的
+    * switch もダメダメ
+    * for, while の扱いが逆なんじゃない？
+    * inner class もちょっとおかしい
+    * synchronize もダメ
+
+  * JD
+   * 長所
+    * Exception はまあまあ
+   * 短所
+    * いまいち信用出来ない
+     * JAD はうまく行かなかったところに byte code っぽいものを残すのだが、JD は適当にエラーのないコードを出力してるような
+
+ jad で最初でコンパイルしておかしいところを JD で補完していくのがいいと思う
+
+= How To =
+
+== Anti Obfuscation ==
+
+ * ProGuard
+
