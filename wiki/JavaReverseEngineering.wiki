@@ -99,6 +99,14 @@
 
  * StringBuilder、StringBuffer を消す
 
+{{{
+  System.err.println((new StringBuilder("value: ")).append(value).toString());
+}}}
+
+{{{
+  System.err.println("value: " + value);
+}}}
+
 === local variables created by compiler ===
 
  * 見やすくしたり、消したり
@@ -107,3 +115,11 @@
 === double literal ===
 
  * 人が書いた数値に戻す
+
+{{{
+    double d1 = 0.29999999999999999D;
+}}}
+
+{{{
+    double d1 = 0.3d;
+}}}
