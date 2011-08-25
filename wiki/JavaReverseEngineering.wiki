@@ -2,7 +2,7 @@
 
 = Tools =
 
-  * jad
+  * [http://www.varaneckas.com/jad jad]
    * 長所
     * 今のところ最強
    * 短所
@@ -13,7 +13,7 @@
     * synchronize もダメ
     * 開発終了？
 
-  * JD
+  * [http://java.decompiler.free.fr/ JD]
    * 長所
     * Exception はまあまあ
     * switch もまあまあ
@@ -36,7 +36,7 @@
 
  難読化を解除するために難読化ツールを使用する。
 
- * ProGuard
+ * [http://proguard.sourceforge.net/ ProGuard]
   * method overload を積極的にしているのを解除する (-useuniqueclassmembernames)
   * クラス名に同じ文字の大文字、小文字を許容するも解除 (-dontusemixedcaseclassnames)
 
