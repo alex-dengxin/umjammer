@@ -59,6 +59,7 @@
 
  * jad
   * オーバーロードのバインドミスを無くすために -safe オプションを付ける
+
 {{{
  $ find . -name \*.class -exec jad -s .java -safe -space -r -nonlb -ff {} \;
 }}}
@@ -68,6 +69,28 @@
 === for ===
 
  * パターンでわかる
+
+
+{{{
+        i = 0;
+          goto _L1
+_L3:
+
+         :
+
+        i++;
+_L1:
+        if (i < 10) goto _L3; else goto _L2
+_L2:
+
+}}}
+
+{{{
+
+    for (i = 0; i < 10; i++) {
+        :
+    }
+}}}
 
 === exception ===
 
@@ -85,11 +108,69 @@
 
  * パターンでわかる
 
+
+
 === inner class ===
 
  * コンストラクタで super の場所が間違ってるので直す。
  * 親クラス参照を消す
  * コンパイラが作成したと思われる static メソッドをインライン化する
+
+
+{{{
+    
+        foo.addActionListener(new g(this));
+
+      :
+
+    static void g(BaseClass a, String s) {
+        System.out.println(s);
+    }
+
+    class g
+        implements ActionListener {
+
+        final BaseClass a;
+
+        public void actionPerformed(ActionEvent actionevent) {
+            BaseClass.a(a, "");
+        }
+
+            g() {
+                a = BaseClass.this;
+                super();
+            }
+    }
+
+}}}
+
+{{{
+        foo.addActionListener(new g());
+
+      :
+
+    class g
+        implements ActionListener {
+
+        public void actionPerformed(ActionEvent actionevent) {
+            System.out.println(s);
+        }
+
+            g() {
+                super();
+            }
+    }
+}}}
+
+さらに進めて
+
+{{{
+        foo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionevent) {
+                System.out.println(s);
+            }
+        });
+}}}
 
 === class ===
 
@@ -126,4 +207,4 @@
 
 = Others =
 
-慣れてくると、ああこれ jad のソースだとわかるようになる。例えば [http://java.net/projects/jflash/sources/svn/content/trunk/prj/jflash/src/org/jflash/DisplayList.java?rev=38 jflash] の 508 行目とか local variables created by compiler に相当するのがわかる。それ以前に変数名でわかっちゃうけどね。よくもまあ抜け抜けとリバエンしたやつをメジャーサイトに公開するよなぁ？
+慣れてくると、ああこれ jad のソースだとわかるようになる。例えば [http://java.net/projects/jflash/sources/svn/content/trunk/prj/jflash/src/org/jflash/DisplayList.java?rev=38 jflash] の 508 行目とか [http://code.google.com/p/umjammer/w/edit.do#local_variables_created_by_compiler local variables created by compiler] に相当するのがわかる。それ以前に変数名でわかっちゃうけどね。よくもまあ抜け抜けとリバエンしたやつをメジャーサイトに公開するよなぁ？
