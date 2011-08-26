@@ -123,3 +123,7 @@
 {{{
     double d1 = 0.3d;
 }}}
+
+== Others ==
+
+慣れてくると、ああこれ jad のソースだとわかるようになる。例えば [http://java.net/projects/jflash/sources/svn/content/trunk/prj/jflash/src/org/jflash/DisplayList.java?rev=38 jflash] の 508 行目とか local variables created by compiler に相当するのがわかる。それ以前に変数名でわかっちゃうけどね。よくもまあ抜け抜けとリバエンしたやつをメジャーサイトに公開するよなぁ？
