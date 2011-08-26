@@ -260,4 +260,14 @@ _L2:
 
 = Others =
 
+Eclipse のリファクタリング機能がこれほど活躍できる場面はないと思う。
+
+たまに Javadoc だけ公開されている場合がある。その場合は [http://codavaj.sourceforge.net/ Codavaj] を使用すればコピペで楽にコメントが付けられる。おまけに正しい引数名が得られるので、そこから芋づる式に内部の解析が進むこともある。
+
 慣れてくると、ああこれ jad のソースだとわかるようになる。例えば [http://java.net/projects/jflash/sources/svn/content/trunk/prj/jflash/src/org/jflash/DisplayList.java?rev=38 jflash] の 508 行目とか [http://code.google.com/p/umjammer/w/edit.do#local_variables_created_by_compiler local variables created by compiler] に相当するのがわかる。それ以前に変数名でわかっちゃうけどね。よくもまあ抜け抜けとリバエンしたやつをメジャーサイトに公開するよなぁ？
+
+= Todo =
+
+オーバーロードでミスる事を知らなかったときにリバエンした 50000 行くらいのコードがあるのだが、もちろんエラーは出ないし、なんとちゃんと動いてしまってるので、どこでミスってるのかが簡単に検出できない。結果のデータが違うので明らかにミスっているのは分かるのだが、どうしたものか...
+
+ * call graph 作成とか？
