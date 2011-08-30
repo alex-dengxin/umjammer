@@ -144,7 +144,7 @@ _L2:
 {{{
         Object obj = foo;
         JVM INSTR monitorenter ;
-          ]
+          :
         obj;
         JVM INSTR monitorexit ;
         throw ;
