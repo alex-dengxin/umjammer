@@ -100,6 +100,23 @@ _L2:
 
  * exception 処理っぽいところで同じコードが何回も出てきたらそれは finally 節
 
+{{{
+        break MISSING_BLOCK_LABEL_43;
+        Exception exception;
+        exception;
+        a.c();
+        throw exception;
+        a.c();
+        return;
+}}}
+
+{{{
+        } catch (Exception exception) {
+        } finally {
+            a.c();
+        }
+}}}
+
 === switch ===
 
  * 人力ではキツイので JD に頼る
