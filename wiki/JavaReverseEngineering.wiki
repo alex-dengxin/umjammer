@@ -312,3 +312,5 @@ null と比較とかだとエラーにならない場合が出てくる。
       }
    }
 }}}
+
+まあ [http://code.google.com/p/umjammer/wiki/JavaReverseEngineering?ts=1316976443&updated=JavaReverseEngineering#Anti_Obfuscation Anti_Obfuscation] しておけばいらない苦労だったんだけどね。
