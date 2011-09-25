@@ -291,8 +291,7 @@ Eclipse のリファクタリング機能がこれほど活躍できる場面は
 
 == 見つけた ==
 
-オーバーロードのミスより、名前の優先順位が定数より変数が勝つみたいなのでそこがミスっていた
-null と比較とかだとエラーにならない場合が出てくる。
+オーバーロードのミスより、名前の優先順位が定数より変数が勝つみたいなのでそこがミスっていた。null と比較とかだとエラーにならない場合が出てくる。
 
 {{{
    class Foo {
@@ -313,4 +312,4 @@ null と比較とかだとエラーにならない場合が出てくる。
    }
 }}}
 
-まあ [http://code.google.com/p/umjammer/wiki/JavaReverseEngineering?ts=1316976443&updated=JavaReverseEngineering#Anti_Obfuscation Anti_Obfuscation] しておけばいらない苦労だったんだけどね。
+まあ [http://code.google.com/p/umjammer/wiki/JavaReverseEngineering?ts=1316976443&updated=JavaReverseEngineering#Anti_Obfuscation Anti Obfuscation] しておけばいらない苦労だったんだけどね。
