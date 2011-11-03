@@ -137,7 +137,7 @@ public @interface WebScraper {
         }
 
         /**
-         * Scrapes datum.
+         * Scrapes data.
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
@@ -171,7 +171,7 @@ public @interface WebScraper {
         }
 
         /**
-         * Scrapes datum.
+         * Scrapes data.
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
