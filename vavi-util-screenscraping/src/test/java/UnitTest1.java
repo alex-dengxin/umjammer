@@ -155,7 +155,9 @@ System.err.println("N: " + title + " -> " + normalizedName);
     public void test04() throws Exception {
 
       String[] us = {
-          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=12765759&subSessionID=001&subSession=start",
+          "http://www2.jasrac.or.jp/eJwid/main.jsp?trxID=F20101&WORKS_CD=0X173806&subSessionID=001&subSession=start",
+          "",
+          "",
           "",
           "",
           "",
@@ -215,6 +217,11 @@ System.err.println("N: " + title + " -> " + normalizedName);
         for (String cs : csx) {
             System.out.println(iTunes.normalizeComposer(CharConverterJa.toHalf2(cs)));
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        UnitTest1 app = new UnitTest1();
+        app.test04();
     }
 }
 

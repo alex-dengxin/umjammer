@@ -362,7 +362,7 @@
 
   <!-- itunes -->
   <target name="itunes" depends="compile" description="iTunes">
-    <java classname="iTunes" fork="yes">
+    <java classname="iTunes" fork="yes" output="tmp/composers.tsv">
       <jvmarg value="-Xmx256m" />    
       <jvmarg value="-Dfile.encoding=${encoding}" />    
 <!--
@@ -370,6 +370,18 @@
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
 -->
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- handwrite -->
+  <target name="t4" depends="compile" description="手入力">
+    <java classname="UnitTest1" fork="yes">
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
       <classpath>
         <path refid="project.class.path" />
         <pathelement location="target/test-classes" />
