@@ -313,7 +313,7 @@ _L2:
             lO = new Foo("AAA", 0, (byte)0);
             lN = new Foo("BBB", 1, (byte)1);
             lP = new Foo("CCC", 2, (byte)3);
-            Control afoo[] = new Foo[3];
+            Foo afoo[] = new Foo[3];
             afoo[0] = lO;
             afoo[1] = lN;
             afoo[2] = lP;
@@ -341,8 +341,7 @@ _L2:
             return lQ;
         }
 
-        private Foo(String s, int i, byte byte0) {
-            super(s, i);
+        private Foo(byte byte0) {
             lQ = byte0;
         }
     }
