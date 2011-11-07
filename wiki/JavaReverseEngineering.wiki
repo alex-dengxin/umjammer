@@ -263,7 +263,7 @@ _L2:
  * 見やすくしたり、消したり
  * while の条件式中のやつは注意
 
-=== double literal ===
+=== double/float literal ===
 
  * 人が書いた数値に戻す
 
@@ -275,7 +275,81 @@ _L2:
     double d1 = 0.3d;
 }}}
 
+
+=== enum ===
+ 
+ * static {} の中身に注目
+ * vaues(), valueOf() を削除
+ * コンストラクタの第 1, 2 引数と super の削除
+ * enum の引数関連は残す
+ * あと他の場所では static フィールドに設定されているフィールド名が使用されているため分かるように残しておく
+
+{{{
+    public static final class Foo extends Enum {
+
+        private static final Foo lM[];
+        public static final Foo lN;
+        public static final Foo lO;
+        public static final Foo lP;
+        byte lQ;
+
+        public static Foo valueOf(String s) {
+            return (Foo)Enum.valueOf(foo/bar/Buz$Foo, s);
+        }
+
+        public static Foo[] values() {
+            Foo afoo[] = lM;
+            int i = afoo.length;
+            Foo afoo1[] = new Foo[i];
+            System.arraycopy(((Object) (afoo)), 0, ((Object) (afoo1)), 0, i);
+            return afoo1;
+        }
+
+        public byte cR() {
+            return lQ;
+        }
+
+        static  {
+            lO = new Foo("AAA", 0, (byte)0);
+            lN = new Foo("BBB", 1, (byte)1);
+            lP = new Foo("CCC", 2, (byte)3);
+            Control afoo[] = new Foo[3];
+            afoo[0] = lO;
+            afoo[1] = lN;
+            afoo[2] = lP;
+            lM = afoo;
+        }
+
+        private Foo(String s, int i, byte byte0) {
+            super(s, i);
+            lQ = byte0;
+        }
+    }
+
+}}}
+
+{{{
+    public static enum Foo {
+
+        AAA(0), // lO
+        BBB(1), // lN
+        CCC(2); // lP
+
+        byte lQ;
+
+        public byte cR() {
+            return lQ;
+        }
+
+        private Foo(String s, int i, byte byte0) {
+            super(s, i);
+            lQ = byte0;
+        }
+    }
+}}}
+
 = Others =
+
 
 Eclipse のリファクタリング機能がこれほど活躍できる場面はないと思う。
 
