@@ -9,18 +9,21 @@
     * Exception 周りが下手、finally は絶望的
     * switch もダメダメ
     * for, while の扱いが逆なんじゃない？
+     * 2重ループ、if ... else if ... else ... とかも弱い
     * inner class もちょっとおかしい
     * synchronize もダメ
+    * enum 超面倒
     * 開発終了？
 
   * [http://java.decompiler.free.fr/ JD]
    * 長所
     * Exception はまあまあ
-    * switch もまあまあ
+    * switch も~~まあまあ~~
      * break が抜けてる気がするのだが
+     * できない場合も多いな
     * 開発中
    * 短所
-    * いまいち信用出来ない
+    * ~~いまいち~~かなり信用出来ない
      * jad はうまく行かなかったところに byte code っぽいものを残すのだが、JD は適当にエラーのないコードを出力してるような
     * CUI がない
 
