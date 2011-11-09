@@ -47,6 +47,7 @@
 -dontshrink
 -dontoptimize
 -useuniqueclassmembernames
+-dontusemixedcaseclassnames
 -dontpreverify
 -keepparameternames
 -renamesourcefileattribute SourceFile
