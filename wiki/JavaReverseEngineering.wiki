@@ -64,6 +64,7 @@
 
  * jad
   * オーバーロードのバインドミスを無くすために -safe オプションを付ける
+  * あとは好みのフォーマットオプション
 
 {{{
  $ find . -name \*.class -exec jad -s .java -safe -space -r -nonlb -ff {} \;
