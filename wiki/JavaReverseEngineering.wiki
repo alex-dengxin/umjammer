@@ -42,6 +42,7 @@
  * [http://proguard.sourceforge.net/ ProGuard]
   * method overload を積極的にしているのを解除する (-useuniqueclassmembernames)
   * クラス名に同じ文字の大文字、小文字を許容するも解除 (-dontusemixedcaseclassnames)
+  * 難読化されていないパッケージ、クラス名は保存しておく (-keeppackagenames, -keepnames)
 
 {{{
 -dontshrink
