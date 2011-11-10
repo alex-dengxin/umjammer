@@ -2,7 +2,7 @@
 <g:plusone size="medium"></g:plusone>
 = Tools =
 
-  * [http://www.varaneckas.com/jad jad]
+  * [http://www.varaneckas.com/jad jad] (1.5.8g)
    * 長所
     * 今のところ最強
    * 短所
@@ -15,7 +15,7 @@
     * enum 超面倒
     * 開発終了？
 
-  * [http://java.decompiler.free.fr/ JD]
+  * [http://java.decompiler.free.fr/ JD] (core 0.6.0)
    * 長所
     * Exception はまあまあ
     * switch も~~まあまあ~~
@@ -433,11 +433,18 @@ Java SE のものは消しておく
 -libraryjars /.../android-sdk/platforms/android-8/android.jar
 }}}
 
-=== apktools ===
+=== [http://code.google.com/p/android-apktool/ apktools] ===
 
+{{{
+ $ apktool d foo.apk
+}}}
 
-=== dex2jar ===
+=== [http://code.google.com/p/dex2jar/ dex2jar] ===
 
+{{{
+ $ unzip foo.apk classes.dex
+ $ dex2jar.sh classes.dex
+}}}
 
 === dex2jar 0.0.9.2 のバグ対応 ===
 
