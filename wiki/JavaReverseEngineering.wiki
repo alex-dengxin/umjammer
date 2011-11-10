@@ -465,3 +465,7 @@ import static java.lang.annotation.ElementType.*;
 {{{
 -libraryjars .../annotaion_default.jar
 }}}
+
+== known package ==
+
+|| orrg.acra || http://code.google.com/p/acra/ ||
