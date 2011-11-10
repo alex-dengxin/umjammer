@@ -382,11 +382,12 @@ Eclipse のリファクタリング機能がこれほど活躍できる場面は
 
 = Todo =
 
+== やってしまったソース ==
 オーバーロードでミスる事を知らなかったときにリバエンした 50000 行くらいのコードがあるのだが、もちろんエラーは出ないし、なんとちゃんと動いてしまってるので、どこでミスってるのかが簡単に検出できない。結果のデータが違うので明らかにミスっているのは分かるのだが、~~どうしたものか...~~
 
  * ~~call graph 作成とか？~~ → [http://erik.doernenburg.com/2008/09/call-graph-visualisation-with-aspectj-and-dot/ 作った]けど、はっきり言って比較するのムリ
 
-== 見つけた ==
+=== 見つけた ===
 
 オーバーロードのミスより、名前の優先順位が定数より変数が勝つみたいなのでそこがミスっていた。null と比較とかだとエラーにならない場合が出てくる。
 
@@ -410,3 +411,48 @@ Eclipse のリファクタリング機能がこれほど活躍できる場面は
 }}}
 
 まあ [http://code.google.com/p/umjammer/wiki/JavaReverseEngineering?ts=1316976443&updated=JavaReverseEngineering#Anti_Obfuscation Anti Obfuscation] しておけばいらない苦労だったんだけどね。
+
+== 辞書の活用 ==
+
+{{{
+-packageobfuscationdictionary dic_file
+}}}
+
+== オープンソースが難読化されて組み込まれている場合 ==
+
+どうしよう？
+
+== Android ==
+
+=== ライブラリーの設定 ===
+
+Java SE のものは消しておく
+{{{
+-libraryjars /.../android-sdk/platforms/android-8/android.jar
+}}}
+
+=== apktools ===
+
+
+=== dex2jar ===
+
+
+=== dex2jar 0.0.9.2 のバグ対応 ===
+
+AnnotationDefault.java を適当に作って jar しておく
+{{{
+package dalvik.annotation;
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.*;
+
+@Retention(value=RUNTIME)
+@Target(value=ANNOTATION_TYPE)
+@interface AnnotationDefault {
+}
+}}}
+
+ライブラリに追加
+{{{
+-libraryjars .../annotaion_default.jar
+}}}
