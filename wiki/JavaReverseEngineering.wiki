@@ -286,7 +286,7 @@ _L2:
  * vaues(), valueOf() を削除
  * コンストラクタの第 1, 2 引数と super の削除
  * enum の引数関連は残す
- * あと他の場所では static フィールドに設定されているフィールド名が使用されているため分かるように残しておく
+ * あと他の場所では static フィールドに設定されているフィールド名が使用されているため~~分かるように残して~~それを残して後でリネーム出来るように残しておく
 
 {{{
     public static final class Foo extends Enum {
@@ -332,12 +332,32 @@ _L2:
 
 }}}
 
+NG
 {{{
     public static enum Foo {
 
         AAA(0), // lO
         BBB(1), // lN
         CCC(2); // lP
+
+        byte lQ;
+
+        public byte cR() {
+            return lQ;
+        }
+
+        private Foo(byte byte0) {
+            lQ = byte0;
+        }
+    }
+}}}
+BETTER
+{{{
+    public static enum Foo {
+
+        lO(0), // AAA
+        lN(1), // BBB
+        lP(2); // CCC
 
         byte lQ;
 
