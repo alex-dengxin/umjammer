@@ -468,4 +468,4 @@ import static java.lang.annotation.ElementType.*;
 
 == known package ==
 
-|| orrg.acra || http://code.google.com/p/acra/ ||
+|| org.acra || http://code.google.com/p/acra/ ||
