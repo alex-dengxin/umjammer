@@ -219,7 +219,7 @@ _L2:
 {{{
         foo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionevent) {
-                System.out.println(s);
+                System.out.println("");
             }
         });
 }}}
