@@ -6,6 +6,11 @@
 == proguard ==
 === ライブラリーの設定 (proguard) ===
 
+Java SE のものは消しておく
+{{{
+-libraryjars /.../android-sdk/platforms/android-8/android.jar
+}}}
+
 === dex2jar 0.0.9.2 のバグ対応 ===
 
 AnnotationDefault.java を適当に作って jar しておく
@@ -24,12 +29,6 @@ import static java.lang.annotation.ElementType.*;
 ライブラリに追加
 {{{
 -libraryjars .../annotaion_default.jar
-}}}
-
-
-Java SE のものは消しておく
-{{{
--libraryjars /.../android-sdk/platforms/android-8/android.jar
 }}}
 
 == [http://code.google.com/p/android-apktool/ apktools] ==
