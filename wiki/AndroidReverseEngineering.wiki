@@ -1,4 +1,4 @@
-#summary Java Reverse Engineering
+#summary Android Reverse Engineering
 <g:plusone size="medium"></g:plusone>
 
 = HOWTO =
