@@ -3,7 +3,29 @@
 
 = HOWTO =
 
-== ライブラリーの設定 (proguard) ==
+== proguard ==
+=== ライブラリーの設定 (proguard) ===
+
+=== dex2jar 0.0.9.2 のバグ対応 ===
+
+AnnotationDefault.java を適当に作って jar しておく
+{{{
+package dalvik.annotation;
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.*;
+
+@Retention(value=RUNTIME)
+@Target(value=ANNOTATION_TYPE)
+@interface AnnotationDefault {
+}
+}}}
+
+ライブラリに追加
+{{{
+-libraryjars .../annotaion_default.jar
+}}}
+
 
 Java SE のものは消しておく
 {{{
@@ -43,26 +65,6 @@ Java SE のものは消しておく
 {{{
  $ unzip foo.apk classes.dex
  $ dex2jar.sh classes.dex
-}}}
-
-== dex2jar 0.0.9.2 のバグ対応 ==
-
-AnnotationDefault.java を適当に作って jar しておく
-{{{
-package dalvik.annotation;
-import java.lang.annotation.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static java.lang.annotation.ElementType.*;
-
-@Retention(value=RUNTIME)
-@Target(value=ANNOTATION_TYPE)
-@interface AnnotationDefault {
-}
-}}}
-
-ライブラリに追加
-{{{
--libraryjars .../annotaion_default.jar
 }}}
 
 == known package ==
