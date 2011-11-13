@@ -1,8 +1,9 @@
-#summary One-sentence summary of this page.
+#summary Java Reverse Engineering
+<g:plusone size="medium"></g:plusone>
 
-= Android =
+= HOWTO =
 
-== ライブラリーの設定 ==
+== ライブラリーの設定 (proguard) ==
 
 Java SE のものは消しておく
 {{{
@@ -11,9 +12,31 @@ Java SE のものは消しておく
 
 == [http://code.google.com/p/android-apktool/ apktools] ==
 
+ * unpack
+
 {{{
  $ apktool d foo.apk
 }}}
+
+ * pack
+
+{{{
+ $ smali -o target/classes.dex smali
+ $ tree -L 1 target
+ target/
+ ├── AndroidManifest.xml
+ ├── apktool.yml
+ ├── assets
+ ├── classes.dex
+ ├── lib
+ ├── proguard.pro
+ ├── project.properties
+ └── res
+ $ apktool b target tmp.apk
+ $ jarsigner -verbose -keystore ~/.android/debug.keystore -storepass android tmp.apk androiddebugkey
+ $ $ANDROID_SDK/tools/zipalign -v 4 tmp.apk out.apk
+}}}
+
 
 == [http://code.google.com/p/dex2jar/ dex2jar] ==
 
