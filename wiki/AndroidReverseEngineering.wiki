@@ -3,34 +3,6 @@
 
 = HOWTO =
 
-== proguard ==
-=== ライブラリーの設定 (proguard) ===
-
-Java SE のものは消しておく
-{{{
--libraryjars /.../android-sdk/platforms/android-8/android.jar
-}}}
-
-=== dex2jar 0.0.9.2 のバグ対応 ===
-
-AnnotationDefault.java を適当に作って jar しておく
-{{{
-package dalvik.annotation;
-import java.lang.annotation.*;
-import static java.lang.annotation.RetentionPolicy.*;
-import static java.lang.annotation.ElementType.*;
-
-@Retention(value=RUNTIME)
-@Target(value=ANNOTATION_TYPE)
-@interface AnnotationDefault {
-}
-}}}
-
-ライブラリに追加
-{{{
--libraryjars .../annotaion_default.jar
-}}}
-
 == [http://code.google.com/p/android-apktool/ apktools] ==
 
  * unpack
@@ -64,6 +36,34 @@ import static java.lang.annotation.ElementType.*;
 {{{
  $ unzip foo.apk classes.dex
  $ dex2jar.sh classes.dex
+}}}
+
+== proguard ==
+=== ライブラリーの設定 (proguard) ===
+
+Java SE のものは消しておく
+{{{
+-libraryjars /.../android-sdk/platforms/android-8/android.jar
+}}}
+
+=== dex2jar 0.0.9.2 のバグ対応 ===
+
+AnnotationDefault.java を適当に作って jar しておく
+{{{
+package dalvik.annotation;
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.*;
+
+@Retention(value=RUNTIME)
+@Target(value=ANNOTATION_TYPE)
+@interface AnnotationDefault {
+}
+}}}
+
+ライブラリに追加
+{{{
+-libraryjars .../annotaion_default.jar
 }}}
 
 == known package ==
