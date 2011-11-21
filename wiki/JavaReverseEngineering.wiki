@@ -64,7 +64,9 @@
 
  * jad
   * オーバーロードのバインドミスを無くすために -safe オプションを付ける
+   * 難読化されていない場合はしなくても多分大丈夫
   * あとは好みのフォーマットオプション
+   * TODO -noctor
 
 {{{
  $ find . -name \*.class -exec jad -s .java -safe -space -r -nonlb -ff {} \;
@@ -97,6 +99,16 @@ _L2:
         :
     }
 }}}
+
+=== for (iterable) ===
+TODO
+=== while ===
+TODO
+=== else if ===
+TODO
+=== break/continue ===
+
+TODO
 
 === exception ===
 
@@ -318,9 +330,14 @@ _L2:
  * 見やすくしたり、消したり
  * while の条件式中のやつは注意
 
+{{{
+ TODO sample
+}}}
+
 === double/float literal ===
 
  * 人が書いた数値に戻す
+ * Math.PI 等
 
 {{{
     double d1 = 0.29999999999999999D;
@@ -330,6 +347,12 @@ _L2:
     double d1 = 0.3d;
 }}}
 
+
+=== constants ===
+
+ * すべてコードに埋め込まれてしまうのでもとに戻す
+  * TODO eclispe のリファクタ機能で何とかならないのか？
+  * TODO android の R.java とか
 
 === enum ===
  
@@ -425,11 +448,30 @@ BETTER
 === assert ===
 
 {{{
-TODO
+    package buz.bar;
+    class Foo {
+
+       static final boolean $assertionsDisabled;
+
+          :
+
+          if (!$assertionsDisabled && foo == 0)
+              throw new AssertionError("assertion message");
+
+          :
+
+        static  {
+            boolean flag;
+            if (!buz.bar.Foo.class.desiredAssertionStatus())
+                flag = true;
+            else
+                flag = false;
+            $assertionsDisabled = flag;
+        }
 }}}
 
 {{{
-TODO
+          assert foo != 0 : "assertion message";
 }}}
 
 = Others =
@@ -487,3 +529,6 @@ Eclipse のリファクタリング機能がこれほど活躍できる場面は
   * すべてやる必要はない
  * スケルトンを作る (jad -nocode)
  
+== GPL/LGPL のライブラリが組み込まれている場合 ==
+
+リーバースエンジニアリングの権利があるのでじゃんじゃんリバエンして公開しようｗ
