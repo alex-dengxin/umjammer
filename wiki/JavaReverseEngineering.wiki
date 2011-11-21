@@ -143,6 +143,55 @@ _L2:
            :
 }}}
 
+手動でやる場合はこういう感じ
+
+{{{
+        switch (a) {
+//        JVM INSTR tableswitch -1 6: default 523     _L1
+    //                   -1 523                       _L1
+    //                   0 60                         _L2
+    //                   1 200                        _L3
+    //                   2 523                        _L1
+    //                   3 499                        _L4
+    //                   4 499                        _L4
+    //                   5 507                        _L5
+    //                   6 515;                       _L6
+//           goto _L1 _L1 _L2 _L3 _L1 _L4 _L4 _L5 _L6
+//_L1:
+        default:
+        case -1:
+        case 0:
+        case 2:
+    :
+
+//_L2:
+        case 0:
+    :
+
+//_L3:
+        case 1:
+    :
+
+//_L4:
+        case 3:
+        case 4:
+    :
+
+//_L5:
+        case 5:
+    :
+
+//_L6:
+        case 6:
+    :
+}}}
+
+ * goto 以降を default から順に当てはめていく
+ * switch の後が default 中に置かれてる事多し
+ * break が continue になってたり
+ * case 値の JVM code の行番号も参考に
+  * switch 文より前にある場合とか発狂しそう 
+
 === synchronized ===
 
  * パターンでわかる
