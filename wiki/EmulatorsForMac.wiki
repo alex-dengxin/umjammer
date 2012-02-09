@@ -31,4 +31,18 @@ OPTION  -power  -powdsk -smooth=1       -bus=0  -prn=0  -tape=4
 
 }}}        
 
-        
+== PC-9801 ==
+
+=== NP2 for OSX ===
+
+ * HID Utilities 必要
+ * コンパイルはできたが動かん...orz
+
+=== xnp2 ===
+
+ * 素直にこちらを使う
+ * サウンドとかも OK
+
+=== T98next w/ wine ===
+
+ * サウンドが鳴らない？
