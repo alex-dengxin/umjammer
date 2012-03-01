@@ -16,15 +16,12 @@ package vavi.uusbd;
 public class Pipe {
 
     /** */
-    @SuppressWarnings("unused")
     private boolean overlap;
 
     /** */
-    @SuppressWarnings("unused")
     private int interfaceNo;
 
     /** */
-    @SuppressWarnings("unused")
     private int pipeNo;
 
     /**
@@ -97,7 +94,6 @@ public class Pipe {
     private long usbInstance;
 
     /** パイプのハンドル */
-    @SuppressWarnings("unused")
     private long instance;
 
     /**
@@ -118,13 +114,11 @@ public class Pipe {
     /**
      * パイプをリセットします。
      */
-    @SuppressWarnings("unused")
     private native void reset() throws UsbException;
 
     /**
      * パイプをアボートします。
      */
-    @SuppressWarnings("unused")
     private native void abort() throws UsbException;
 
     /** */

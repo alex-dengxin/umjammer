@@ -1,0 +1,21 @@
+#
+# Copyright (c) 2010 by Naohide Sano, All rights reserved.
+#
+# Written by Naohide Sano
+#
+# ant properties for 
+#
+# @author	Naohide Sano
+# @version	0.00	100119	nsano	initial version
+#
+
+encoding=utf-8
+
+windows.home=c:/WINNT/system32
+jdk.home=/usr/local/java
+cygwin.home=c:/usr/local/cygwin
+mingw.include=${cygwin.home}/usr/include/mingw
+w32api.include=${cygwin.home}/usr/include/w32api
+mingw.lib=${cygwin.home}/lib/mingw
+jni.uusbd.dir=uusbd
+jni.usb.dir=javax.usb
