@@ -19,29 +19,30 @@ import vavi.gps.GpsFormat;
 import vavi.gps.MapVector;
 import vavi.gps.PointMap3D;
 import vavi.gps.PointSurface;
+import vavi.util.StringUtil;
 
 
 /**
  * SONY IPS 系 GPS データフォーマットを表すクラスです。
- *
+ * 
  * <code><pre>
  * 1. 生データ
- *
+ * 
  * SM00200312163182241n3753525E14006172+02530001809812163181058Q3BREFABXGdABSCKABPCGACDHIABJEiABGCrBGMGrCEdDCEO
  * 
  * 2. データ文字列の意味
- *
+ * 
  * ofs len      data            description
  * ---+---+--------------------+-----------------------------------------------
  *   0   6	SM0020		ベンダーバージョン
  *   6  13	0312163182241	日付と時刻
- *				03 (年)
- *				12 (月)
- *				16 (日)
- *				 3 (曜日: 0(Sunday) - 6(Saturday))
- *				18 (時)
- *				22 (分)
- *				41 (秒)
+ * 				03 (年)
+ * 				12 (月)
+ * 				16 (日)
+ * 				 3 (曜日: 0(Sunday) - 6(Saturday))
+ * 				18 (時)
+ * 				22 (分)
+ * 				41 (秒)
  *  19   1	N		北緯 (N)あるいは南緯(S) n,s は非測位中
  *  20   2	37		緯度 37 (度)
  *  22   2	53		緯度 53 (分)
@@ -54,26 +55,26 @@ import vavi.gps.PointSurface;
  *  41   3	000		速度 km/h
  *  44   3	180		方角 (北から時計回り) degrees (True North)
  *  47  13	9812163181058	日付と時刻 (計測時)
- *		
+ * 		
  *  60   1	Q		dilution of precision (DOP)
- *	 			データ	値	データ	値
- *	 			A	1	J	10
- *	 			B	2	K	11 - 12
- *	 			C	3	L	13 - 15
- *	 			D	4	M	16 - 20
- *	 			E	5	N	21 - 30
- *	 			F	6	O	31 - 50
- *	 			G	7	P	51 - 99
- *	 			H	8	Q	100+
- *	 			I	9
- *		 
+ * 	 			データ	値	データ	値
+ * 	 			A	1	J	10
+ * 	 			B	2	K	11 - 12
+ * 	 			C	3	L	13 - 15
+ * 	 			D	4	M	16 - 20
+ * 	 			E	5	N	21 - 30
+ * 	 			F	6	O	31 - 50
+ * 	 			G	7	P	51 - 99
+ * 	 			H	8	Q	100+
+ * 	 			I	9
+ * 		 
  *  61   1	3		測定モード
- *		       	データ	モード
- *		       	3	衛星3つ使用の2次元モード
- *		       	4	衛星4つ使用の3次元モード
- *		
+ * 		       	データ	モード
+ * 		       	3	衛星3つ使用の2次元モード
+ * 		       	4	衛星4つ使用の3次元モード
+ * 		
  *  62   1	B		高度補正データ
- *		
+ * 		
  *  63   5	REFAB		チャネル[1]
  *  68   5	XGdAB		チャネル[2]
  *  73   5	SCKAB		チャネル[3]
@@ -90,98 +91,98 @@ import vavi.gps.PointSurface;
  * 128   5	JEiAB		チャネル[14]
  * 133   5	GCrBG		チャネル[15]
  * 138   5	MGrCE		チャネル[16]
- *		 
- *		 		1 番目の文字	衛星の PRN 番号
- *		 		2 番目の文字	衛星の高度
- *		 		3 番目の文字	衛星の方位
- *		 		4 番目の文字	受信機と衛星の情報
- *		 		5 番目の文字	衛星からの信号の強さ
- *		 
- *		 		1. 衛星の PRN (Pseudo-Range Navigation) 番号
- *		 		データ	PRN#	データ	PRN#	データ PRN#
- *		 		A	1	L	12	W	23
- *		 		B	2	M	13	X	24
- *		 		C	3	N	14	a	25
- *		 		D	4	O	15	b	26
- *		 		E	5	P	16	c	27
- *		 		F	6	Q	17	d	28
- *		 		G	7	R	18	e	29
- *		 		H	8	S	19	f	30
- *		 		I	9	T	20	g	31
- *		 		J	10	U	21	h	32
- *		 		K	11	V	22
- *		 
- *		 		2. 衛星の高度
- *		 		データ	  高度		データ	  高度
- *		 		A	  0 >  +5	a	  0 >  -5
- *		 		B	 +6 > +15	b	 -6 > -15
- *		 		C	+16 > +25	c	-16 > -25
- *		 		D	+26 > +35	d	-26 > -35
- *		 		E	+36 > +45	e	-36 > -45
- *		 		F	+46 > +55	f	-46 > -55
- *		 		G	+56 > +65	g	-56 > -65
- *		 		H	+66 > +75	h	-66 > -75
- *		 		I	+76 > +85	i	-76 > -85
- *		 		J	+86 > +90	j	-86 > -90
- *		 
- *		 		3. 衛星の方位
- *		 		データ	   方位		データ	   方位
- *		 		A	   0 >   +5	a	   0 >   -5
- *		 		B	  +6 >  +15	b	  -6 >  -15
- *		 		C	 +16 >  +25	c	 -16 >  -25
- *		 		D	 +26 >  +35	d	 -26 >  -35
- *		 		E	 +36 >  +45	e	 -36 >  -45
- *		 		F	 +46 >  +55	f	 -46 >  -55
- *		 		G	 +56 >  +65	g	 -56 >  -65
- *		 		H	 +66 >  +75	h	 -66 >  -75
- *		 		I	 +76 >  +85	i	 -76 >  -85
- *		 		J	 +86 >  +95	j	 -86 >  -95
- *		 		K	 +96 > +105	k	 -96 > -105
- *		 		L	+106 > +115	l	-106 > -115
- *		 		M	+116 > +125	m	-116 > -125
- *		 		N	+126 > +135	n	-126 > -135
- *		 		O	+136 > +145	o	-136 > -145
- *		 		P	+146 > +155	p	-146 > -155
- *		 		Q	+156 > +165	q	-156 > -165
- *		 		R	+166 > +175	r	-166 > -175
- *		 		S	+176 > +180	s	-176 > -180
- *		 
- *		 		4. 受信機と衛星の情報
- *		 		データ	状態
- *		 		A 衛星を探している (SCAN)
- *		 		B 受信機は衛星の信号に同調中 (LOCK)
- *		 		C 位置情報の計算準備完了 (READY)
- *		 		D 衛星からの信号に割り込みがかかった (HOLD)
- *		 		E 衛星が不調かもしくは計算不能 (ILL)
- *		 		F 衛星は位置情報計算可能 (OK)
- *		 
- *		 		5. 衛星からの信号の強さ
- *		 		[A-Z] のデータ
- *		 		A:	低レベル	Z: 高レベル
- *		 
+ * 		 
+ * 		 		1 番目の文字	衛星の PRN 番号
+ * 		 		2 番目の文字	衛星の高度
+ * 		 		3 番目の文字	衛星の方位
+ * 		 		4 番目の文字	受信機と衛星の情報
+ * 		 		5 番目の文字	衛星からの信号の強さ
+ * 		 
+ * 		 		1. 衛星の PRN (Pseudo-Range Navigation) 番号
+ * 		 		データ	PRN#	データ	PRN#	データ PRN#
+ * 		 		A	1	L	12	W	23
+ * 		 		B	2	M	13	X	24
+ * 		 		C	3	N	14	a	25
+ * 		 		D	4	O	15	b	26
+ * 		 		E	5	P	16	c	27
+ * 		 		F	6	Q	17	d	28
+ * 		 		G	7	R	18	e	29
+ * 		 		H	8	S	19	f	30
+ * 		 		I	9	T	20	g	31
+ * 		 		J	10	U	21	h	32
+ * 		 		K	11	V	22
+ * 		 
+ * 		 		2. 衛星の高度
+ * 		 		データ	  高度		データ	  高度
+ * 		 		A	  0 >  +5	a	  0 >  -5
+ * 		 		B	 +6 > +15	b	 -6 > -15
+ * 		 		C	+16 > +25	c	-16 > -25
+ * 		 		D	+26 > +35	d	-26 > -35
+ * 		 		E	+36 > +45	e	-36 > -45
+ * 		 		F	+46 > +55	f	-46 > -55
+ * 		 		G	+56 > +65	g	-56 > -65
+ * 		 		H	+66 > +75	h	-66 > -75
+ * 		 		I	+76 > +85	i	-76 > -85
+ * 		 		J	+86 > +90	j	-86 > -90
+ * 		 
+ * 		 		3. 衛星の方位
+ * 		 		データ	   方位		データ	   方位
+ * 		 		A	   0 >   +5	a	   0 >   -5
+ * 		 		B	  +6 >  +15	b	  -6 >  -15
+ * 		 		C	 +16 >  +25	c	 -16 >  -25
+ * 		 		D	 +26 >  +35	d	 -26 >  -35
+ * 		 		E	 +36 >  +45	e	 -36 >  -45
+ * 		 		F	 +46 >  +55	f	 -46 >  -55
+ * 		 		G	 +56 >  +65	g	 -56 >  -65
+ * 		 		H	 +66 >  +75	h	 -66 >  -75
+ * 		 		I	 +76 >  +85	i	 -76 >  -85
+ * 		 		J	 +86 >  +95	j	 -86 >  -95
+ * 		 		K	 +96 > +105	k	 -96 > -105
+ * 		 		L	+106 > +115	l	-106 > -115
+ * 		 		M	+116 > +125	m	-116 > -125
+ * 		 		N	+126 > +135	n	-126 > -135
+ * 		 		O	+136 > +145	o	-136 > -145
+ * 		 		P	+146 > +155	p	-146 > -155
+ * 		 		Q	+156 > +165	q	-156 > -165
+ * 		 		R	+166 > +175	r	-166 > -175
+ * 		 		S	+176 > +180	s	-176 > -180
+ * 		 
+ * 		 		4. 受信機と衛星の情報
+ * 		 		データ	状態
+ * 		 		A 衛星を探している (SCAN)
+ * 		 		B 受信機は衛星の信号に同調中 (LOCK)
+ * 		 		C 位置情報の計算準備完了 (READY)
+ * 		 		D 衛星からの信号に割り込みがかかった (HOLD)
+ * 		 		E 衛星が不調かもしくは計算不能 (ILL)
+ * 		 		F 衛星は位置情報計算可能 (OK)
+ * 		 
+ * 		 		5. 衛星からの信号の強さ
+ * 		 		[A-Z] のデータ
+ * 		 		A:	低レベル	Z: 高レベル
+ * 		 
  * 143   1	d		内部基準発信器の状態 (Hz)
- *				TCXO のずれ (1.57542Ghz 換算)
+ * 				TCXO のずれ (1.57542Ghz 換算)
  * 144   2	DC		不明
  * 146   1	E		Lat and Lon are shown as DMS if in Alphabet
- *				Lat and Lon are shown as DMD if in Numeric
- *
+ * 				Lat and Lon are shown as DMD if in Numeric
+ * 
  * 147   1	O		パリティ(either E or O)
  * </pre></code>
- *		
- * @author	<a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
- * @version	0.00	030315	nsano	initial version <br>
- *		0.01	030318	nsano	IPS compatible <br>
- *		0.02	030319	nsano	fix seconds <br>
+ * 
+ * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @version 0.00 030315 nsano initial version <br>
+ *          0.01 030318 nsano IPS compatible <br>
+ *          0.02 030319 nsano fix seconds <br>
  */
 public class IpsGpsFormat implements GpsFormat {
 
-    private static final String HEADER_UNKNOWN1 = "SONY73";
-    private static final String HEADER_UNKNOWN2 = "SONY80";
-    private static final String HEADER_IPS5000 = "SONY81";
-    private static final String HEADER_IPS5200 = "SONY82";
-    private static final String HEADER_IPS8000 = "SONY99";
-    private static final String HEADER_HGR1 = "SM01??";
-    private static final String HEADER_HGR3 = "SM0020";
+    public static final String HEADER_UNKNOWN1 = "SONY73";
+    public static final String HEADER_UNKNOWN2 = "SONY80";
+    public static final String HEADER_IPS5000 = "SONY81";
+    public static final String HEADER_IPS5200 = "SONY82";
+    public static final String HEADER_IPS8000 = "SONY99";
+    public static final String HEADER_HGR1 = "SM01??";
+    public static final String HEADER_HGR3 = "SM0020";
 
     // 衛星の PRN 番号
     static final String prnData = "ABCDEFGHIJKLMNOPQRSTUVWXabcdefgh";
@@ -237,6 +238,7 @@ public class IpsGpsFormat implements GpsFormat {
     private static Date toDate(String time) {
         final DateFormat sdf = new SimpleDateFormat("yyMMdd HHmmss z");
         try {
+            @SuppressWarnings("unused")
             int wday = Integer.parseInt(time.substring(6, 7));
             time = time.substring(0, 6) + " " + time.substring(7) + " GMT";
             return sdf.parse(time);
@@ -399,6 +401,7 @@ public class IpsGpsFormat implements GpsFormat {
         }
 //Debug.println("unitType: " + unitType + ": " + (data.getUnitType() == IpsGpsData.UNIT_DMD ? "DMD" : "DMS"));
 
+        @SuppressWarnings("unused")
         String parity = new String(line, 147, 1);
 //Debug.println("parity: " + parity + ": " + (data.getParity(line) == IpsGpsData.PARITY_EVEN ? "E" : "O"));
 
@@ -415,7 +418,7 @@ public class IpsGpsFormat implements GpsFormat {
 
         //
         Date dateTime = data.getDateTime();
-
+System.err.println(StringUtil.paramString(data));
         DateFormat sdf = new SimpleDateFormat("yyMMdd");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String value = sdf.format(dateTime);

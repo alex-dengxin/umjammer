@@ -8,12 +8,10 @@ package vavi.gps.vendor.sony;
 
 import java.io.IOException;
 import java.util.Properties;
+
 import vavi.gps.BasicGpsDevice;
 import vavi.gps.GpsFormat;
 import vavi.util.Debug;
-// main
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 
 /**
@@ -186,25 +184,6 @@ try { Thread.sleep(3000); } catch (Exception e) { Debug.println(e); }
         } catch (IOException e) {
 Debug.printStackTrace(e);
             throw new InternalError(e.toString());
-        }
-    }
-
-    //-------------------------------------------------------------------------
-
-    /** */
-    public static void main(String[] args) throws Exception {
-        Hgr hgr = new Hgr(args[0]);
-        hgr.start();
-        hgr.makeSureInputStreamOpened();
-        hgr.makeSureOutputStreamOpened();
-        BufferedReader r =
-            new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            System.err.print("> ");
-            String line = r.readLine();
-            if (line != null) {
-                hgr.os.writeLine(line);
-            }
         }
     }
 }

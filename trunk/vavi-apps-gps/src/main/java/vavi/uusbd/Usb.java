@@ -8,8 +8,6 @@ package vavi.uusbd;
 
 import java.io.IOException;
 
-import vavi.util.StringUtil;
-
 
 /**
  * Usb.
@@ -156,13 +154,11 @@ public class Usb {
      *         (デバイスドライバーが remove されている)
      * @throws UsbException 無効である
      */
-    @SuppressWarnings("unused")
     private native boolean available() throws UsbException;
 
     /**
      * USB デバイスをリセットする
      */
-    @SuppressWarnings("unused")
     private native void reset() throws UsbException;
 
     /**
@@ -194,35 +190,6 @@ public class Usb {
     /** */
     static {
         System.loadLibrary("UusbdWrapper");
-    }
-
-    // ------------------------------------------------------------------------
-
-    /** */
-    public static void main(String[] args) throws IOException {
-
-//        String command = args[0];
-        String command = "!PUON\r\n";
-
-        Usb usb = new Usb();
-        usb.sendClassRequest(false,
-                             RECIPIENT_INTERFACE,
-                             0x09,
-                             0x100,
-                             0,
-                             8,
-                             command.getBytes());
-
-        Pipe pipe = new Pipe(usb, 0, 0);
-//      pipe.write(command.getBytes(), 0, command.getBytes().length);
-
-        byte[] buf = new byte[8];
-        while (true) {
-            int l = pipe.read(buf, 0, 8);
-System.err.println("got: " + l);
-System.err.println(StringUtil.getDump(buf));
-try{ Thread.sleep(1000); } catch (Exception e) {}
-        }
     }
 }
 

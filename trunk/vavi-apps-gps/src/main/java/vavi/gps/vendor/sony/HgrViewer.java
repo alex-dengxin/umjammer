@@ -161,8 +161,8 @@ Debug.printStackTrace(e);
     };
 
     /**
-     * @param	trueNorth	degrees
-     * @param	r		”¼Œa
+     * @param trueNorth degrees
+     * @param r ”¼Œa
      */
     private Point2D trueNorthToPoint2D(double trueNorth, double r) {
 
@@ -170,9 +170,9 @@ Debug.printStackTrace(e);
         double theta = trueNorth / 360d * (Math.PI * 2) - Math.PI / 2;
         // X, Y ‚Í³‹KÀ•W
         double X = Math.sqrt(
-            (r*r * r*r) / (r*r + r*r * Math.pow(Math.tan(theta), 2)));
+            (r * r * r * r) / (r * r + r * r * Math.pow(Math.tan(theta), 2)));
         double Y = Math.sqrt(
-            (r*r * r*r) / (r*r / Math.pow(Math.tan(theta), 2) + r*r));
+            (r * r * r * r) / (r * r / Math.pow(Math.tan(theta), 2) + r * r));
 
         // TODO ³‚µ‚­‚È‚¢ theta ‚ÌÀ•W‚É‘Î‚µ‚Ä‚Ì•â³
         if (theta > Math.PI / 2 && theta < Math.PI * 1.5) X *= -1;

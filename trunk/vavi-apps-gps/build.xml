@@ -5,40 +5,42 @@
 <!--                                                                        -->
 <!-- Written by Naohide Sano                                                -->
 <!--                                                                        -->
-<!-- JSR80 Win32 Implement                                                  -->
+<!-- vavi-apps-gps                                                          -->
 <!--                                                                        -->
 <!-- @author	Naohide Sano                                                -->
 <!-- @version	0.00	030314	nsano	initial version                     -->
 <!--                                                                        -->
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
-<project default="run" basedir=".">
+<project name="vavi-apps-gps" default="run.dummy" basedir="."
+  xmlns:ivy="antlib:org.apache.ivy.ant">
 
-  <property name="windows.home" value="c:/WINNT/system32" />
-  <property name="jdk.home" value="c:/usr/local/java" />
-  <property name="cygwin.home" value="c:/usr/local/cygwin" />
-  <property name="mingw.include" value="${cygwin.home}/usr/include/mingw" />
-  <property name="w32api.include" value="${cygwin.home}/usr/include/w32api" />
-  <property name="mingw.lib" value="${cygwin.home}/lib/mingw" />
-  <property name="jni.uusbd.package" value="vavi/uusbd" />
-  <property name="jni.usb.package" value="src/jni" />
+  <property file="local.properties" />
 
-  <property name="dir.build" value="build" />
+  <property name="dir.build" value="target/classes" />
+  <property name="dir.lib" value="lib" />
 
   <!-- クラスパスの定義 -->
   <path id="project.class.path">
-    <pathelement location="../.." />
-    <pathelement location="${java.home}/lib/comm.jar" />
-    <fileset dir="lib">
+    <fileset dir="${dir.lib}">
       <include name="*.jar" />
     </fileset>
+    <pathelement location="${java.home}/lib/comm.jar" />
   </path>
 
   <!-- ターゲットの定義 -->
 
   <!-- clean -->
   <target name="clean" description="ビルド環境のクリア">
-    <delete dir="${dir.build}" />
+    <delete>
+      <fileset dir="${dir.build}">
+        <include name="**/*" />
+      </fileset>
+      <fileset dir="target/test-classes">
+        <include name="**/*" />
+      </fileset>
+    </delete>
+<!--
     <delete>
       <fileset dir="lib">
         <include name="*.dll" />
@@ -52,29 +54,44 @@
         <exclude name="src/jni/JavaxUsb.h" />
       </fileset>
     </delete>
+-->
   </target>
 
   <!-- prepare -->
   <target name="prepare" description="準備">
-    <mkdir dir="${dir.build}" />
-  </target>
-
-  <!-- javac vavi.util -->
-  <target name="compile.vavi.util"
-          description="コンパイル vavi.util">
-    <ant dir="../../vavi/util" target="compile" />
+    <ivy:settings file="ivy-settings.xml" />
+    <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
+    <ivy:retrieve />
   </target>
 
   <!-- javac -->
-  <target name="compile" depends="prepare,compile.vavi.util"
-          description="コンパイル">
-    <javac debug="on" destdir="${dir.build}">
+  <target name="compile" depends="prepare" description="コンパイル">
+    <javac debug="on" destdir="${dir.build}" encoding="MS932">
       <classpath refid="project.class.path" />
       <include name="**/*.java" />
-      <exclude name="**/jusb/**/*.java" />
-      <exclude name="**/sample/**/*.java" />
-      <src path="src" />
+      <src path="src/main/java" />
     </javac>
+
+    <copy todir="${dir.build}">
+      <fileset dir="src/main/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+
+    <javac debug="on" encoding="MS932" destdir="target/test-classes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+      <include name="**/*.java" />
+      <src path="src/test/java" />
+    </javac>
+
+    <copy todir="target/test-classes">
+      <fileset dir="src/test/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
   </target>
 
   <!-- javah -->
@@ -91,8 +108,8 @@
   </target>
 
   <!-- gcc -->
-  <target name="compile.native" depends="javah" description="コンパイル C">
-    <apply executable="gcc" dest="src/${jni.uusbd.package}" parallel="false">
+  <target name="compile.native.cygwin" depends="javah" description="コンパイル C">
+    <apply executable="gcc" dest="src/main/jni/${jni.uusbd.dir}" parallel="false">
       <env key="LANG" value="C" />
       <arg value="-c" />
       <arg line="-g -Wall -O2" />
@@ -112,7 +129,7 @@
   </target>
 
   <!-- link -->
-  <target name="link" depends="compile.native" description="Makeing DLL">
+  <target name="link.cygwin" depends="compile.native.cygwin" description="Makeing DLL">
     <apply executable="dllwrap" dest="lib">
       <env key="LANG" value="C" />
       <arg value="--add-stdcall-alias" />
@@ -123,22 +140,13 @@
       <srcfile />
       <arg value="lib/uusbd.lib" />
       <arg line="-s -mno-cygwin" />
-      <fileset dir="src/${jni.uusbd.package}" includes="*.o"/>
+      <fileset dir="src/main/jni/${jni.uusbd.dir}" includes="*.o"/>
       <mapper type="glob" from="*.o" to="*.dll"/>
     </apply>
   </target>
 
-  <!-- dist -->
-  <target name="dist" depends="compile,link" description="Distribution">
-    <copy todir="${dir.build}" preservelastmodified="true">
-      <fileset dir="src">
-        <include name="**/*.properties" />
-      </fileset>
-    </copy>
-  </target>
-
   <!-- run -->
-  <target name="run" depends="dist" description="Run program">
+  <target name="run" depends="link.cygwin" description="Run program">
     <java classname="vavi.apps.gps.GpsFormatConverter" fork="yes">
       <env key="PATH" path="lib" />
       <classpath>
@@ -148,8 +156,18 @@
     </java>
   </target>
 
+  <!-- run -->
+  <target name="run.dummy" depends="compile" description="Run program">
+    <java classname="vavi.apps.gps.GpsFormatConverter" fork="yes">
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="${dir.build}" />
+      </classpath>
+    </java>
+  </target>
+
   <!-- hgr -->
-  <target name="hgr" depends="compile,link" description="test program">
+  <target name="hgr" depends="link.cygwin" description="test program">
     <java classname="vavi.gps.vendor.sony.Hgr" fork="yes">
       <env key="PATH" path="lib" />
       <classpath refid="project.class.path" />
@@ -158,7 +176,7 @@
   </target>
 
   <!-- util -->
-  <target name="util" depends="compile" description="run utility">
+  <target name="util" depends="compile" description="run hgr utility">
     <java classname="vavi.apps.gps.HgrUtil" fork="yes">
       <env key="PATH" path="lib;/usr/local/cygwin/bin" />
       <classpath refid="project.class.path" />

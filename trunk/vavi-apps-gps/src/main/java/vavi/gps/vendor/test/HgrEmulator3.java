@@ -22,7 +22,7 @@ import vavi.util.Debug;
  */
 public class HgrEmulator3 extends HgrEmulator {
 
-    /** */
+    /** 早送りの倍速度 */
     int ff = 10;
 
     /** シリアル回線への GPS データの出力 */

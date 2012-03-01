@@ -157,20 +157,15 @@ public abstract class HgrEmulator extends GpsDevice {
     private void doCommand(String command) throws IOException {
         if ("!PUON".equals(command)) {
             doPUON();
-        }
-        else if ("!PUOFF".equals(command)) {
+        } else if ("!PUOFF".equals(command)) {
             doPUOFF();
-        }
-        else if ("!GP".equals(command)) {
+        } else if ("!GP".equals(command)) {
             doGP();
-        }
-        else if ("!PC".equals(command)) {
+        } else if ("!PC".equals(command)) {
             doPC();
-        }
-        else if ("!ID".equals(command)) {
+        } else if ("!ID".equals(command)) {
             doID();
-        }
-        else {
+        } else {
 Debug.println("unrecognized command: " + command);
         }
     }

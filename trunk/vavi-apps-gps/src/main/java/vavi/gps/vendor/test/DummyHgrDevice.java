@@ -42,6 +42,7 @@ public class DummyHgrDevice extends SharedMemoryDevice {
                 emulatorClass = value;
             }
 
+            @SuppressWarnings("unused")
             HgrEmulator emulator = (HgrEmulator) Class.forName(emulatorClass).newInstance();
         } catch (Exception e) {
 Debug.printStackTrace(e);
