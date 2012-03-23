@@ -45,4 +45,5 @@ OPTION  -power  -powdsk -smooth=1       -bus=0  -prn=0  -tape=4
 
 === T98next w/ wine ===
 
- * サウンドが鳴らない？
+ * % サウンドが鳴らない？ %
+  * wine のバージョンが悪かったみたい
