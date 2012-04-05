@@ -38,7 +38,7 @@ public class BbsThread implements Comparable<BbsThread> {
     private long lastModified;
     /** gunziped size */
     private int size;
-    /** loaded datum count */
+    /** loaded data count */
     private int index;
 
     /** */

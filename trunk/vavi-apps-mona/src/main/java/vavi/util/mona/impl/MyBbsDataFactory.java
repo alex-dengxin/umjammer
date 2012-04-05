@@ -18,17 +18,17 @@ import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 
 import vavi.util.mona.BbsData;
-import vavi.util.mona.BbsDatumFactory;
+import vavi.util.mona.BbsDataFactory;
 import vavi.util.mona.BbsThread;
 
 
 /**
- * MyBbsDatumFactory. 
+ * MyBbsDataFactory. 
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080901 nsano initial version <br>
  */
-public class MyBbsDatumFactory implements BbsDatumFactory {
+public class MyBbsDataFactory implements BbsDataFactory {
 
     /** 
      * @param thread lastModified, size
@@ -36,7 +36,7 @@ public class MyBbsDatumFactory implements BbsDatumFactory {
     public List<BbsData> readFrom(BbsThread thread) throws IOException {
         HttpURLConnection uc = null;
         try {
-            List<BbsData> datum = new ArrayList<BbsData>();
+            List<BbsData> data = new ArrayList<BbsData>();
 //System.err.println("threadUrl: " + thread.getThreadUrl());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             uc = (HttpURLConnection) new URL(thread.getThreadUrl()).openConnection();
@@ -67,10 +67,10 @@ public class MyBbsDatumFactory implements BbsDatumFactory {
                 thread.setLastModified(uc.getLastModified());
             } else if (result == HttpURLConnection.HTTP_NOT_MODIFIED) { // 304
 System.err.println("NO DIFF");
-                return datum;
+                return data;
             } else if (result == 416) { // HTTP_RANGE_NOT_SATISFIABLE
 System.err.println("ABON");
-                return datum;
+                return data;
             } else {
                 throw new IllegalStateException(String.valueOf(result));
             }
@@ -133,11 +133,11 @@ System.err.println("ABON");
                     }
                     p = q + 2;
                 }
-                datum.add(new BbsData(thread.getIndex(), name, email, id, text, title));
-                datum.get(datum.size() - 1).setRaw(row); 
+                data.add(new BbsData(thread.getIndex(), name, email, id, text, title));
+                data.get(data.size() - 1).setRaw(row); 
                 thread.setIndex(thread.getIndex() + 1);
             }   
-            return datum;
+            return data;
         } finally {
             uc.disconnect();
         }

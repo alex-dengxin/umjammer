@@ -28,7 +28,7 @@ import vavi.util.mona.Mona;
 public class LevenshteinDistanceTest {
 
     /** input threads no from console */
-//    @Test
+    @Test
     public void test00() throws Exception {
         Mona mona = new Mona();
         List<BbsBoard> boards = mona.getBoardsByCategory("ŽÀ‹µch");
@@ -42,8 +42,11 @@ public class LevenshteinDistanceTest {
         final LevenshteinDistance ld = new LevenshteinDistance();
         Collections.sort(threads, new Comparator<BbsThread>() {
             public int compare(BbsThread o1, BbsThread o2) {
-                int d1 = ld.calculate(title, o1.getTitleAsPlainText()) - ld.calculate(title, o2.getTitleAsPlainText());
-                return d1;
+                int d = ld.calculate(title, o1.getTitleAsPlainText()) - ld.calculate(title, o2.getTitleAsPlainText());
+                if (d != 0) {
+                    return d;
+                }
+                return (int) (o2.getSinse() - o1.getSinse());
             }
         });
         System.out.println(title);
@@ -53,7 +56,7 @@ public class LevenshteinDistanceTest {
     }
 
     /** input threads no from console */
-    @Test
+//    @Test
     public void test01() throws Exception {
         String[] names = {
             "”Ô‘gch(NHK)",
