@@ -11,12 +11,12 @@ import java.util.List;
 
 
 /**
- * BbsDatumFactory. 
+ * BbsDataFactory. 
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 081221 nsano initial version <br>
  */
-public interface BbsDatumFactory {
+public interface BbsDataFactory {
 
     /** 
      * @param thread lastModified, size

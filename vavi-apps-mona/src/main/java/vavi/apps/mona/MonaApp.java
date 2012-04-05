@@ -187,6 +187,7 @@ public class MonaApp {
                     try {
                         String boardName = boards.get(getCurrentIndex()).getName();
                         BbsBoard board = mona.getBoardByName(boardName);
+                        mona.setTargetBoard(board);
                         threadVC.setModel(board.getThreads());
                         mode = MODE_THREAD;
 System.err.println("MODE: THREAD");
@@ -398,11 +399,11 @@ status = "3:" + e;
 
             /* */
             public void whenThreadUpdated(MonaEvent event) {
-                List<BbsData> datum = event.getBbsDatum();
-                for (int i = 0; i < datum.size(); i++) {
-                    BbsData data = datum.get(i);
+                List<BbsData> data = event.getBbsData();
+                for (int i = 0; i < data.size(); i++) {
+                    BbsData datum = data.get(i);
 //System.err.println(data.toStringAsFormated() + "\n");
-                    StringTokenizer lines = new StringTokenizer(data.toStringAsFormated(), "\n");
+                    StringTokenizer lines = new StringTokenizer(datum.toStringAsFormated(), "\n");
                     while (lines.hasMoreTokens()) {
                         String line = lines.nextToken();
                         this.lines.add(line);
@@ -466,7 +467,11 @@ System.err.println("SCROLL: start"/* + getHeight() / (fontSize * 2) */);
                             }
                             graphics.setColor(Color.black);
                             graphics.fillRect(fontSize * 2, currentLine * fontSize * 2, getWidth(), fontSize * 2);
-                            graphics.setColor(Color.white);
+                            if (line.charAt(0) != ' ') {
+                                graphics.setColor(Color.green);
+                            } else {
+                                graphics.setColor(Color.white);
+                            }
                             graphics.drawString(line, fontSize * 2, currentLine * fontSize * 2);
                             if (lines.size() < 100) {
                                 repaint();

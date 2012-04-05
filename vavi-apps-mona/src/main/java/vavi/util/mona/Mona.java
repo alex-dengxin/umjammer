@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import vavi.util.mona.impl.MyBbsBoardsFactory;
-import vavi.util.mona.impl.MyBbsDatumFactory;
+import vavi.util.mona.impl.MyBbsDataFactory;
 
 
 /**
@@ -91,7 +91,7 @@ System.err.println("BOARD: current is " + targetBoard);
 
     /** */
     public class MonaEvent extends EventObject {
-        private List<BbsData> datum;
+        private List<BbsData> data;
         private BbsThread thread;
         private String message;
         /** */
@@ -100,14 +100,14 @@ System.err.println("BOARD: current is " + targetBoard);
             this.message = message;
         }
         /** */
-        public MonaEvent(Object source, BbsThread thread, List<BbsData> datum) {
+        public MonaEvent(Object source, BbsThread thread, List<BbsData> data) {
             super(source);
-            this.datum = datum;
+            this.data = data;
             this.thread = thread;
         }
         /** */
-        public List<BbsData> getBbsDatum() {
-            return datum;
+        public List<BbsData> getBbsData() {
+            return data;
         }
         /** */
         public BbsThread getBbsThread() {
@@ -146,19 +146,19 @@ System.err.println("THREAD: current is " + targetThread);
     }
 
     /** */
-    private BbsDatumFactory bbsDatumFactory = new MyBbsDatumFactory();
+    private BbsDataFactory bbsDataFactory = new MyBbsDataFactory();
 
     /** */
     private class MyTimerTask extends TimerTask {
         int lastIndex = 0;
         public void run() {
             try {
-                List<BbsData> datum = bbsDatumFactory.readFrom(targetThread);
+                List<BbsData> data = bbsDataFactory.readFrom(targetThread);
                 List<BbsData> responses = new ArrayList<BbsData>();
-                for (BbsData data : datum) {
-                    if (data.getIndex() > lastIndex) {
-                        responses.add(data);
-                        lastIndex = data.getIndex();
+                for (BbsData datum : data) {
+                    if (datum.getIndex() > lastIndex) {
+                        responses.add(datum);
+                        lastIndex = datum.getIndex();
                     }
                 }
                 monaListener.whenThreadUpdated(new MonaEvent(this, targetThread, responses));
