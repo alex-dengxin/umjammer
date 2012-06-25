@@ -21,6 +21,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import net.sf.saxon.dom.NodeOverNodeInfo;
 import net.sf.saxon.om.NodeInfo;
 
@@ -63,25 +66,54 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
                 String xpath = Target.Util.getValue(field);
 //System.err.println("xpath: " + xpath);
+
                 if (WebScraper.Util.isCollection(type)) {
                     
-                    @SuppressWarnings("unchecked")
-                    List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
+                    Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
+    
+                    if (List.class.isInstance(nodeSet)) {
+    
+                        @SuppressWarnings("unchecked")
+                        List<NodeInfo> nodeList = List.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.size());
-                    for (int i = 0; i < nodeList.size(); i++) {
-                        T bean = null;
-                        try {
-                            bean = results.get(i);
-                        } catch (IndexOutOfBoundsException e) {
-                            bean = type.newInstance();
-                            results.add(bean);
-                        }
-
-                        String text = nodeList.get(i).getStringValue().trim();
+                        for (int i = 0; i < nodeList.size(); i++) {
+                            // because loops for each fields, instantiation should be done once
+                            T bean = null;
+                            try {
+                                bean = results.get(i);
+                            } catch (IndexOutOfBoundsException e) {
+                                bean = type.newInstance();
+                                results.add(bean);
+                            }
+    
+                            String text = nodeList.get(i).getStringValue().trim();
 //System.err.println(field.getName() + ": " + text);
-                        BeanUtil.setFieldValue(field, bean, text);
+                            BeanUtil.setFieldValue(field, bean, text);
+                        }
+                    } else if (NodeList.class.isInstance(nodeSet)) {
+    
+                        NodeList nodeList = NodeList.class.cast(nodeSet);
+//System.err.println("nodeList: " + nodeList.getLength());
+                        for (int i = 0; i < nodeList.getLength(); i++) {
+                            // because loops for each fields, instantiation should be done once
+                            T bean = null;
+                            try {
+                                bean = results.get(i);
+                            } catch (IndexOutOfBoundsException e) {
+                                bean = type.newInstance();
+                                results.add(bean);
+                            }
+    
+                            String text = nodeList.item(i).getTextContent().trim();
+//System.err.println(field.getName() + ": " + text);
+                            BeanUtil.setFieldValue(field, bean, text);
+                        }
+                    } else {
+                        throw new IllegalStateException("unsupported type returns: " + nodeSet.getClass().getName());
                     }
                 } else {
+                    
+                    // because loops for each fields, instantiation should be done once
                     T bean = null;
                     try {
                         bean = results.get(0);
@@ -108,7 +140,15 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
         }
     }
 
-    /** TODO now 2 step XPath only */
+    /**
+     * <h4>2 step XPath</h4>
+     * <p>
+     *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
+     *  {@link Target#value()} で指定した XPath で取得する方法。
+     * </p>
+     * <li> TODO now 2 step XPath only
+     * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
+     */
     public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
@@ -119,25 +159,55 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
     
             String xpath = WebScraper.Util.getValue(type);
     
-            @SuppressWarnings("unchecked")
-            List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
+            Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
+
+            if (List.class.isInstance(nodeSet)) {
+
+                @SuppressWarnings("unchecked")
+                List<NodeInfo> nodeList = List.class.cast(nodeSet);
 System.err.println("nodeList: " + nodeList.size());
-            for (int i = 0; i < nodeList.size(); i++) {
-                T bean = type.newInstance();
-    
-                NodeInfo node = nodeList.get(i);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                new PrettyPrinter(new PrintWriter(baos)).print(NodeOverNodeInfo.wrap(node));
-    
-                Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
-                for (Field field : targetFields) {
-                    String subXpath = Target.Util.getValue(field); 
-                    InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-                    String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
-                    BeanUtil.setFieldValue(field, bean, text);
+
+                for (int i = 0; i < nodeList.size(); i++) {
+                    T bean = type.newInstance();
+        
+                    NodeInfo node = nodeList.get(i);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    new PrettyPrinter(new PrintWriter(baos)).print(NodeOverNodeInfo.wrap(node));
+        
+                    Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
+                    for (Field field : targetFields) {
+                        String subXpath = Target.Util.getValue(field); 
+                        InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                        String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+                        BeanUtil.setFieldValue(field, bean, text);
+                    }
+                    
+                    eachHandler.exec(bean);
                 }
-                
-                eachHandler.exec(bean);
+            } else if (NodeList.class.isInstance(nodeSet)) {
+
+                NodeList nodeList = NodeList.class.cast(nodeSet);
+//System.err.println("nodeList: " + nodeList.getLength());
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    T bean = type.newInstance();
+                    
+                    Node node = nodeList.item(i);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    new PrettyPrinter(new PrintWriter(baos)).print(node);
+        
+                    Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
+                    for (Field field : targetFields) {
+                        String subXpath = Target.Util.getValue(field); 
+                        InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                        String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+                        BeanUtil.setFieldValue(field, bean, text);
+                    }
+                    
+                    eachHandler.exec(bean);
+                }
+            } else {
+                throw new IllegalStateException("unsupported type returns: " + nodeSet.getClass().getName());
             }
 
         } catch (XPathExpressionException e) {

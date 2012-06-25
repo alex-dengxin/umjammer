@@ -20,7 +20,9 @@ import java.util.List;
  */
 public interface Parser<I, T> {
     
-    /** @return list of scraped */
+    /**
+     * @return list of scraped
+     */
     List<T> parse(Class<T> type, InputHandler<I> inputHandler, String ... args);
 
     /** for less memory */

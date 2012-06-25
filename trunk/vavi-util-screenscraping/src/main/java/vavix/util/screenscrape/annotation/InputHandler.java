@@ -19,6 +19,9 @@ public interface InputHandler<T> {
 
     /**
      * TODO こういう所だよなぁ、Java のメソッドが First Class Object だったらなぁと思う場面
+     * @param args {@link WebScraper.Util#scrape(Class, String...)},
+     *             {@link WebScraper.Util#foreach(Class, EachHandler, String...)}
+     *             の args
      */
     T getInput(String ... args) throws IOException;
 }
