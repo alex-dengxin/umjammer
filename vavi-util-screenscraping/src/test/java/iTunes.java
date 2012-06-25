@@ -26,11 +26,11 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import vavi.util.CharConverterJa;
 import vavi.util.LevenshteinDistance;
 import vavix.util.screenscrape.annotation.EachHandler;
+import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.SaxonXPathParser;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
-import vavix.util.screenscrape.annotation.XPathParser;
 
 
 /**
@@ -121,6 +121,7 @@ public class iTunes {
     }
 
     @WebScraper(input = MyInput.class,
+                parser = HtmlXPathParser.class,
                 encoding = "MS932")
     public static class TitleUrl {
         @Target(value = "//TABLE//TR/TD[2]/DIV/text()")
@@ -161,7 +162,7 @@ public class iTunes {
 
     /** 作詞、作曲詳細 (一行) */
     @WebScraper(input = MyInput2.class,
-                parser = XPathParser.class,
+                parser = HtmlXPathParser.class,
                 encoding = "MS932")
     public static class Composer {
         @Target(value = "//TABLE[4]//TR/TD[2]/SPAN/text()")
@@ -236,6 +237,7 @@ public class iTunes {
 
     /** 作品名指定の作品 (複数) */
     @WebScraper(input = MyInput3.class,
+                parser = HtmlXPathParser.class,
                 encoding = "MS932")
     public static class TitleUrl3 {
         @Target(value = "//TABLE//TR/TD[5]/text()")
@@ -312,6 +314,7 @@ public class iTunes {
 
     /** アーティスト指定の作品 (複数) */
     @WebScraper(input = MyInput4.class,
+                parser = HtmlXPathParser.class,
                 encoding = "MS932")
     public static class TitleUrl4 {
         @Target(value = "//TABLE//TR/TD[1]/DIV/text()")

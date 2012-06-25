@@ -26,19 +26,22 @@ import vavi.beans.BeanUtil;
 
 
 /**
- * XPathParser. 
+ * HtmlXPathParser. 
+ * <p>
+ * parse HTML using cyberneko.
+ * </p>
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
-public class XPathParser<T> implements Parser<Reader, T> {
+public class HtmlXPathParser<T> implements Parser<Reader, T> {
     
     /** */
     protected XPath xPath;
     
     {
 //System.err.println(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);    
-//        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");    
+        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");    
         xPath = XPathFactory.newInstance().newXPath();
 //System.err.println(XPathFactory.newInstance().getClass());
     }
@@ -56,6 +59,8 @@ public class XPathParser<T> implements Parser<Reader, T> {
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
                 Reader reader = handler.getInput(args);
+
+                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");    
 
                 InputSource in = new InputSource(reader);
                 in.setEncoding(encoding);
@@ -95,6 +100,8 @@ public class XPathParser<T> implements Parser<Reader, T> {
                     String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
                     BeanUtil.setFieldValue(field, bean, text);
                 }
+
+                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "");    
             }
             
             return results;

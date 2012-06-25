@@ -18,7 +18,15 @@ import java.util.Set;
 
 /**
  * WebScraper. 
- *
+ * <p>
+ * 入力は {@link #url()} を指定するか、 {@link #input()} を指定します。
+ * {@link #url()} を指定した場合は {@link DefaultInputHandler} が暗黙的に使用されます。
+ * </p>
+ * <p>
+ * 繰り返し対応は {@link #isCollection()} で指定します。デフォルトでは複数対応です。
+ * {@link #isCollection()} を false に設定すると、戻り値のリストの有効添字は 0 のみになります。
+ * </p>
+ * 
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
  */
@@ -138,6 +146,7 @@ public @interface WebScraper {
 
         /**
          * Scrapes data.
+         * ユーザが使用するべきトップレベルの API です。
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
@@ -172,6 +181,7 @@ public @interface WebScraper {
 
         /**
          * Scrapes data.
+         * ユーザが使用するべきトップレベルの API です。
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
