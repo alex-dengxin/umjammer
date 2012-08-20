@@ -26,7 +26,7 @@
  ├── project.properties
  └── res
  $ apktool b target tmp.apk
- $ jarsigner -verbose -keystore ~/.android/debug.keystore -storepass android tmp.apk androiddebugkey
+ $ jarsigner -verbose -sigalg MD5withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore -storepass android tmp.apk androiddebugkey
  $ $ANDROID_SDK/tools/zipalign -v 4 tmp.apk out.apk
 }}}
 
