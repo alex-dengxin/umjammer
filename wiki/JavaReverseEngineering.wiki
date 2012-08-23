@@ -474,6 +474,23 @@ BETTER
           assert foo != 0 : "assertion message";
 }}}
 
+=== annotation ===
+
+{{{
+import java.lang.annotation.Annotation;
+
+public interface UiThread
+    extends Annotation {
+
+    public abstract boolean value();
+}
+}}}
+
+{{{
+public @interface UiThread {
+}
+}}}
+
 = Others =
 
 
